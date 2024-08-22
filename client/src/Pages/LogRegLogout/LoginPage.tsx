@@ -5,7 +5,6 @@ import { notifications } from '@mantine/notifications';
 import {
   TextInput,
   PasswordInput,
-  Checkbox,
   Anchor,
   Paper,
   Title,
@@ -14,7 +13,6 @@ import {
   Group,
   Button,
   rem,
-  Notification,
   Alert,
 } from '@mantine/core';
 import classes from './AunthenticationTitle.module.css';
@@ -31,7 +29,6 @@ import {
   clearError,
   loginUser,
 } from '../../Entities/User/model/CurrentUserSlice';
-import { useState } from 'react';
 
 const schema = yup
   .object({
@@ -41,10 +38,6 @@ const schema = yup
   .required();
 
 function LoginPage(): JSX.Element {
-  const [notificationVisible, setNotificationVisible] = useState(true);
-  const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
-  const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
-
   const {
     register,
     handleSubmit,
@@ -69,7 +62,7 @@ function LoginPage(): JSX.Element {
       withCloseButton: false,
     });
     dispatch(clearError());
-    setNotificationVisible(true);
+
     dispatch(loginUser(loginPass))
       .then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
@@ -80,7 +73,7 @@ function LoginPage(): JSX.Element {
             message: 'Авторизация прошла успешно',
             icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
             loading: false,
-            autoClose: 2000,
+            autoClose: 3000,
           });
           navigate('/');
         }
@@ -88,12 +81,12 @@ function LoginPage(): JSX.Element {
         if (action.meta.requestStatus === 'rejected') {
           notifications.update({
             id,
-            color: 'teal',
+            color: 'red',
             title: 'Ошибка',
             message: error,
-            icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+            icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
             loading: false,
-            autoClose: 2000,
+            autoClose: 3000,
           });
         }
       })
@@ -117,6 +110,12 @@ function LoginPage(): JSX.Element {
               required
               {...register('email')}
             />
+            {errors.email && (
+              <Alert variant="light" color="red" radius="md">
+                {errors.email?.message}
+              </Alert>
+            )}
+
             <PasswordInput
               label="Пароль"
               placeholder="Введите пароль"
@@ -124,6 +123,12 @@ function LoginPage(): JSX.Element {
               mt="md"
               {...register('password')}
             />
+            {errors.password && (
+              <Alert variant="light" color="red" radius="md">
+                {errors.password?.message}
+              </Alert>
+            )}
+
             <Group justify="space-between" mt="lg">
               <Anchor component="button" size="sm"></Anchor>
             </Group>

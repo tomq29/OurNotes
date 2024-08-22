@@ -15,9 +15,9 @@ function App(): JSX.Element {
 
   return (
     <AppShell>
-      <AppShell.Header>
+      {/* <AppShell.Header> */}
         <NavBar />
-      </AppShell.Header>
+      {/* </AppShell.Header> */}
       <AppShell.Main>
         <AppRouter />
       </AppShell.Main>

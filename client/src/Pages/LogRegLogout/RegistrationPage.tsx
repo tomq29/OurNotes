@@ -1,16 +1,18 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { IconX, IconCheck } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
+
+import { IconInfoCircle } from '@tabler/icons-react';
 import {
   TextInput,
   PasswordInput,
-  Checkbox,
-  Anchor,
   Paper,
   Title,
   Text,
   Container,
-  Group,
   Button,
-  Select,
+  Alert,
+  rem,
 } from '@mantine/core';
 
 import { useForm } from 'react-hook-form';
@@ -42,7 +44,7 @@ const schema = yup
 
 function RegistrationPage(): JSX.Element {
   const dispatch = useAppDispatch();
-
+  const icon = <IconInfoCircle />;
   const error = useAppSelector((state) => state.currentUserStore.error);
 
   const {
@@ -58,10 +60,38 @@ function RegistrationPage(): JSX.Element {
 
   const registrationUser = (logEmailPass: logEmailPassType) => {
     if (logEmailPass.confirm === logEmailPass.password) {
+      const id = notifications.show({
+        loading: true,
+        title: 'Ждемс..',
+        message: 'Ща все будет',
+        autoClose: false,
+        withCloseButton: false,
+      });
       dispatch(regUser(logEmailPass))
         .then((action) => {
           if (action.meta.requestStatus === 'fulfilled') {
+            notifications.update({
+              id,
+              color: 'teal',
+              title: '',
+              message: 'Авторизация прошла успешно',
+              icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+              loading: false,
+              autoClose: 3000,
+            });
             navigate('/');
+          }
+
+          if (action.meta.requestStatus === 'rejected') {
+            notifications.update({
+              id,
+              color: 'red',
+              title: 'Ошибка',
+              message: error,
+              icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
+              loading: false,
+              autoClose: 3000,
+            });
           }
         })
         .catch(console.log);
@@ -87,7 +117,11 @@ function RegistrationPage(): JSX.Element {
               {...register('login')}
             />
 
-            <p style={{ color: 'red' }}>{errors.login?.message}</p>
+            {errors.login && (
+              <Alert variant="light" color="red" radius="md">
+                {errors.login?.message}
+              </Alert>
+            )}
 
             <TextInput
               label="Email"
@@ -97,7 +131,11 @@ function RegistrationPage(): JSX.Element {
               {...register('email')}
             />
 
-            <p style={{ color: 'red' }}> {errors.email?.message}</p>
+            {errors.email && (
+              <Alert variant="light" color="red" radius="md">
+                {errors.email?.message}
+              </Alert>
+            )}
 
             <PasswordInput
               label="Пароль"
@@ -107,7 +145,11 @@ function RegistrationPage(): JSX.Element {
               {...register('password')}
             />
 
-            <p style={{ color: 'red' }}> {errors.password?.message}</p>
+            {errors.password && (
+              <Alert variant="light" color="red" radius="md">
+                {errors.password?.message}
+              </Alert>
+            )}
 
             <PasswordInput
               label="Потвердите пароль"
@@ -116,7 +158,12 @@ function RegistrationPage(): JSX.Element {
               mt="md"
               {...register('confirm')}
             />
-            <p style={{ color: 'red' }}> {errors.confirm?.message}</p>
+
+            {errors.confirm && (
+              <Alert variant="light" color="red" radius="md">
+                {errors.confirm?.message}
+              </Alert>
+            )}
 
             <Button fullWidth mt="md" type="submit" size="md">
               Зарегистрироваться
@@ -124,7 +171,6 @@ function RegistrationPage(): JSX.Element {
           </Paper>
         </form>
         {error && <p className="text-danger  text-center mt-3">{error}</p>}
-
       </Container>
     </>
   );

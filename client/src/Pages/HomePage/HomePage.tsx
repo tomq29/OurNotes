@@ -1,10 +1,14 @@
-
-import CarouselMain from "./ui/CarouselMain";
-import DescriptionMain from "./ui/DescriptionMain";
-import "@mantine/carousel/styles.css";
+import { Container, Flex } from '@mantine/core';
+import CarouselMain from './ui/CarouselMain';
+import DescriptionMain from './ui/DescriptionMain';
 
 function HomePage(): JSX.Element {
-  return <CarouselMain />;
+  return (
+    <Container>
+      <DescriptionMain />
+      <CarouselMain />
+    </Container>
+  );
 }
 
 export default HomePage;
