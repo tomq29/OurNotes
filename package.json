@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@mantine/carousel": "^7.12.1",
+    "embla-carousel-autoplay": "^7.1.0",
+    "embla-carousel-react": "^7.1.0"
+  }
+}
