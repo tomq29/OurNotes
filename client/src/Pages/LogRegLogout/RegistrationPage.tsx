@@ -1,4 +1,16 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  TextInput,
+  PasswordInput,
+  Checkbox,
+  Anchor,
+  Paper,
+  Title,
+  Text,
+  Container,
+  Group,
+  Button,
+} from '@mantine/core';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -56,7 +68,64 @@ function RegistrationPage(): JSX.Element {
 
   return (
     <>
-      <div style={{ width: '50%', margin: ' 0 auto' }}>
+      <Container size={420} my={40}>
+        <Title ta="center" className={classes.title}>
+          Hi, new User!
+        </Title>
+        <Text c="dimmed" size="sm" ta="center" mt={5}>
+          Do you have an account?{' '}
+          <Anchor size="sm" component="button">
+            <Link to="/auth/login">Login to account</Link>
+          </Anchor>
+        </Text>
+        <form onSubmit={handleSubmit(registrationUser)}>
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            <TextInput
+              label="Login"
+              placeholder="Login"
+              required
+              {...register('login')}
+            />
+
+            <p style={{ color: 'red' }}>{errors.login?.message}</p>
+
+            <TextInput
+              label="Email"
+              placeholder="Email"
+              required
+              {...register('email')}
+            />
+
+            <p style={{ color: 'red' }}> {errors.email?.message}</p>
+
+            <PasswordInput
+              label="Пароль"
+              placeholder="Введите пароль"
+              required
+              mt="md"
+              {...register('password')}
+            />
+
+            <p style={{ color: 'red' }}> {errors.password?.message}</p>
+
+            <PasswordInput
+              label="Потвердите пароль"
+              placeholder="Потвердите пароль"
+              required
+              mt="md"
+              {...register('confirm')}
+            />
+
+            <p style={{ color: 'red' }}> {errors.confirm?.message}</p>
+
+            <Button fullWidth mt="md" type="submit" size="md">
+              Зарегистрироваться
+            </Button>
+          </Paper>
+        </form>
+      </Container>
+
+      {/* <div style={{ width: '50%', margin: ' 0 auto' }}>
         <h2>Registration</h2>
         <form onSubmit={handleSubmit(registrationUser)}>
           <input
@@ -119,7 +188,7 @@ function RegistrationPage(): JSX.Element {
           </button>
         </form>
         {error && <p className="text-danger  text-center mt-3">{error}</p>}
-      </div>
+      </div> */}
     </>
   );
 }
