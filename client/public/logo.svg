@@ -1,0 +1,15 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="100" fill="#4A90E2"/>
+
+  <!-- Outer Border -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="#FFF" stroke-width="10"/>
+
+  <!-- Note Icon -->
+  <rect x="50" y="50" width="100" height="120" fill="#FFF" rx="10"/>
+  <line x1="60" y1="70" x2="140" y2="70" stroke="#4A90E2" stroke-width="8" stroke-linecap="round"/>
+  <line x1="60" y1="90" x2="140" y2="90" stroke="#4A90E2" stroke-width="8" stroke-linecap="round"/>
+  <line x1="60" y1="110" x2="140" y2="110" stroke="#4A90E2" stroke-width="8" stroke-linecap="round"/>
+  <line x1="60" y1="130" x2="140" y2="130" stroke="#4A90E2" stroke-width="8" stroke-linecap="round"/>
+  <line x1="60" y1="150" x2="140" y2="150" stroke="#4A90E2" stroke-width="8" stroke-linecap="round"/>
+</svg>
