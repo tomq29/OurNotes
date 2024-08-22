@@ -2,11 +2,11 @@ const notesRouter = require('express').Router();
 const { Op } = require('sequelize');
 
 /////////////
-const { Note, Text } = require('../db/models'); // Change here your Model
+const { Note, Text } = require('../../db/models'); // Change here your Model
 /////////////
 
 // verifyAccessToken Использовать перед POST DELETE PUT
-const verifyAccessToken = require('../middleware/verifyAccessToken');
+const verifyAccessToken = require('../../middleware/verifyAccessToken');
 
 /////////////
 

@@ -1,5 +1,5 @@
 const textRouter = require('express').Router();
-const { Note, Text } = require('../db/models'); // Change here your Model
+const { Note, Text } = require('../../db/models'); // Change here your Model
 
 textRouter
   .route('/')

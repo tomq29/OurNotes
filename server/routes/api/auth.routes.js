@@ -59,10 +59,9 @@ authRouter.post('/login', async (req, res) => {
     if (!userInDB) {
       return res.status(400).json({ message: 'User not found' });
     }
-  
-    const user = userInDB.get()
- 
-    
+
+    const user = userInDB.get();
+
     const passDB = user.password;
     const isValid = await bcrypt.compare(password, passDB);
 
@@ -87,13 +86,11 @@ authRouter.post('/login', async (req, res) => {
 
 authRouter.delete('/logout', async (req, res) => {
   try {
-    res
-      .clearCookie(jwtConfig.refresh.type)
-      .json({
-        user:undefined,
-        accessToken: '',
-        message: 'You have logged out successfully! Bye!',
-      });
+    res.clearCookie(jwtConfig.refresh.type).json({
+      user: undefined,
+      accessToken: '',
+      message: 'You have logged out successfully! Bye!',
+    });
   } catch (error) {
     res.status(500).json({ message: error.message || 'Internal server error' });
   }

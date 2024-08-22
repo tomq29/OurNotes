@@ -1,5 +1,5 @@
 const folderRouter = require('express').Router();
-const { Folder, Note } = require('../db/models'); // Change here your Model
+const { Folder, Note } = require('../../db/models'); // Change here your Model
 
 folderRouter
   .route('/')

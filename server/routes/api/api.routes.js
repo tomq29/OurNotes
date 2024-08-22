@@ -1,9 +1,8 @@
-const notesRouter = require('../notes.routes');
-const authRouter = require('../3_log reg/auth.routes');
-
-const tokenRouter = require('../4_tokens/token.routes');
-const folderRouter = require('../folder.routes');
-const textRouter = require('../notesText.routes');
+const authRouter = require('./auth.routes');
+const tokenRouter = require('./token.routes');
+const textRouter = require('./notesText.routes');
+const notesRouter = require('./notes.routes');
+const folderRouter = require('./folder.routes');
 
 const apiRouter = require('express').Router();
 
