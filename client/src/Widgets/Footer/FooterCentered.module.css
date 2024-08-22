@@ -1,7 +1,7 @@
 .footer {
   display: flex;
-    margin-top: rem(120px);
-    border-top: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+    margin-top: rem(2px);
+    /* border-top: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5)); */
     /* position: absolute; */
     bottom: 0px;
     width: 100%;

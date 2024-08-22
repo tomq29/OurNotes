@@ -4,26 +4,22 @@ import { Carousel } from "@mantine/carousel";
 import imgCarousel1 from "../img/1img.png";
 import imgCarousel2 from "../img/2img.png";
 
-function CarouselMain() {
-  const autoplay = useRef(Autoplay({ delay: 2000 }));
+function CarouselMain(): JSX.Element {
+  const autoplay = useRef(Autoplay({ delay: 3000 }));
 
   const images = [imgCarousel1, imgCarousel2];
 
   return (
     <Carousel
       withIndicators
-      height={200}
+      height={700}
       plugins={[autoplay.current]}
       onMouseEnter={autoplay.current.stop}
       onMouseLeave={autoplay.current.reset}
-      style={{ height: "100%", width: "100%" }}
     >
       {images.map((image) => (
-        <Carousel.Slide key={image} style={{ height: "100%", width: "100%" }}>
-          <img
-            src={image}
-            style={{ height: "100%", width: "100%", objectFit: "cover" }}
-          />
+        <Carousel.Slide>
+          <img src={image} alt="image" />
         </Carousel.Slide>
       ))}
     </Carousel>
