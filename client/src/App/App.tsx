@@ -16,12 +16,12 @@ function App(): JSX.Element {
 
 
   return (
-    <>
+    <div className='mainContainer'>
       <NavBar />
 
       <AppRouter />
       <Footer/>
-    </>
+    </div>
   );
 }
 
