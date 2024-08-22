@@ -2,7 +2,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { IconX, IconCheck } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 
-import { IconInfoCircle } from '@tabler/icons-react';
 import {
   TextInput,
   PasswordInput,
@@ -44,7 +43,7 @@ const schema = yup
 
 function RegistrationPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const icon = <IconInfoCircle />;
+
   const error = useAppSelector((state) => state.currentUserStore.error);
 
   const {

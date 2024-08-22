@@ -6,7 +6,7 @@ import imgCarousel2 from '../img/2img.png';
 import { Image } from '@mantine/core';
 
 function CarouselMain(): JSX.Element {
-  // const autoplay = useRef(Autoplay({ delay: 3000 }));
+  const autoplay = useRef(Autoplay({ delay: 3000 }));
 
   const images = [imgCarousel1, imgCarousel2];
 
@@ -16,7 +16,7 @@ function CarouselMain(): JSX.Element {
       slideGap="md"
       loop
       withIndicators
-      // plugins={[autoplay.current]}
+      plugins={[autoplay.current]}
       // onMouseEnter={autoplay.current.stop}
       // onMouseLeave={autoplay.current.reset}
     >
