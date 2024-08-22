@@ -5,6 +5,7 @@ import NavBar from '../Widgets/NavBar/NavBar';
 
 import { useAppDispatch } from './providers/store/store';
 import { refreshUser } from '../Entities/User/model/CurrentUserSlice';
+import { Footer } from '../Widgets/Footer/Footer';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -13,12 +14,14 @@ function App(): JSX.Element {
     dispatch(refreshUser()).catch(console.log);
   }, []);
 
+
   return (
-    <>
+    <div className='mainContainer'>
       <NavBar />
 
       <AppRouter />
-    </>
+      <Footer/>
+    </div>
   );
 }
 
