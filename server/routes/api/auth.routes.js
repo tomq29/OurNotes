@@ -10,7 +10,7 @@ const authRouter = require('express').Router();
 
 authRouter.post('/reg', async (req, res) => {
   try {
-    const { login, email, password, colorID } = req.body;
+    const { login, email, password } = req.body;
 
     if (login.trim() === '' || email.trim() === '' || password.trim() === '') {
       return res.status(400).json({ message: 'All fields are required' });
@@ -27,7 +27,6 @@ authRouter.post('/reg', async (req, res) => {
         login,
         email,
         password: await bcrypt.hash(password, 10),
-        colorID,
       })
     ).get();
 

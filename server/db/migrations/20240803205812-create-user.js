@@ -23,6 +23,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       colorID: {
+        defaultValue: 13,
         type: Sequelize.INTEGER,
         references: {
           model: 'Colors',

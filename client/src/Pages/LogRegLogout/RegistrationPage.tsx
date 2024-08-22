@@ -49,7 +49,6 @@ function RegistrationPage(): JSX.Element {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(schema),
@@ -117,21 +116,6 @@ function RegistrationPage(): JSX.Element {
               mt="md"
               {...register('confirm')}
             />
-
-            <Select
-              label="Выберите цвет"
-              placeholder="Выберите цвет"
-              mt="md"
-              data={[
-                { value: '1', label: 'Красный' },
-                { value: '2', label: 'Зелёный' },
-                { value: '3', label: 'Синий' },
-              ]}
-              {...register('colorID')}
-              onChange={(value) => setValue('colorID', value)} // Update form value on change
-              error={errors.colorID?.message} // Show error if validation fails
-            />
-
             <p style={{ color: 'red' }}> {errors.confirm?.message}</p>
 
             <Button fullWidth mt="md" type="submit" size="md">
@@ -139,72 +123,9 @@ function RegistrationPage(): JSX.Element {
             </Button>
           </Paper>
         </form>
-      </Container>
-
-      {/* <div style={{ width: '50%', margin: ' 0 auto' }}>
-        <h2>Registration</h2>
-        <form onSubmit={handleSubmit(registrationUser)}>
-          <input
-            type="text"
-            {...register('login')}
-            className={`form-control mb-3 ${errors.login ? 'is-invalid' : ''}`}
-            placeholder="Login"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.login?.message}
-          </p>
-          <input
-            type="email"
-            onClick={() => dispatch(clearError())}
-            {...register('email')}
-            className={`form-control mb-3 ${errors.email ? 'is-invalid' : ''}`}
-            placeholder="Email"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.email?.message}
-          </p>
-          <input
-            type="password"
-            {...register('password')}
-            className={`form-control mb-3 ${
-              errors.password ? 'is-invalid' : ''
-            }`}
-            placeholder="Пароль"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.password?.message}
-          </p>
-          <input
-            type="password"
-            {...register('confirm')}
-            className={`form-control mb-3 ${
-              errors.confirm ? 'is-invalid' : ''
-            }`}
-            placeholder="Подтвердите пароль"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.confirm?.message}
-          </p>
-          <select
-            {...register('colorID')}
-            className={`form-control mb-3 ${
-              errors.colorID ? 'is-invalid' : ''
-            }`}
-          >
-            <option value="">Выберите цвет</option>
-            <option value={1}>Красный</option>
-            <option value={2}>Зелёный</option>
-            <option value={3}>Синий</option>
-          </select>
-          <p className="text-danger text-center mt-3">
-            {errors.colorID?.message}
-          </p>
-          <button type="submit" className="btn btn-outline-success">
-            Зарегистрироваться
-          </button>
-        </form>
         {error && <p className="text-danger  text-center mt-3">{error}</p>}
-      </div> */}
+
+      </Container>
     </>
   );
 }

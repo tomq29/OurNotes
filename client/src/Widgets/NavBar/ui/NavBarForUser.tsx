@@ -18,7 +18,7 @@ function NavBarForUser(): JSX.Element {
         <Group justify="space-around" h="100%">
           <Group h="100%" visibleFrom="sm">
             <NavLink to={'/'} className={classes.link}>
-              Home
+              Домой
             </NavLink>
             <NavLink to={'/notes'} className={classes.link}>
               Заметки
