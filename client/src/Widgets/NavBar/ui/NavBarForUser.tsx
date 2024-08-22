@@ -1,76 +1,55 @@
-
-import { NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../../App/providers/store/store';
 
+import { Group, Button, Box, Text } from '@mantine/core';
+
+import classes from '../HeaderMegaMenu.module.css';
+import { IconUser } from '@tabler/icons-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { ThemeToggle } from '../../../Shared/ThemeToggle/ThemeToggle';
+
 function NavBarForUser(): JSX.Element {
+  const navigate = useNavigate();
+
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
 
   return (
-    <div className="collapse navbar-collapse">
-      <ul className="navbar-nav">
-        <li className="nav-item">
-          <div className="nav-link active">
-            Добрый день, {currentUser?.login}
-          </div>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? 'nav-link active' : 'nav-link'
-            }
-            to="/notes"
-          >
-            Заметки
-          </NavLink>
-        </li>
-        {/*  */}
-        <li className="nav-item">
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? 'nav-link active' : 'nav-link'
-            }
-            to="/questions"
-          >
-            Вопросы
-          </NavLink>
-        </li>
-        {/*  */}
-        <li className="nav-item">
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? 'nav-link active' : 'nav-link'
-            }
-            to="/quotes"
-          >
-            Цитаты
-          </NavLink>
-        </li>
+    <Box>
+      <header className={classes.header}>
+        <Group justify="space-around" h="100%">
+          <Group h="100%" visibleFrom="sm">
+            <NavLink to={'/'} className={classes.link}>
+              Home
+            </NavLink>
+            <NavLink to={'/notes'} className={classes.link}>
+              Заметки
+            </NavLink>
+            <NavLink to={'/questions'} className={classes.link}>
+              Вопросы
+            </NavLink>
+            <NavLink to={'/quotes'} className={classes.link}>
+              Цитаты
+            </NavLink>
+            <NavLink to={'/objectwriting'} className={classes.link}>
+              Object Writing
+            </NavLink>
+          </Group>
+          <Group h="100%" visibleFrom="sm">
+            <IconUser />
+            <Text size="md" mx="xs">
+              Добрый день, {currentUser?.login}
+            </Text>
+          </Group>
 
-        {/*  */}
-        <li className="nav-item">
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? 'nav-link active' : 'nav-link'
-            }
-            to="/objectwriting"
-          >
-            Object Writing
-          </NavLink>
-        </li>
+          <Group visibleFrom="sm">
+            <ThemeToggle />
 
-        {/*  */}
-        <li className="nav-item">
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? 'nav-link active' : 'nav-link'
-            }
-            to="/auth/logout"
-          >
-            Выйти
-          </NavLink>
-        </li>
-      </ul>
-    </div>
+            <Button onClick={() => navigate('/auth/logout')} variant="light">
+              Logout
+            </Button>
+          </Group>
+        </Group>
+      </header>
+    </Box>
   );
 }
 
