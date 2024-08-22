@@ -10,6 +10,7 @@ import {
   Container,
   Group,
   Button,
+  Select,
 } from '@mantine/core';
 
 import { useForm } from 'react-hook-form';
@@ -24,11 +25,12 @@ import {
   clearError,
   regUser,
 } from '../../Entities/User/model/CurrentUserSlice';
+import classes from './AunthenticationTitle.module.css';
 
 const schema = yup
   .object({
     email: yup.string().email('Введите email').required('Введите email'),
-    login: yup.string().required('Введите login'),
+    login: yup.string().required('Введите логин'),
     password: yup.string().required('Введите пароль'),
     confirm: yup
       .string()
@@ -47,6 +49,7 @@ function RegistrationPage(): JSX.Element {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(schema),
@@ -70,19 +73,17 @@ function RegistrationPage(): JSX.Element {
     <>
       <Container size={420} my={40}>
         <Title ta="center" className={classes.title}>
-          Hi, new User!
+          Добро пожаловать!
         </Title>
         <Text c="dimmed" size="sm" ta="center" mt={5}>
-          Do you have an account?{' '}
-          <Anchor size="sm" component="button">
-            <Link to="/auth/login">Login to account</Link>
-          </Anchor>
+          Уже есть аккаунт? <Link to="/auth/login"> Авторизируйтесь</Link>
         </Text>
         <form onSubmit={handleSubmit(registrationUser)}>
           <Paper withBorder shadow="md" p={30} mt={30} radius="md">
             <TextInput
-              label="Login"
+              label="Логин"
               placeholder="Login"
+              autoFocus
               required
               {...register('login')}
             />
@@ -91,6 +92,7 @@ function RegistrationPage(): JSX.Element {
 
             <TextInput
               label="Email"
+              onClick={() => dispatch(clearError())}
               placeholder="Email"
               required
               {...register('email')}
@@ -114,6 +116,20 @@ function RegistrationPage(): JSX.Element {
               required
               mt="md"
               {...register('confirm')}
+            />
+
+            <Select
+              label="Выберите цвет"
+              placeholder="Выберите цвет"
+              mt="md"
+              data={[
+                { value: '1', label: 'Красный' },
+                { value: '2', label: 'Зелёный' },
+                { value: '3', label: 'Синий' },
+              ]}
+              {...register('colorID')}
+              onChange={(value) => setValue('colorID', value)} // Update form value on change
+              error={errors.colorID?.message} // Show error if validation fails
             />
 
             <p style={{ color: 'red' }}> {errors.confirm?.message}</p>
