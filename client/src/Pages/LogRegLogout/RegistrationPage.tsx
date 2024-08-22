@@ -1,16 +1,18 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { IconX, IconCheck } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
+
+import { IconInfoCircle } from '@tabler/icons-react';
 import {
   TextInput,
   PasswordInput,
-  Checkbox,
-  Anchor,
   Paper,
   Title,
   Text,
   Container,
-  Group,
   Button,
-  Select,
+  Alert,
+  rem,
 } from '@mantine/core';
 
 import { useForm } from 'react-hook-form';
@@ -42,14 +44,13 @@ const schema = yup
 
 function RegistrationPage(): JSX.Element {
   const dispatch = useAppDispatch();
-
+  const icon = <IconInfoCircle />;
   const error = useAppSelector((state) => state.currentUserStore.error);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(schema),
@@ -59,10 +60,38 @@ function RegistrationPage(): JSX.Element {
 
   const registrationUser = (logEmailPass: logEmailPassType) => {
     if (logEmailPass.confirm === logEmailPass.password) {
+      const id = notifications.show({
+        loading: true,
+        title: 'Ждемс..',
+        message: 'Ща все будет',
+        autoClose: false,
+        withCloseButton: false,
+      });
       dispatch(regUser(logEmailPass))
         .then((action) => {
           if (action.meta.requestStatus === 'fulfilled') {
+            notifications.update({
+              id,
+              color: 'teal',
+              title: '',
+              message: 'Авторизация прошла успешно',
+              icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+              loading: false,
+              autoClose: 3000,
+            });
             navigate('/');
+          }
+
+          if (action.meta.requestStatus === 'rejected') {
+            notifications.update({
+              id,
+              color: 'red',
+              title: 'Ошибка',
+              message: error,
+              icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
+              loading: false,
+              autoClose: 3000,
+            });
           }
         })
         .catch(console.log);
@@ -88,7 +117,11 @@ function RegistrationPage(): JSX.Element {
               {...register('login')}
             />
 
-            <p style={{ color: 'red' }}>{errors.login?.message}</p>
+            {errors.login && (
+              <Alert variant="light" color="red" radius="md">
+                {errors.login?.message}
+              </Alert>
+            )}
 
             <TextInput
               label="Email"
@@ -98,7 +131,11 @@ function RegistrationPage(): JSX.Element {
               {...register('email')}
             />
 
-            <p style={{ color: 'red' }}> {errors.email?.message}</p>
+            {errors.email && (
+              <Alert variant="light" color="red" radius="md">
+                {errors.email?.message}
+              </Alert>
+            )}
 
             <PasswordInput
               label="Пароль"
@@ -108,7 +145,11 @@ function RegistrationPage(): JSX.Element {
               {...register('password')}
             />
 
-            <p style={{ color: 'red' }}> {errors.password?.message}</p>
+            {errors.password && (
+              <Alert variant="light" color="red" radius="md">
+                {errors.password?.message}
+              </Alert>
+            )}
 
             <PasswordInput
               label="Потвердите пароль"
@@ -118,93 +159,19 @@ function RegistrationPage(): JSX.Element {
               {...register('confirm')}
             />
 
-            <Select
-              label="Выберите цвет"
-              placeholder="Выберите цвет"
-              mt="md"
-              data={[
-                { value: '1', label: 'Красный' },
-                { value: '2', label: 'Зелёный' },
-                { value: '3', label: 'Синий' },
-              ]}
-              {...register('colorID')}
-              onChange={(value) => setValue('colorID', value)} // Update form value on change
-              error={errors.colorID?.message} // Show error if validation fails
-            />
-
-            <p style={{ color: 'red' }}> {errors.confirm?.message}</p>
+            {errors.confirm && (
+              <Alert variant="light" color="red" radius="md">
+                {errors.confirm?.message}
+              </Alert>
+            )}
 
             <Button fullWidth mt="md" type="submit" size="md">
               Зарегистрироваться
             </Button>
           </Paper>
         </form>
-      </Container>
-
-      {/* <div style={{ width: '50%', margin: ' 0 auto' }}>
-        <h2>Registration</h2>
-        <form onSubmit={handleSubmit(registrationUser)}>
-          <input
-            type="text"
-            {...register('login')}
-            className={`form-control mb-3 ${errors.login ? 'is-invalid' : ''}`}
-            placeholder="Login"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.login?.message}
-          </p>
-          <input
-            type="email"
-            onClick={() => dispatch(clearError())}
-            {...register('email')}
-            className={`form-control mb-3 ${errors.email ? 'is-invalid' : ''}`}
-            placeholder="Email"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.email?.message}
-          </p>
-          <input
-            type="password"
-            {...register('password')}
-            className={`form-control mb-3 ${
-              errors.password ? 'is-invalid' : ''
-            }`}
-            placeholder="Пароль"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.password?.message}
-          </p>
-          <input
-            type="password"
-            {...register('confirm')}
-            className={`form-control mb-3 ${
-              errors.confirm ? 'is-invalid' : ''
-            }`}
-            placeholder="Подтвердите пароль"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.confirm?.message}
-          </p>
-          <select
-            {...register('colorID')}
-            className={`form-control mb-3 ${
-              errors.colorID ? 'is-invalid' : ''
-            }`}
-          >
-            <option value="">Выберите цвет</option>
-            <option value={1}>Красный</option>
-            <option value={2}>Зелёный</option>
-            <option value={3}>Синий</option>
-          </select>
-          <p className="text-danger text-center mt-3">
-            {errors.colorID?.message}
-          </p>
-          <button type="submit" className="btn btn-outline-success">
-            Зарегистрироваться
-          </button>
-        </form>
         {error && <p className="text-danger  text-center mt-3">{error}</p>}
-      </div> */}
+      </Container>
     </>
   );
 }
