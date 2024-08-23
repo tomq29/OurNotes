@@ -37,7 +37,6 @@ const schema = yup
       .string()
       .oneOf([yup.ref('password')], 'Пароли должны совпадать')
       .required('Потвердите пароль'),
-    colorID: yup.string().required('Выберите цвет'),
   })
   .required();
 
@@ -72,8 +71,8 @@ function RegistrationPage(): JSX.Element {
             notifications.update({
               id,
               color: 'teal',
-              title: '',
-              message: 'Авторизация прошла успешно',
+              title: 'Успешно',
+              message: 'Регистрация прошла успешно',
               icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
               loading: false,
               autoClose: 3000,
@@ -81,7 +80,7 @@ function RegistrationPage(): JSX.Element {
             navigate('/');
           }
 
-          if (action.meta.requestStatus === 'rejected') {
+          if (action.meta.requestStatus === 'rejected' && error) {
             notifications.update({
               id,
               color: 'red',
@@ -169,7 +168,6 @@ function RegistrationPage(): JSX.Element {
             </Button>
           </Paper>
         </form>
-        {error && <p className="text-danger  text-center mt-3">{error}</p>}
       </Container>
     </>
   );
