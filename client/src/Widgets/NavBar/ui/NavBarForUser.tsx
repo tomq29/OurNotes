@@ -34,7 +34,10 @@ function NavBarForUser(): JSX.Element {
             </NavLink>
           </Group>
           <Group h="100%" visibleFrom="sm">
+          <NavLink to={'/profile'} className={classes.link}>
+              Личный кабинет
             <IconUser />
+            </NavLink>
             <Text size="md" mx="xs">
               Добрый день, {currentUser?.login}
             </Text>
