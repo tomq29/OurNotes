@@ -10,10 +10,21 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.Color, { foreignKey: 'colorID' });
+
       this.hasMany(models.Folder, { foreignKey: 'userID' });
+
       this.hasMany(models.Note, { foreignKey: 'userID' });
+
       this.hasMany(models.Text, { foreignKey: 'userID' });
-      
+
+      this.hasMany(models.Pair, {
+        foreignKey: 'userOneID',
+        as: 'UserOnePairs',
+      });
+      this.hasMany(models.Pair, {
+        foreignKey: 'userTwoID',
+        as: 'UserTwoPairs',
+      });
     }
   }
   User.init(

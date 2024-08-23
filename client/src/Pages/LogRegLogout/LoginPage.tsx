@@ -69,7 +69,7 @@ function LoginPage(): JSX.Element {
           notifications.update({
             id,
             color: 'teal',
-            title: '',
+            title: 'Успешно',
             message: 'Авторизация прошла успешно',
             icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
             loading: false,

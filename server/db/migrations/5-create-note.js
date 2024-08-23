@@ -35,6 +35,16 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
+      pairID: {
+        type: Sequelize.INTEGER,
+        allowNull: true, // This allows for notes not to be part of a pair
+        references: {
+          model: 'Pairs',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      },
       createdAt: {
         defaultValue: Sequelize.fn('NOW'),
         allowNull: false,
