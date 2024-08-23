@@ -8,3 +8,4 @@ export type User = {
 };
 
 export type UserID = User['id'];
+export type UserLogin = User['login'];
