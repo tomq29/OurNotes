@@ -64,12 +64,18 @@ export const refreshUser = createAsyncThunk('user/refresh', () =>
 
 export const createPair = createAsyncThunk(
   'user/createPair',
-  ({ login, id }: { login: string; id: UserID }) =>
-    PairsApi.createPair(login, id)
+  ({
+    secondUserLogin,
+    firstUserID,
+  }: {
+    secondUserLogin: string;
+    firstUserID: UserID;
+  }) => PairsApi.createPair(secondUserLogin, firstUserID)
 );
 
-export const rejectPair = createAsyncThunk('user/deletePair', (id: UserID) =>
-  PairsApi.rejectPair(id)
+export const rejectPair = createAsyncThunk(
+  'user/deletePair',
+  (pairID: number) => PairsApi.rejectPair(pairID)
 );
 
 export const acceptPair = createAsyncThunk('user/acceptPair', (id: UserID) =>
@@ -117,7 +123,7 @@ const currentUserSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(createPair.fulfilled, (state, action) => {
-        state.pair = action.payload;
+        state.pair = action.payload.pair;
       })
       .addCase(rejectPair.fulfilled, (state, action) => {
         state.pair = null;
@@ -126,7 +132,7 @@ const currentUserSlice = createSlice({
         state.pair.status = action.payload.status;
       })
       .addCase(checkPair.fulfilled, (state, action) => {
-        state.pair = action.payload;
+        state.pair = action.payload.pair;
       });
   },
 });
