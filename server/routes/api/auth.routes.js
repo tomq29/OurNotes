@@ -16,12 +16,17 @@ authRouter.post('/reg', async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    const userInDB = await User.findOne({ where: { email } });
+    const emailInDB = await User.findOne({ where: { email } });
 
-    if (userInDB) {
+    if (emailInDB) {
       return res.status(400).json({ message: 'Email is already in use' });
     }
 
+    const loginInDB = await User.findOne({ where: { login } });
+
+    if (loginInDB) {
+      return res.status(400).json({ message: 'Login is already in use' });
+    }
     const user = (
       await User.create({
         login,

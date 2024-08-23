@@ -2,49 +2,55 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Users', {
+    await queryInterface.createTable('Pairs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      email: {
-        unique: true,
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      login: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      password: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      colorID: {
-        defaultValue: 13,
+      userOneID: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
-          model: 'Colors',
+          model: 'Users',
           key: 'id',
         },
-        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        unique: true,
+      },
+      userTwoID: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        unique: true,
+      },
+      status: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'pending', // Initial status
       },
       createdAt: {
         defaultValue: Sequelize.fn('NOW'),
+
         allowNull: false,
         type: Sequelize.DATE,
       },
       updatedAt: {
         defaultValue: Sequelize.fn('NOW'),
+
         allowNull: false,
         type: Sequelize.DATE,
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Pairs');
   },
 };
