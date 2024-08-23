@@ -35,10 +35,6 @@ pairsRouter.post('/createRequest', async (req, res) => {
       await Pair.create({ userOneID: firstUserID, userTwoID: secondUser.id })
     ).get();
 
-
-
-
-
     res.status(200).json({ message: 'pair request created', pair });
   } catch (error) {
     res.status(500).json({ message: error.message || 'Internal server error' });
@@ -49,26 +45,19 @@ pairsRouter.put('/checkPair/:userID', async (req, res) => {
   try {
     const { userID } = req.params;
 
-    const pair = await Pair.findOne({where:{userTwoID:userID}})
+    const pair = await Pair.findOne({
+      where: { userTwoID: userID, status: 'pending' },
+    });
 
     if (pair) {
-        return res.status(200).json({ message: '', pair });
-      
+      return res.status(200).json({ message: 'you got one request', pair });
     }
 
-    
-
-
-
+    return res.status(200).json({ message: 'No request' });
   } catch (error) {
     res.status(500).json({ message: error.message || 'Internal server error' });
   }
 });
-
-
-
-
-
 
 pairsRouter.put('/acceptRequest/:pairID', async (req, res) => {
   try {
