@@ -24,6 +24,24 @@ module.exports = {
           password: await bcrypt.hash('123', 10),
           colorID: 3,
         },
+        {
+          email: 'jane@doe',
+          login: 'jane',
+          password: await bcrypt.hash('123', 10),
+          colorID: 4,
+        },
+        {
+          email: 'john@smith',
+          login: 'john',
+          password: await bcrypt.hash('123', 10),
+          colorID: 5,
+        },
+        {
+          email: 'alice@wonderland',
+          login: 'alice',
+          password: await bcrypt.hash('123', 10),
+          colorID: 6,
+        },
       ],
       {}
     );
