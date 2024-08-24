@@ -7,9 +7,7 @@
     "dev": "node --watch app.js",
     "db:migSeed": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:undo:all && npx sequelize db:seed:all",
     "db:mig": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate",
-    "db:seeds": "npx sequelize db:seed:undo:all && npx sequelize db:seed:all",
-    "db:c": "npx sequelize db:create",
-    "db:d": "npx sequelize db:drop"
+    "db:seeds": "npx sequelize db:seed:undo:all && npx sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",
