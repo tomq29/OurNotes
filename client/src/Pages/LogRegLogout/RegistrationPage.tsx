@@ -36,7 +36,7 @@ const schema = yup
     confirm: yup
       .string()
       .oneOf([yup.ref('password')], 'Пароли должны совпадать')
-      .required('Потвердите пароль'),
+      .required('Подтвердите пароль'),
   })
   .required();
 
@@ -109,7 +109,7 @@ function RegistrationPage(): JSX.Element {
           <Paper withBorder shadow="md" p={30} mt={30} radius="md">
             <TextInput
               label="Логин"
-              placeholder="Login"
+              placeholder="Введите логин"
               autoFocus
               required
               {...register('login')}
@@ -124,7 +124,7 @@ function RegistrationPage(): JSX.Element {
             <TextInput
               label="Email"
               onClick={() => dispatch(clearError())}
-              placeholder="Email"
+              placeholder="Введите email"
               required
               {...register('email')}
             />
@@ -150,8 +150,8 @@ function RegistrationPage(): JSX.Element {
             )}
 
             <PasswordInput
-              label="Потвердите пароль"
-              placeholder="Потвердите пароль"
+              label="Подтвердите пароль"
+              placeholder="Подтвердите пароль"
               required
               mt="md"
               {...register('confirm')}
@@ -167,6 +167,11 @@ function RegistrationPage(): JSX.Element {
               Зарегистрироваться
             </Button>
           </Paper>
+          <p style={{ textAlign: 'center', fontSize: '12px', opacity: '0.5' }}>
+            Ваш логин отображается для пользователей, которые приглашают вас в
+            рабочее пространство. Продолжая, вы подтверждаете, что понимаете и
+            соглашаетесь с Условиями использования нашего сервиса.
+          </p>
         </form>
       </Container>
     </>

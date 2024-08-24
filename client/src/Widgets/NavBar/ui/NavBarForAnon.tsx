@@ -1,7 +1,5 @@
 import { Group, Button, Box } from '@mantine/core';
-
 import classes from '../HeaderMegaMenu.module.css';
-
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ThemeToggle } from '../../../Shared/ThemeToggle/ThemeToggle';
 
@@ -13,7 +11,7 @@ function NavBarForAnon(): JSX.Element {
         <Group justify="space-around" h="100%">
           <Group h="100%" visibleFrom="sm">
             <NavLink to={'/'} className={classes.link}>
-              Домой
+              Главная
             </NavLink>
           </Group>
 
