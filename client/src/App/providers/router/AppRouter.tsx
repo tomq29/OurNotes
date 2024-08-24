@@ -19,7 +19,7 @@ function AppRouter(): JSX.Element {
     // Устанавливаем заголовок страницы в зависимости от текущего пути
     switch (location.pathname) {
       case '/':
-        document.title = 'Our Notes';
+        document.title = 'OurNotes';
         break;
       case '/notes':
         document.title = 'Заметки';
@@ -37,7 +37,7 @@ function AppRouter(): JSX.Element {
         document.title = 'Objectwriting';
         break;
       case '/auth/login':
-        document.title = 'Выход';
+        document.title = 'Вход';
         break;
       case '/auth/logout':
         document.title = 'Выход';
