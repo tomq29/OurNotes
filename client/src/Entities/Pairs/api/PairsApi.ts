@@ -5,18 +5,17 @@ import type { PairType } from '../type/PairsType';
 class PairsApi {
   static findUserForPair = async (login: string) => {
     const { data } = await axiosInstance.get<UserLogin[]>(
-      `/pairs/users/search?targetLogin=${login}`,
-     
+      `/pairs/users/search?targetLogin=${login}`
     );
     return data;
   };
-  static createPair = async (secondUserLogin: string, firstUserID: UserID) => {
+  static createPair = async (login: string, id: UserID) => {
     const { data } = await axiosInstance.post<{
       message: string;
       pair: PairType;
     }>('/pairs/createRequest', {
-      secondUserLogin,
-      firstUserID,
+      secondUserLogin: login,
+      firstUserID: id,
     });
     return data;
   };
@@ -32,9 +31,9 @@ class PairsApi {
     );
     return data;
   };
-  static ckeckPair = async (id: UserID) => {
+  static ckeckPair = async (userID: UserID) => {
     const { data } = await axiosInstance<{ message: string; pair: PairType }>(
-      `/pairs/checkPair/${id}`
+      `/pairs/checkPair/${userID}`
     );
     return data;
   };
