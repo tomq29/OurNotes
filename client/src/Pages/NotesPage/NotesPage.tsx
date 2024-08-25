@@ -9,7 +9,7 @@ import {
   useAppSelector,
 } from '../../App/providers/store/store';
 import { getUsersNotes } from '../../Entities/Notes/model/NotesSlice';
-import { Table } from '@mantine/core';
+import { Container, Table } from '@mantine/core';
 import NoteCardv2 from '../../Entities/Notes/ui/NoteCardv2';
 
 function NotesPage(): JSX.Element {
@@ -19,6 +19,9 @@ function NotesPage(): JSX.Element {
 
   const { notes, loading } = useAppSelector((state) => state.notesStore);
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
+
+  
+  
 
   useEffect(() => {
     if (notes.length === 0 && currentUser) {
@@ -49,49 +52,27 @@ function NotesPage(): JSX.Element {
         </>
       )}
 
+      <Container>
+        <Table.ScrollContainer minWidth={800}>
+          <Table verticalSpacing="sm">
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Название</Table.Th>
+                <Table.Th>Описание</Table.Th>
+                <Table.Th>Тип</Table.Th>
+                <Table.Th>Дата изменения</Table.Th>
+                <Table.Th />
+              </Table.Tr>
+            </Table.Thead>
 
-
-
-      {/* <div className="container d-flex flex-wrap">
-        {notes.map((note) => (
-          <NoteCard key={note.id} note={note} />
-        ))}
-      </div> */}
-
-
-<Table.ScrollContainer minWidth={800}>
-      <Table verticalSpacing="sm">
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Employee</Table.Th>
-            <Table.Th>Job title</Table.Th>
-            <Table.Th>Email</Table.Th>
-            <Table.Th>Phone</Table.Th>
-            <Table.Th />
-          </Table.Tr>
-        </Table.Thead>
-
-
-
-        <Table.Tbody>{
-      notes.map((note) => (
-        <NoteCardv2 key={note.id} note={note} />
-      ))
-      
-      }</Table.Tbody>
-
-
-
-
-      </Table>
-    </Table.ScrollContainer>
-
-
-
-
-
-
-
+            <Table.Tbody>
+              {notes.map((note) => (
+                <NoteCardv2 key={note.id} note={note} />
+              ))}
+            </Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
+      </Container>
     </div>
   );
 }

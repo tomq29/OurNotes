@@ -7,9 +7,9 @@ export type Note = {
   id: number;
   title: string;
   description?: string;
-  folderID?: FolderID;
+  folderID?: FolderID | null;
   userID: UserID;
-  pairID: PairID
+  pairID?: PairID | null;
 };
 
 export type NoteID = Note['id'];

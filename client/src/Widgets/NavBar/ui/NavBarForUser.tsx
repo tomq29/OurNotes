@@ -16,7 +16,7 @@ function NavBarForUser(): JSX.Element {
     <Box>
       <header className={classes.header}>
         <Group justify="space-around" h="100%">
-          <Group h="100%" visibleFrom="sm">
+          <Group visibleFrom="sm">
             <NavLink to={'/'} className={classes.link}>
               Главная
             </NavLink>
@@ -33,7 +33,8 @@ function NavBarForUser(): JSX.Element {
               Object Writing
             </NavLink>
           </Group>
-          <Group h="100%" visibleFrom="sm">
+
+          <Group visibleFrom="sm">
             <NavLink to={'/profile'} className={classes.link}>
               Личный кабинет
               <IconUser />
@@ -41,9 +42,6 @@ function NavBarForUser(): JSX.Element {
             <Text size="md" mx="xs">
               Добрый день, {currentUser?.login}
             </Text>
-          </Group>
-
-          <Group visibleFrom="sm">
             <ThemeToggle />
 
             <Button onClick={() => navigate('/auth/logout')} variant="light">
