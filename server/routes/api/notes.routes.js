@@ -44,6 +44,24 @@ notesRouter
   });
 
 notesRouter
+  .route('/:userID')
+
+  .get(async (req, res) => {
+    try {
+      const { userID } = req.params;
+
+      const notes = await Note.findAll({
+        where: { userID },
+        order: [['id', 'DESC']],
+      });
+
+      res.status(200).json(notes);
+    } catch ({ message }) {
+      res.status(500).json({ err: message });
+    }
+  });
+
+notesRouter
   .route('/note/:id')
 
   .put(async (req, res) => {

@@ -7,6 +7,7 @@ import {
 } from '../type/NoteType';
 
 import axiosInstance from '../../../../services/axiosInstace';
+import { UserID } from '../../User/type/UserType';
 
 type updateNote = {
   updateStatus: number;
@@ -20,7 +21,12 @@ type deteleNote = {
 
 class NoteApi {
   static getAllNotes = async (): Promise<Note[]> => {
-    const { data }: AxiosResponse<Note[]> = await axiosInstance.get('/notes');
+    const { data }: AxiosResponse<Note[]> = await axiosInstance.get('/notes/');
+    return data;
+  };
+
+  static getUsersNotes = async (userID:UserID): Promise<Note[]> => {
+    const { data }: AxiosResponse<Note[]> = await axiosInstance.get(`/notes/${userID}`);
     return data;
   };
 

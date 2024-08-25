@@ -6,3 +6,6 @@ export type PairType = {
   userTwoID: UserID;
   status: string;
 };
+
+
+export type PairID = PairType['id'];
