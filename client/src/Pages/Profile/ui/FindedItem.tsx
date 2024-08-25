@@ -10,8 +10,7 @@ function FindedItem({ login, setUserForPair }: Props): JSX.Element {
   return (
     <div
       key={login}
-      className='findedItem'
-      
+      className="findedItem"
       onClick={() => setUserForPair(login)}
     >
       {login}

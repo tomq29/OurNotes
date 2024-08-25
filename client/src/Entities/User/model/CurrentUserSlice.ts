@@ -5,6 +5,8 @@ import { logEmailPassType, loginPassType } from '../type/AuthTypes';
 import { AxiosError } from 'axios';
 import PairsApi from '../../Pairs/api/PairsApi';
 import type { PairType } from '../../Pairs/type/PairsType';
+import { ColorID } from '../../Colors/type/ColorType';
+import UsersApi from '../api/UsersApi';
 
 export type userSliceType = {
   user: User | undefined;
@@ -86,6 +88,12 @@ export const checkPair = createAsyncThunk('user/checkPair', (id: UserID) =>
   PairsApi.ckeckPair(id)
 );
 
+export const updateUserColor = createAsyncThunk(
+  'user/updateColor',
+  ({ id, colorID }: { id: UserID; colorID: ColorID }) =>
+    UsersApi.changeColor(id, colorID)
+);
+
 const currentUserSlice = createSlice({
   name: 'currentUser',
   initialState,
@@ -133,6 +141,9 @@ const currentUserSlice = createSlice({
       })
       .addCase(checkPair.fulfilled, (state, action) => {
         state.pair = action.payload.pair;
+      })
+      .addCase(updateUserColor.fulfilled, (state, action) => {
+        state.user.colorID = action.payload.user.colorID;
       });
   },
 });

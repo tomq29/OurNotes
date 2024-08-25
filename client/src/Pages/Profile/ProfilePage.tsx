@@ -4,6 +4,7 @@ import ModalAddPair from './ui/ModalAddPair';
 import './ui/profile.css';
 import { useEffect, useState } from 'react';
 import PairsApi from '../../Entities/Pairs/api/PairsApi';
+import SelectColor from './ui/SelectColor';
 
 function ProfilePage(): JSX.Element {
   const currentUser = useAppSelector((store) => store.currentUserStore.user);
@@ -26,7 +27,7 @@ function ProfilePage(): JSX.Element {
 
   return (
     <Container className="profileContainer">
-      <h2>ProfilePage</h2>
+      <h2>Профиль</h2>
       <p>
         <strong>Ваш логин: </strong> {currentUser?.login}
       </p>
@@ -37,6 +38,7 @@ function ProfilePage(): JSX.Element {
       <div className="profileRequestButton">
         <Button>Входящие заявки</Button>
       </div>
+      <SelectColor />
     </Container>
   );
 }

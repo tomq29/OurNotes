@@ -27,13 +27,6 @@ pairsRouter.post('/createRequest', async (req, res) => {
   try {
     const { firstUserID, secondUserLogin } = req.body;
   
-    console.log("req.body", req.body);
-    console.log("firstUserID", typeof firstUserID);
-    console.log("secondUserLogin", typeof secondUserLogin);
-    
-    
-    
-
     if (!firstUserID || !secondUserLogin) {
       return res.status(400).json({ message: 'Invalid input' });
     }
@@ -41,7 +34,7 @@ pairsRouter.post('/createRequest', async (req, res) => {
     const secondUser = (await User.findOne({
       where: { login: secondUserLogin },
     })).get();
-    console.log("secondUser", secondUser);
+    
     
 
     if (!secondUser) {
