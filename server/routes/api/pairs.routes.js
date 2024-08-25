@@ -4,7 +4,7 @@ const { User, Pair } = require('../../db/models');
 
 pairsRouter.get('/users/search', async (req, res) => {
   try {
-    const login = req.query.targerLogin;
+    const login = req.query.targetLogin;
 
     const targetUsers = await User.findAll({
       where: {
@@ -26,22 +26,35 @@ pairsRouter.get('/users/search', async (req, res) => {
 pairsRouter.post('/createRequest', async (req, res) => {
   try {
     const { firstUserID, secondUserLogin } = req.body;
+  
+    if (!firstUserID || !secondUserLogin) {
+      return res.status(400).json({ message: 'Invalid input' });
+    }
 
-    const secondUser = await User.findOne({
+    const secondUser = (await User.findOne({
       where: { login: secondUserLogin },
-    });
+    })).get();
+    
+    
+
+    if (!secondUser) {
+      return res.status(404).json({ message: 'Second user not found' });
+    }
 
     const pair = (
-      await Pair.create({ userOneID: firstUserID, userTwoID: secondUser.id })
+      await Pair.create({ userOneID: firstUserID, userTwoID: secondUser.id, status: 'pending' })
     ).get();
 
-    res.status(200).json({ message: 'pair request created', pair });
+    
+
+    res.status(200).json({ message: 'Pair request created', pair });
   } catch (error) {
     res.status(500).json({ message: error.message || 'Internal server error' });
   }
 });
 
-pairsRouter.put('/checkPair/:userID', async (req, res) => {
+
+pairsRouter.get('/checkPair/:userID', async (req, res) => {
   try {
     const { userID } = req.params;
 
