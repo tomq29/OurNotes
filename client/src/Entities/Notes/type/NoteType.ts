@@ -10,6 +10,7 @@ export type Note = {
   folderID?: FolderID | null;
   userID: UserID;
   pairID?: PairID | null;
+  createdAt: Date
 };
 
 export type NoteID = Note['id'];
