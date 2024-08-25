@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 const generateTokens = require('../../utils/generateToken');
 
 /////////////
-const { User } = require('../../db/models'); // Change here your Model and in your code
+const { User, Pair } = require('../../db/models'); // Change here your Model and in your code
+const { Op } = require('sequelize');
 /////////////
 
 const authRouter = require('express').Router();
@@ -76,6 +77,21 @@ authRouter.post('/login', async (req, res) => {
     delete user.password;
 
     const { refreshToken, accessToken } = generateTokens({ user });
+
+    const userPair = await Pair.findOne({
+      where: {
+        [Op.or]: [{ userOneID: user.id }, { userTwoID: user.id }],
+      },
+    });
+
+    if (userPair) {
+      return res
+        .cookie(jwtConfig.refresh.type, refreshToken, {
+          httpOnly: true,
+          maxAge: jwtConfig.refresh.expiresIn,
+        })
+        .json({ message: 'you loggin', user, accessToken, userPair });
+    }
 
     res
       .cookie(jwtConfig.refresh.type, refreshToken, {

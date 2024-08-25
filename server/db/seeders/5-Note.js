@@ -17,7 +17,7 @@ module.exports = {
         { title: 'Brainstorming Ideas', description: 'Ideas for new projects', folderID: 10, userID: 1 },
         // Pair-associated notes
         { title: 'Project Collaboration', description: 'Discussing project details', folderID: 1, userID: 1, pairID: 1 },
-        { title: 'Vacation Planning', description: 'Plan vacation with details', folderID: 2, userID: 2, pairID: 2 },
+        { title: 'Vacation Planning', description: 'Plan vacation with details', folderID: 2, userID: 2, pairID: 1 },
       ],
       {}
     );

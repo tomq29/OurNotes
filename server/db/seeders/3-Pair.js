@@ -10,11 +10,6 @@ module.exports = {
           userTwoID: 2, // Marie
           status: 'active',
         },
-        {
-          userOneID: 2, // Marie
-          userTwoID: 3, // Admin
-          status: 'active',
-        },
       ],
       {}
     );

@@ -40,6 +40,7 @@ const schema = yup
     userID: yup.number().required(),
     folderID: yup.number().nullable(),
     pairID: yup.number().nullable(),
+    
   })
   .required();
 
@@ -144,7 +145,7 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
         )}
       </Table.Td>
 
-      <Table.Td>25.08.24</Table.Td>
+      <Table.Td>{new Date(note.createdAt).toLocaleDateString()}</Table.Td>
 
       <Table.Td>
         <Group gap={0} justify="flex-end">

@@ -108,9 +108,15 @@ const currentUserSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.fulfilled, (state, action) => {
+
+
         state.error = null;
         state.user = action.payload.user;
         state.accessToken = action.payload.accessToken;
+
+        if (action.payload.userPair) {
+          state.pair = action.payload.userPair;
+        }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload as string;
