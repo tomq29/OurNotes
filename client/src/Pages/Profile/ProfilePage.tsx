@@ -1,26 +1,39 @@
-import { useAppSelector } from '../../App/providers/store/store';
-import { Button, Container } from '@mantine/core';
+import { RootState, useAppSelector } from '../../App/providers/store/store';
+import { Container } from '@mantine/core';
 import ModalAddPair from './ui/ModalAddPair';
 import './ui/profile.css';
 import { useEffect, useState } from 'react';
 import PairsApi from '../../Entities/Pairs/api/PairsApi';
 import SelectColor from './ui/SelectColor';
+import TableForCreator from './ui/TableForCreator';
+import ModalConfirmPair from './ui/ModalConfirmPair';
+import { UserID } from '../../Entities/User/type/UserType';
 
 function ProfilePage(): JSX.Element {
-  const currentUser = useAppSelector((store) => store.currentUserStore.user);
+  const currenStore = useAppSelector(
+    (store: RootState) => store.currentUserStore
+  );
   const [canMakePair, setCanMakePair] = useState<boolean>(true);
+  const [haveNotification, setHaveNotification] = useState<boolean>(false);
+  const [firstUserId, setFirstUserId] = useState<UserID>();
 
   const checkCanMakePair = async () => {
-    if (currentUser) {
-      const data = await PairsApi.ckeckPair(currentUser.id);
-      if (data.pair.id) {
+    if (currenStore.user?.colorID) {
+      const data = await PairsApi.ckeckPair(currenStore.user?.id);
+      console.log(data);
+
+      if (data.pair.userOneID) {
         setCanMakePair(false);
+      }
+      if (data.pair.userTwoID === currenStore.user?.id) {
+        setHaveNotification(true);
+        setFirstUserId(data.pair.userOneID);
       }
     }
   };
 
   useEffect(() => {
-    if (currentUser) {
+    if (currenStore.user) {
       checkCanMakePair();
     }
   }, []);
@@ -29,16 +42,16 @@ function ProfilePage(): JSX.Element {
     <Container className="profileContainer">
       <h2>Профиль</h2>
       <p>
-        <strong>Ваш логин: </strong> {currentUser?.login}
+        <strong>Ваш логин: </strong> {currenStore?.user?.login}
       </p>
       <p>
-        <strong>Ваш email: </strong> {currentUser?.email}
+        <strong>Ваш email: </strong> {currenStore?.user?.email}
       </p>
       <ModalAddPair canMakePair={canMakePair} />
-      <div className="profileRequestButton">
-        <Button>Входящие заявки</Button>
-      </div>
+      {haveNotification && <ModalConfirmPair firstUserId={firstUserId}/>}
+      
       <SelectColor />
+      <TableForCreator currenStore={currenStore} />
     </Container>
   );
 }

@@ -133,17 +133,21 @@ const currentUserSlice = createSlice({
       .addCase(createPair.fulfilled, (state, action) => {
         state.pair = action.payload.pair;
       })
-      .addCase(rejectPair.fulfilled, (state, action) => {
+      .addCase(rejectPair.fulfilled, (state) => {
         state.pair = null;
       })
       .addCase(acceptPair.fulfilled, (state, action) => {
-        state.pair.status = action.payload.status;
+        if (state.pair) {
+          state.pair.status = action.payload.status;
+        }
       })
       .addCase(checkPair.fulfilled, (state, action) => {
         state.pair = action.payload.pair;
       })
       .addCase(updateUserColor.fulfilled, (state, action) => {
-        state.user.colorID = action.payload.user.colorID;
+        if (state.user) {
+          state.user.colorID = action.payload.user.colorID;
+        }
       });
   },
 });

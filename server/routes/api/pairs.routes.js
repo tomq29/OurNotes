@@ -26,26 +26,28 @@ pairsRouter.get('/users/search', async (req, res) => {
 pairsRouter.post('/createRequest', async (req, res) => {
   try {
     const { firstUserID, secondUserLogin } = req.body;
-  
+
     if (!firstUserID || !secondUserLogin) {
       return res.status(400).json({ message: 'Invalid input' });
     }
 
-    const secondUser = (await User.findOne({
-      where: { login: secondUserLogin },
-    })).get();
-    
-    
+    const secondUser = (
+      await User.findOne({
+        where: { login: secondUserLogin },
+      })
+    ).get();
 
     if (!secondUser) {
       return res.status(404).json({ message: 'Second user not found' });
     }
 
     const pair = (
-      await Pair.create({ userOneID: firstUserID, userTwoID: secondUser.id, status: 'pending' })
+      await Pair.create({
+        userOneID: firstUserID,
+        userTwoID: secondUser.id,
+        status: 'pending',
+      })
     ).get();
-
-    
 
     res.status(200).json({ message: 'Pair request created', pair });
   } catch (error) {
@@ -53,17 +55,21 @@ pairsRouter.post('/createRequest', async (req, res) => {
   }
 });
 
-
 pairsRouter.get('/checkPair/:userID', async (req, res) => {
   try {
     const { userID } = req.params;
 
     const pair = await Pair.findOne({
-      where: { userTwoID: userID, status: 'pending' },
+      where: {
+        [Op.or]: [
+          { userTwoID: userID },
+          { userOneID: userID }
+        ]
+      },
     });
 
     if (pair) {
-      return res.status(200).json({ message: 'you got one request', pair });
+      return res.status(200).json({ message: 'you have pair', pair });
     }
 
     return res.status(200).json({ message: 'No request' });
