@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Note, NoteID, NoteWithoutIDandFolderID } from '../type/NoteType';
 import NoteApi from '../api/noteApi';
+import { UserID } from '../../User/type/UserType';
 
 type initialState = { notes: Note[]; loading: boolean };
 
@@ -8,6 +9,10 @@ const initialState: initialState = { notes: [], loading: false };
 
 export const getAllNotes = createAsyncThunk('notes/getAll', () =>
   NoteApi.getAllNotes()
+);
+export const getUsersNotes = createAsyncThunk(
+  'notes/getAllUsers',
+  (userID: UserID) => NoteApi.getUsersNotes(userID)
 );
 export const createlNote = createAsyncThunk(
   'notes/createNote',
@@ -30,6 +35,14 @@ const notesSlice = createSlice({
     });
 
     builder.addCase(getAllNotes.fulfilled, (state, action) => {
+      state.notes.push(...action.payload);
+      state.loading = false;
+    });
+    builder.addCase(getUsersNotes.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(getUsersNotes.fulfilled, (state, action) => {
       state.notes.push(...action.payload);
       state.loading = false;
     });

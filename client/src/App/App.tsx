@@ -14,7 +14,7 @@ function App(): JSX.Element {
   }, []);
 
   return (
-    <AppShell header={{ height: 60 }} footer={{ height: 60 }}>
+    <AppShell header={{ height: 60 }} footer={{ height: 60 }}  >
       <AppShell.Header>
         <NavBar />
       </AppShell.Header>

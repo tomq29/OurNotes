@@ -1,4 +1,5 @@
 import { FolderID } from '../../Folder/type/FolderType';
+import { PairID } from '../../Pairs/type/PairsType';
 import { Text } from '../../Texts/type/TextType';
 import { UserID } from '../../User/type/UserType';
 
@@ -6,8 +7,10 @@ export type Note = {
   id: number;
   title: string;
   description?: string;
-  folderID?: FolderID;
+  folderID?: FolderID | null;
   userID: UserID;
+  pairID?: PairID | null;
+  createdAt: Date
 };
 
 export type NoteID = Note['id'];
