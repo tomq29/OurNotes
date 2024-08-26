@@ -90,7 +90,9 @@ notesRouter
         { where: { id } }
       );
 
-      res.json({ updateStatus, id: Number(id) });
+      const updatedNote = await Note.findByPk(id);
+
+      res.json({ updateStatus, id: Number(id), updatedNote });
     } catch ({ message }) {
       res.status(500).json({ err: message });
     }

@@ -26,7 +26,7 @@ function NotesPage(): JSX.Element {
     if (notes.length === 0 && currentUser) {
       dispatch(getUsersNotes(currentUser.id)).catch(console.log);
     }
-  }, []);
+  }, [currentUser]);
 
   const filteredNotes = notes.filter((note) => {
     if (filter === 'Все') {
@@ -66,7 +66,7 @@ function NotesPage(): JSX.Element {
                 <Table.Th>Название</Table.Th>
                 <Table.Th>Описание</Table.Th>
                 <Table.Th>Тип</Table.Th>
-                <Table.Th>Дата изменения</Table.Th>
+                <Table.Th>Дата создания</Table.Th>
                 <Table.Th />
               </Table.Tr>
             </Table.Thead>

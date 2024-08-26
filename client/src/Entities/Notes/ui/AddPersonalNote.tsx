@@ -16,8 +16,9 @@ const schema = yup
     title: yup
       .string()
       .required('Введите название')
+      .trim()
       .min(3, 'Минимум 3 символа'),
-    description: yup.string(),
+    description: yup.string().trim(),
     userID: yup.number().required(),
   })
   .required();

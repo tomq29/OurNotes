@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Note, NoteID, NoteWithoutCreatedAt } from '../type/NoteType';
-import { useNavigate } from 'react-router-dom';
+
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -34,9 +34,10 @@ const schema = yup
     id: yup.number().required(),
     title: yup
       .string()
+      .trim()
       .required('Введите название')
       .min(3, 'Минимум 3 символа'),
-    description: yup.string(),
+    description: yup.string().trim(),
     userID: yup.number().required(),
     folderID: yup.number().nullable(),
     pairID: yup.number().nullable(),
@@ -69,7 +70,6 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
       createdAt: note.createdAt,
     },
   });
-
 
   async function editButtonHadler() {
     const isValidForm = await trigger();

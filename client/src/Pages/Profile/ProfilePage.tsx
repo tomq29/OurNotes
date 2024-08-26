@@ -1,11 +1,12 @@
 import { RootState, useAppSelector } from '../../App/providers/store/store';
-import { Loader, Container } from '@mantine/core';
+import { Container } from '@mantine/core';
 import ModalAddPair from './ui/ModalAddPair';
 import './ui/profile.css';
 import { useEffect, useState } from 'react';
 import SelectColor from './ui/SelectColor';
 import ModalConfirmPair from './ui/ModalConfirmPair';
 import TableForFair from './ui/TableForFair';
+import Spinner from '../../Shared/LoadingSpinner/Spinner';
 
 function ProfilePage(): JSX.Element {
   const currenStore = useAppSelector(
@@ -23,7 +24,6 @@ function ProfilePage(): JSX.Element {
         setCanMakePair(false);
         setIsPairTable(true);
         setLoading(false);
-        console.log('currenStore.pair, ', currenStore.pair, currenStore.user);
       } else if (currenStore.user?.id === currenStore.pair?.userTwoID) {
         if (currenStore.pair?.status === 'pending') {
           setHaveNotification(true);
@@ -48,9 +48,7 @@ function ProfilePage(): JSX.Element {
   return (
     <>
       {loading ? (
-        <Container>
-          <Loader color="blue" size="xl" />
-        </Container>
+        <Spinner />
       ) : (
         <Container className="profileContainer">
           <h1 style={{ marginBottom: '20px' }}>Профиль</h1>

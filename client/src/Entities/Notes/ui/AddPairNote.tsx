@@ -39,8 +39,8 @@ function AddPairNote(): JSX.Element {
     mode: 'onBlur',
     resolver: yupResolver(schema),
     defaultValues: {
-      pairID: currentUser.user?.id,
-      userID: currentUser.pair?.id,
+      pairID: currentUser.pair?.id,
+      userID: currentUser.user?.id,
     },
   });
 
