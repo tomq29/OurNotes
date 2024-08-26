@@ -70,7 +70,6 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
     },
   });
 
-  const navigate = useNavigate();
 
   async function editButtonHadler() {
     const isValidForm = await trigger();
