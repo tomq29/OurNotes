@@ -1,8 +1,3 @@
-
-import { NoteWithoutIDandFolderID } from '../type/NoteType';
-
-
-
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -11,6 +6,7 @@ import {
   useAppSelector,
 } from '../../../App/providers/store/store';
 import { createlNote } from '../model/NotesSlice';
+import { NoteWithoutIDFolderIDcreatedAt } from '../type/NoteType';
 
 const schema = yup
   .object({
@@ -23,9 +19,11 @@ const schema = yup
   })
   .required();
 
-function AddNewCard({ setAddMode }: { setAddMode:React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element {
-
-
+function AddNewCard({
+  setAddMode,
+}: {
+  setAddMode: React.Dispatch<React.SetStateAction<boolean>>;
+}): JSX.Element {
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
 
   const dispatch = useAppDispatch();
@@ -40,7 +38,9 @@ function AddNewCard({ setAddMode }: { setAddMode:React.Dispatch<React.SetStateAc
     defaultValues: { userID: currentUser?.id },
   });
 
-  async function addNewNote(newNote: NoteWithoutIDandFolderID): Promise<void> {
+  async function addNewNote(
+    newNote: NoteWithoutIDFolderIDcreatedAt
+  ): Promise<void> {
     try {
       dispatch(createlNote(newNote));
       setAddMode((prev) => !prev);

@@ -5,8 +5,11 @@ import { Title, Container} from "@mantine/core";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../App/providers/store/store";
-import { logoutUser } from "../../Entities/User/model/CurrentUserSlice";
+
+} from '../../App/providers/store/store';
+import { logoutUser } from '../../Entities/User/model/CurrentUserSlice';
+import { clearNotes } from '../../Entities/Notes/model/NotesSlice';
+
 
 function LogOutPage(): JSX.Element {
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
@@ -15,6 +18,7 @@ function LogOutPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const logoutHandler = () => {
+    dispatch(clearNotes());
     dispatch(logoutUser())
       .then(() => navigate("/"))
       .catch(console.log);
