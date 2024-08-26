@@ -9,6 +9,7 @@ import {
 import { getUsersNotes } from '../../Entities/Notes/model/NotesSlice';
 import { Container, Table } from '@mantine/core';
 import NoteCardv2 from '../../Entities/Notes/ui/NoteCardv2';
+import AddPersonalNote from '../../Entities/Notes/ui/AddPersonalNote';
 
 function NotesPage(): JSX.Element {
   const [addMode, setAddMode] = useState(false);
@@ -46,6 +47,7 @@ function NotesPage(): JSX.Element {
           </div>
         </>
       )}
+      <AddPersonalNote />
 
       <Container>
         <Table.ScrollContainer minWidth={800}>

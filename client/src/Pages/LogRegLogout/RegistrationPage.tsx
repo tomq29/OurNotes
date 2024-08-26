@@ -108,6 +108,8 @@ function RegistrationPage(): JSX.Element {
         <form onSubmit={handleSubmit(registrationUser)}>
           <Paper withBorder shadow="md" p={30} mt={30} radius="md">
             <TextInput
+              radius="xl"
+              error={errors.login?.message}
               label="Логин"
               placeholder="Введите логин"
               autoFocus
@@ -115,13 +117,9 @@ function RegistrationPage(): JSX.Element {
               {...register('login')}
             />
 
-            {errors.login && (
-              <Alert variant="light" color="red" radius="md">
-                {errors.login?.message}
-              </Alert>
-            )}
-
             <TextInput
+              radius="xl"
+              error={errors.email?.message}
               label="Email"
               onClick={() => dispatch(clearError())}
               placeholder="Введите email"
@@ -129,13 +127,9 @@ function RegistrationPage(): JSX.Element {
               {...register('email')}
             />
 
-            {errors.email && (
-              <Alert variant="light" color="red" radius="md">
-                {errors.email?.message}
-              </Alert>
-            )}
-
             <PasswordInput
+              radius="xl"
+              error={errors.password?.message}
               label="Пароль"
               placeholder="Введите пароль"
               required
@@ -143,25 +137,15 @@ function RegistrationPage(): JSX.Element {
               {...register('password')}
             />
 
-            {errors.password && (
-              <Alert variant="light" color="red" radius="md">
-                {errors.password?.message}
-              </Alert>
-            )}
-
             <PasswordInput
+              radius="xl"
+              error={errors.confirm?.message}
               label="Подтвердите пароль"
               placeholder="Подтвердите пароль"
               required
               mt="md"
               {...register('confirm')}
             />
-
-            {errors.confirm && (
-              <Alert variant="light" color="red" radius="md">
-                {errors.confirm?.message}
-              </Alert>
-            )}
 
             <Button fullWidth mt="md" type="submit" size="md">
               Зарегистрироваться

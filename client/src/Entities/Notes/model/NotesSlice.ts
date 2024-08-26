@@ -3,9 +3,9 @@ import { Note, NoteID, NoteWithoutIDandFolderID } from '../type/NoteType';
 import NoteApi from '../api/noteApi';
 import { UserID } from '../../User/type/UserType';
 
-type initialState = { notes: Note[]; loading: boolean };
+type initialStateType = { notes: Note[]; loading: boolean };
 
-const initialState: initialState = { notes: [], loading: false };
+const initialState: initialStateType = { notes: [], loading: false };
 
 export const getAllNotes = createAsyncThunk('notes/getAll', () =>
   NoteApi.getAllNotes()
@@ -28,7 +28,12 @@ export const updateNote = createAsyncThunk('notes/updateNote', (note: Note) =>
 const notesSlice = createSlice({
   name: 'Notes',
   initialState,
-  reducers: {},
+  reducers: {
+    clearNotes: (state) => {
+      state.loading = false;
+      state.notes = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getAllNotes.pending, (state) => {
       state.loading = true;
@@ -65,5 +70,7 @@ const notesSlice = createSlice({
     });
   },
 });
+
+export const { clearNotes } = notesSlice.actions;
 
 export default notesSlice.reducer;
