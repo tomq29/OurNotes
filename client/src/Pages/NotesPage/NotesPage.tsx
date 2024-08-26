@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SegmentedControl } from '@mantine/core';
 // import classes from './GradientSegmentedControl.module.css';
@@ -15,7 +15,7 @@ import AddPairNote from '../../Entities/Notes/ui/AddPairNote';
 
 function NotesPage(): JSX.Element {
   const dispatch = useAppDispatch();
-
+  const [filter, setFilter] = useState('Все');
   const { notes, loading } = useAppSelector((state) => state.notesStore);
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
   const currentUserPair = useAppSelector(
@@ -27,6 +27,19 @@ function NotesPage(): JSX.Element {
       dispatch(getUsersNotes(currentUser.id)).catch(console.log);
     }
   }, []);
+
+  const filteredNotes = notes.filter((note) => {
+    if (filter === 'Все') {
+      return true;
+    }
+    if (filter === 'Общие') {
+      return typeof note.pairID === 'number';
+    }
+    if (filter === 'Личные') {
+      return !note.pairID;
+    }
+    return true;
+  });
 
   if (loading) {
     return <Spinner />;
@@ -40,7 +53,12 @@ function NotesPage(): JSX.Element {
       </Flex>
 
       <Container>
-        <SegmentedControl radius="xl" data={['Все', 'Общие', 'Личные']} />
+        <SegmentedControl
+          value={filter}
+          onChange={setFilter}
+          radius="xl"
+          data={['Все', 'Общие', 'Личные']}
+        />
         <Table.ScrollContainer minWidth={800}>
           <Table verticalSpacing="sm">
             <Table.Thead>
@@ -54,7 +72,7 @@ function NotesPage(): JSX.Element {
             </Table.Thead>
 
             <Table.Tbody>
-              {notes.map((note) => (
+              {filteredNotes.map((note) => (
                 <NoteCardv2 key={note.id} note={note} />
               ))}
             </Table.Tbody>
