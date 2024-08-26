@@ -1,4 +1,5 @@
-import { User } from "./UserType";
+import { PairType } from '../../Pairs/type/PairsType';
+import { User } from './UserType';
 
 export type logEmailPassType = {
   login: string;
@@ -15,4 +16,8 @@ export type loginPassType = {
 export type LogRegResponceType = {
   user: User;
   accessToken: string;
+};
+
+export type LoginResponseType = LogRegResponceType & {
+  userPair?: PairType;
 };

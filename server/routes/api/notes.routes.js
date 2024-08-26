@@ -2,7 +2,7 @@ const notesRouter = require('express').Router();
 const { Op } = require('sequelize');
 
 /////////////
-const { Note, Text } = require('../../db/models'); // Change here your Model
+const { Note, Text, Pair } = require('../../db/models'); // Change here your Model
 /////////////
 
 // verifyAccessToken Использовать перед POST DELETE PUT
@@ -50,10 +50,26 @@ notesRouter
     try {
       const { userID } = req.params;
 
-      const notes = await Note.findAll({
-        where: { userID },
-        order: [['id', 'DESC']],
+      const userPair = await Pair.findOne({
+        where: {
+          [Op.or]: [{ userOneID: userID }, { userTwoID: userID }],
+        },
       });
+
+      let notes;
+      if (userPair) {
+        notes = await Note.findAll({
+          where: {
+            [Op.or]: [{ userID }, { pairID: userPair.id }],
+          },
+          order: [['id', 'DESC']],
+        });
+      } else {
+        notes = await Note.findAll({
+          where: { userID },
+          order: [['id', 'DESC']],
+        });
+      }
 
       res.status(200).json(notes);
     } catch ({ message }) {

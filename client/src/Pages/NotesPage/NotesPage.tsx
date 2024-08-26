@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import NoteCard from '../../Entities/Notes/ui/NoteCard';
-
 import AddNewCard from '../../Entities/Notes/ui/AddNewCard';
 import Spinner from '../../Shared/LoadingSpinner/Spinner';
 import {
@@ -19,9 +17,6 @@ function NotesPage(): JSX.Element {
 
   const { notes, loading } = useAppSelector((state) => state.notesStore);
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
-
-  
-  
 
   useEffect(() => {
     if (notes.length === 0 && currentUser) {

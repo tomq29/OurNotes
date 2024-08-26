@@ -51,6 +51,7 @@ function LoginPage(): JSX.Element {
 
   const error = useAppSelector((state) => state.currentUserStore.error);
 
+
   const navigate = useNavigate();
 
   const authorizationUser = async (loginPass: loginPassType) => {

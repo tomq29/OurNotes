@@ -4,7 +4,7 @@ const textRouter = require('./notesText.routes');
 const notesRouter = require('./notes.routes');
 const folderRouter = require('./folder.routes');
 const pairsRouter = require('./pairs.routes');
-const colorsRouter = require('./colors.rotes');
+const colorsRouter = require('./colors.routes');
 const usersRouter = require('./users.routes');
 
 const apiRouter = require('express').Router();
