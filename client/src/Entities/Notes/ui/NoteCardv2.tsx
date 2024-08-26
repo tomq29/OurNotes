@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Note, NoteID } from '../type/NoteType';
+import { Note, NoteID, NoteWithoutCreatedAt } from '../type/NoteType';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -32,11 +32,15 @@ type NoteCardProps = {
 const schema = yup
   .object({
     id: yup.number().required(),
-    title: yup.string().required(),
+    title: yup
+      .string()
+      .required('Введите название')
+      .min(3, 'Минимум 3 символа'),
     description: yup.string(),
     userID: yup.number().required(),
     folderID: yup.number().nullable(),
     pairID: yup.number().nullable(),
+    createdAt: yup.string(),
   })
   .required();
 
@@ -62,6 +66,7 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
       userID: note.userID,
       folderID: note.folderID,
       pairID: note.pairID,
+      createdAt: note.createdAt,
     },
   });
 
@@ -75,7 +80,7 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
     }
   }
 
-  async function editNote(editedNote: Note) {
+  async function editNote(editedNote: NoteWithoutCreatedAt) {
     try {
       dispatch(updateNote(editedNote));
 
@@ -94,12 +99,11 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
     <Table.Tr>
       <Table.Td>
         <Group gap="sm">
-          {/* <Avatar size={30} src={item.avatar} radius={30} /> */}
-
           {editMode && (
             <TextInput
               variant="filled"
               radius="xl"
+              error={errors.title?.message}
               autoFocus
               {...register('title')}
               defaultValue={note.title}
