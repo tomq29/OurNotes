@@ -1,19 +1,24 @@
 import { TextInput } from '@mantine/core';
-import FindedItem from './FindedItem';
+
 import { useAppSelector } from '../../../App/providers/store/store';
+import FoundItem from './FoundItem';
+
 
 type Props = {
   setLoginForSearch: (value: string) => void;
-  findedLogins: string[];
+  foundLogins: string[]; // Renamed for consistency
   setUserForPair: (value: string) => void;
 };
 
 function InputAreaPair({
   setLoginForSearch,
-  findedLogins,
+  foundLogins,
   setUserForPair,
 }: Props): JSX.Element {
   const currentUser = useAppSelector((store) => store.currentUserStore.user);
+
+  const filteredLogins = foundLogins.filter((login) => login !== currentUser?.login);
+
   return (
     <>
       <TextInput
@@ -23,19 +28,19 @@ function InputAreaPair({
         data-autofocus
         onChange={(event) => setLoginForSearch(event.target.value)}
       />
-      <div className="findedDesc">найденные пользователи:</div>
-      {findedLogins.length === 0 && <div>Ничего не найдено</div>}
+      <div className="found-desc">найденные пользователи:</div>
 
-      {findedLogins.length > 0 &&
-        findedLogins
-          .filter((log) => log !== currentUser?.login)
-          .map((login) => (
-            <FindedItem
-              key={login}
-              login={login}
-              setUserForPair={setUserForPair}
-            />
-          ))}
+      {foundLogins.length === 0 ? (
+        <div>Ничего не найдено</div>
+      ) : (
+        filteredLogins.map((login) => (
+          <FoundItem
+            key={login}
+            login={login}
+            setUserForPair={setUserForPair}
+          />
+        ))
+      )}
     </>
   );
 }

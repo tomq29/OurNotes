@@ -1,7 +1,7 @@
 const jwtConfig = require('../../config/jwtConfig');
 const verifyRefreshToken = require('../../middleware/verifyRefreshToken');
 const generateTokens = require('../../utils/generateToken');
-const { Pair } = require('../../db/models');
+const { User, Pair } = require('../../db/models');
 const { Op } = require('sequelize');
 
 const tokenRouter = require('express').Router();
@@ -10,7 +10,9 @@ tokenRouter.get('/refresh', verifyRefreshToken, async (req, res) => {
   try {
     const { user } = res.locals;
 
-    const { refreshToken, accessToken } = generateTokens({ user });
+    const refreshUser = await User.findByPk(user.id);
+
+    const { refreshToken, accessToken } = generateTokens({ user: refreshUser });
 
     const userPair = await Pair.findOne({
       where: {
@@ -24,7 +26,7 @@ tokenRouter.get('/refresh', verifyRefreshToken, async (req, res) => {
           httpOnly: true,
           maxAge: jwtConfig.refresh.expiresIn,
         })
-        .json({ user, accessToken, userPair });
+        .json({ user: refreshUser, accessToken, userPair });
     }
 
     res
@@ -32,7 +34,7 @@ tokenRouter.get('/refresh', verifyRefreshToken, async (req, res) => {
         httpOnly: true,
         maxAge: jwtConfig.refresh.expiresIn,
       })
-      .json({ user, accessToken });
+      .json({ user: refreshUser, accessToken });
   } catch ({ message }) {
     res.status(500).json({ err: message });
   }

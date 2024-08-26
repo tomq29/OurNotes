@@ -1,70 +1,62 @@
 import { RootState, useAppSelector } from '../../App/providers/store/store';
-import { Loader, Container } from '@mantine/core';
+import { Container } from '@mantine/core';
 import ModalAddPair from './ui/ModalAddPair';
 import './ui/profile.css';
 import { useEffect, useState } from 'react';
 import SelectColor from './ui/SelectColor';
 import ModalConfirmPair from './ui/ModalConfirmPair';
 import TableForFair from './ui/TableForFair';
+import Spinner from '../../Shared/LoadingSpinner/Spinner';
 
 function ProfilePage(): JSX.Element {
-  const currenStore = useAppSelector(
-    (store: RootState) => store.currentUserStore
-  );
+  const currentStore = useAppSelector((store: RootState) => store.currentUserStore);
   const [canMakePair, setCanMakePair] = useState<boolean>(true);
   const [haveNotification, setHaveNotification] = useState<boolean>(false);
   const [isPairTable, setIsPairTable] = useState<boolean>(false);
   const [updatePage, setUpdatePage] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const checkCanMakePair = async () => {
-    if (currenStore.pair?.id) {
-      if (currenStore.user?.id === currenStore.pair?.userOneID) {
+  const checkCanMakePair = () => {
+    if (currentStore.pair?.id) {
+      if (currentStore.user?.id === currentStore.pair.userOneID) {
         setCanMakePair(false);
         setIsPairTable(true);
-        setLoading(false);
-        console.log('currenStore.pair, ', currenStore.pair, currenStore.user);
-      } else if (currenStore.user?.id === currenStore.pair?.userTwoID) {
-        if (currenStore.pair?.status === 'pending') {
+      } else if (currentStore.user?.id === currentStore.pair.userTwoID) {
+        if (currentStore.pair.status === 'pending') {
           setHaveNotification(true);
         }
         setCanMakePair(false);
         setIsPairTable(true);
-        setLoading(false);
-        console.log('currenStore.pair, ', currenStore.pair, currenStore.user);
+        console.log('currentStore.pair, ', currentStore.pair, currentStore.user);
       }
     } else {
       setIsPairTable(false);
       setCanMakePair(true);
       setHaveNotification(false);
-      setLoading(false);
     }
+    setLoading(false); // Set loading to false once all conditions are checked
   };
 
   useEffect(() => {
     checkCanMakePair();
-  }, [currenStore.pair?.id, updatePage]);
+  }, [currentStore.pair?.id, currentStore.user?.id, updatePage]); // Adding user ID to dependencies
 
   return (
     <>
       {loading ? (
-        <Container>
-          <Loader color="blue" size="xl" />
-        </Container>
+        <Spinner />
       ) : (
         <Container className="profileContainer">
-          <h1 style={{ marginBottom: '20px' }}>Профиль</h1>
+          <h1 className="profile-title">Профиль</h1> {/* Using CSS class */}
           <h2>Информация о вас</h2>
           <p>
-            <strong>Ваш логин: </strong> {currenStore?.user?.login}
+            <strong>Ваш логин: </strong> {currentStore?.user?.login}
           </p>
           <p>
-            <strong>Ваш email: </strong> {currenStore?.user?.email}
+            <strong>Ваш email: </strong> {currentStore?.user?.email}
           </p>
           <ModalAddPair canMakePair={canMakePair} />
-          {haveNotification && (
-            <ModalConfirmPair setUpdatePage={setUpdatePage} />
-          )}
+          {haveNotification && <ModalConfirmPair setUpdatePage={setUpdatePage} />}
 
           <SelectColor />
           {isPairTable ? (

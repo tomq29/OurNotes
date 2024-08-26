@@ -13,6 +13,7 @@ export type userSliceType = {
   accessToken: string;
   error: string | null;
   pair: PairType | null;
+  loading: boolean;
 };
 
 const initialState: userSliceType = {
@@ -20,6 +21,7 @@ const initialState: userSliceType = {
   accessToken: '',
   error: null,
   pair: null,
+  loading: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -51,7 +53,11 @@ export const regUser = createAsyncThunk(
       const response = await AuthApi.reg(logEmailPass);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data.message);
+      if (error instanceof AxiosError && error.response) {
+        return rejectWithValue(error.response.data.message);
+      }
+
+      return rejectWithValue('An unexpected error occurred.');
     }
   }
 );
@@ -107,6 +113,24 @@ const currentUserSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Handle refreshUser loading state
+      .addCase(refreshUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(refreshUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.accessToken = action.payload.accessToken;
+        if (action.payload.userPair) {
+          state.pair = action.payload.userPair;
+        }
+      })
+      .addCase(refreshUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      // Other cases remain the same as before
       .addCase(loginUser.fulfilled, (state, action) => {
         state.error = null;
         state.user = action.payload.user;
@@ -118,13 +142,6 @@ const currentUserSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.error = action.payload as string;
-      })
-      .addCase(refreshUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.accessToken = action.payload.accessToken;
-        if (action.payload.userPair) {
-          state.pair = action.payload.userPair;
-        }
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.user = action.payload.user;

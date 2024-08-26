@@ -53,7 +53,7 @@ const notesSlice = createSlice({
     });
 
     builder.addCase(createlNote.fulfilled, (state, action) => {
-      state.notes.push(action.payload);
+      state.notes.unshift(action.payload);
       state.loading = false;
     });
 
@@ -64,7 +64,7 @@ const notesSlice = createSlice({
 
     builder.addCase(updateNote.fulfilled, (state, action) => {
       state.notes = state.notes.map((el) =>
-        el.id === action.payload.id ? action.meta.arg : el
+        el.id === action.payload.id ? action.payload.updatedNote : el
       );
       state.loading = false;
     });
