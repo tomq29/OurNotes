@@ -20,18 +20,20 @@ class PairsApi {
     return data;
   };
   static rejectPair = async (pairID: number) => {
-    const { data } = await axiosInstance<{ message: string; status: number }>(
-      `/pairs/rejectRequest/${pairID}`
-    );
+    const { data } = await axiosInstance.delete<{
+      message: string;
+      status: number;
+    }>(`/pairs/rejectRequest/${pairID}`);
     return data.message;
   };
   static acceptPair = async (pairID: number) => {
-    const { data } = await axiosInstance<{ message: string; status: string }>(
-      `/pairs/acceptRequest/${pairID}`
-    );
+    const { data } = await axiosInstance.put<{
+      message: string;
+      status: string;
+    }>(`/pairs/acceptRequest/${pairID}`);
     return data;
   };
-  static ckeckPair = async (userID: UserID) => {
+  static checkPair = async (userID: UserID) => {
     const { data } = await axiosInstance<{ message: string; pair: PairType }>(
       `/pairs/checkPair/${userID}`
     );

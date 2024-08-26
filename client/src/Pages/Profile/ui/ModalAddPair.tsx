@@ -13,6 +13,7 @@ function ModalAddPair({ canMakePair }: { canMakePair: boolean }): JSX.Element {
   const [userForPair, setUserForPair] = useState<string>('');
   const user = useAppSelector((store) => store.currentUserStore.user);
 
+
   const getFindedLogins = async (loginForSearch: UserLogin) => {
     setFindedLogins([]);
     const data = await PairsApi.findUserForPair(loginForSearch);
@@ -30,8 +31,8 @@ function ModalAddPair({ canMakePair }: { canMakePair: boolean }): JSX.Element {
   const closeModalHandler = () => {
     setLoginForSearch('');
     setFindedLogins([]);
-    setOpened(false);
     setUserForPair('');
+    setOpened(false);
   };
 
   useEffect(() => {

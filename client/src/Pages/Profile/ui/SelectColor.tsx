@@ -1,7 +1,7 @@
 import { ColorSwatch, Flex, Select } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import ColorsApi from '../../../Entities/Colors/api/ColorsApi';
-import { User, UserID } from '../../../Entities/User/type/UserType';
+import type { UserID } from '../../../Entities/User/type/UserType';
 import {
   useAppDispatch,
   useAppSelector,
@@ -62,7 +62,7 @@ function SelectColor(): JSX.Element {
     }
 
     if (currentUser) {
-      updateColorInDatabase(value, currentUser.id); // Вызываем функцию обновления цвета
+      updateColorInDatabase(selectedColorId, currentUser.id); // Вызываем функцию обновления цвета
     }
   };
 
