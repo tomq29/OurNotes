@@ -70,7 +70,7 @@ function TableForFair(): JSX.Element {
 
             <Table.Td>
               {currentPair?.status === 'active' ? (
-                <Badge variant="light">Пара активна</Badge>
+                <Badge color="green">Пара активна</Badge>
               ) : (
                 <Badge color="gray" variant="light">
                   Ожидание подтверждения
