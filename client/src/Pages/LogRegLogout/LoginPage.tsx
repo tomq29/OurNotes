@@ -13,7 +13,6 @@ import {
   Group,
   Button,
   rem,
-  Alert,
 } from '@mantine/core';
 import classes from './AunthenticationTitle.module.css';
 
@@ -50,7 +49,6 @@ function LoginPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const error = useAppSelector((state) => state.currentUserStore.error);
-
 
   const navigate = useNavigate();
 
@@ -107,28 +105,22 @@ function LoginPage(): JSX.Element {
           <Paper withBorder shadow="md" p={30} mt={30} radius="md">
             <TextInput
               label="Email"
+              radius="xl"
+              error={errors.email?.message}
               placeholder="Введите email"
               required
               {...register('email')}
             />
-            {errors.email && (
-              <Alert variant="light" color="red" radius="md">
-                {errors.email?.message}
-              </Alert>
-            )}
 
             <PasswordInput
               label="Пароль"
               placeholder="Введите пароль"
+              radius="xl"
+              error={errors.password?.message}
               required
               mt="md"
               {...register('password')}
             />
-            {errors.password && (
-              <Alert variant="light" color="red" radius="md">
-                {errors.password?.message}
-              </Alert>
-            )}
 
             <Group justify="space-between" mt="lg">
               <Anchor component="button" size="sm"></Anchor>

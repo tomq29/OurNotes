@@ -27,14 +27,14 @@ notesRouter
 
   .post(async (req, res) => {
     try {
-      const { title, description, userID, folderID } = req.body;
+      const { title, description, userID, folderID, pairID } = req.body;
 
       if (title.trim() === '' || !userID) {
         return res.status(400).json('Empty field exists');
       }
 
       const data = (
-        await Note.create({ title, description, userID, folderID })
+        await Note.create({ title, description, userID, folderID, pairID })
       ).get();
 
       res.json(data);

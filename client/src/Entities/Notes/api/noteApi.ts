@@ -2,7 +2,8 @@ import { AxiosResponse } from 'axios';
 import {
   Note,
   NoteID,
-  NoteWithoutIDandFolderID,
+  NoteWithoutCreatedAt,
+  NoteWithoutIDFolderIDcreatedAt,
   NoteWithTexts,
 } from '../type/NoteType';
 
@@ -25,8 +26,10 @@ class NoteApi {
     return data;
   };
 
-  static getUsersNotes = async (userID:UserID): Promise<Note[]> => {
-    const { data }: AxiosResponse<Note[]> = await axiosInstance.get(`/notes/${userID}`);
+  static getUsersNotes = async (userID: UserID): Promise<Note[]> => {
+    const { data }: AxiosResponse<Note[]> = await axiosInstance.get(
+      `/notes/${userID}`
+    );
     return data;
   };
 
@@ -38,12 +41,14 @@ class NoteApi {
     return data;
   };
 
-  static createNote = async (note: NoteWithoutIDandFolderID): Promise<Note> => {
+  static createNote = async (
+    note: NoteWithoutIDFolderIDcreatedAt
+  ): Promise<Note> => {
     const { data } = await axiosInstance.post<Note>('/notes', note);
     return data;
   };
 
-  static updateNote = async (note: Note): Promise<updateNote> => {
+  static updateNote = async (note: NoteWithoutCreatedAt): Promise<updateNote> => {
     const { data } = await axiosInstance.put<updateNote>(
       `/notes/note/${note.id}`,
       note
