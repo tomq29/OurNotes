@@ -11,6 +11,7 @@ import NotesPage from '../../../Pages/NotesPage/NotesPage';
 import OneNotePage from '../../../Pages/OneNotePage/OneNotePage';
 import ProfilePage from '../../../Pages/Profile/ProfilePage';
 import { useEffect } from 'react';
+import PrivacyPage from '../../../Pages/PrivacyPage/PrivacyPage';
 
 function AppRouter(): JSX.Element {
   const location = useLocation();
@@ -45,6 +46,9 @@ function AppRouter(): JSX.Element {
       case '/auth/reg':
         document.title = 'Регистрация';
         break;
+      case '/privacy-policy':
+        document.title = 'Условия использования';
+        break;
       default:
         document.title = 'Our Notes';
     }
@@ -66,6 +70,8 @@ function AppRouter(): JSX.Element {
       <Route path="/auth/logout" element={<LogOutPage />} />
       <Route path="/auth/login" element={<LoginPage />} />
       <Route path="/auth/reg" element={<RegistrationPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPage />} />
+
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
