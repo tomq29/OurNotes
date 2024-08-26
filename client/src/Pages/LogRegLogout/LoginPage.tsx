@@ -13,8 +13,6 @@ import {
   Group,
   Button,
   rem,
-  Alert,
-  Input,
 } from '@mantine/core';
 import classes from './AunthenticationTitle.module.css';
 

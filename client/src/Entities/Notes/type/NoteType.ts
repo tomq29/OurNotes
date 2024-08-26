@@ -10,7 +10,7 @@ export type Note = {
   folderID?: FolderID | null;
   userID: UserID;
   pairID?: PairID | null;
-  createdAt: string
+  createdAt: string;
 };
 
 export type NoteID = Note['id'];
@@ -19,4 +19,12 @@ export type NoteWithTexts = Note & {
   Texts: Text[];
 };
 
-export type NoteWithoutIDandFolderID = Omit<Note, 'id' | 'folderID'>;
+
+export type NoteWithoutIDFolderIDcreatedAt = Omit<
+  Note,
+  'id' | 'folderID' | 'createdAt'
+>;
+
+
+
+export type NoteWithoutCreatedAt = Omit<Note, 'createdAt'>;

@@ -1,23 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import AddNewCard from '../../Entities/Notes/ui/AddNewCard';
+import { SegmentedControl } from '@mantine/core';
+// import classes from './GradientSegmentedControl.module.css';
 import Spinner from '../../Shared/LoadingSpinner/Spinner';
 import {
   useAppDispatch,
   useAppSelector,
 } from '../../App/providers/store/store';
 import { getUsersNotes } from '../../Entities/Notes/model/NotesSlice';
-import { Container, Table } from '@mantine/core';
+import { Container, Flex, Table } from '@mantine/core';
 import NoteCardv2 from '../../Entities/Notes/ui/NoteCardv2';
 import AddPersonalNote from '../../Entities/Notes/ui/AddPersonalNote';
+import AddPairNote from '../../Entities/Notes/ui/AddPairNote';
 
 function NotesPage(): JSX.Element {
-  const [addMode, setAddMode] = useState(false);
-
   const dispatch = useAppDispatch();
 
   const { notes, loading } = useAppSelector((state) => state.notesStore);
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
+  const currentUserPair = useAppSelector(
+    (state) => state.currentUserStore.pair
+  );
 
   useEffect(() => {
     if (notes.length === 0 && currentUser) {
@@ -30,26 +33,14 @@ function NotesPage(): JSX.Element {
   }
   return (
     <div>
-      {addMode ? (
-        <>
-          <AddNewCard setAddMode={setAddMode} />
-        </>
-      ) : (
-        <>
-          <div style={{ width: '10%', margin: ' 0 auto' }}>
-            <button
-              onClick={() => setAddMode((prev) => !prev)}
-              type="button"
-              className="btn btn-outline-success"
-            >
-              Добавить новую заметку
-            </button>
-          </div>
-        </>
-      )}
-      <AddPersonalNote />
+      <Flex mih={70} gap="xl" justify="center" align="center" direction="row">
+        <AddPersonalNote />
+
+        {currentUserPair && <AddPairNote />}
+      </Flex>
 
       <Container>
+        <SegmentedControl radius="xl" data={['Все', 'Общие', 'Личные']} />
         <Table.ScrollContainer minWidth={800}>
           <Table verticalSpacing="sm">
             <Table.Thead>

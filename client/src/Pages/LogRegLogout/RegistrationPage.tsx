@@ -10,7 +10,6 @@ import {
   Text,
   Container,
   Button,
-  Alert,
   rem,
 } from '@mantine/core';
 

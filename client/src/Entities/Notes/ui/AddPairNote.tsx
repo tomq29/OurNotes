@@ -18,12 +18,13 @@ const schema = yup
       .required('Введите название')
       .min(3, 'Минимум 3 символа'),
     description: yup.string(),
+    pairID: yup.number().required(),
     userID: yup.number().required(),
   })
   .required();
 
-function AddPersonalNote(): JSX.Element {
-  const currentUser = useAppSelector((state) => state.currentUserStore.user);
+function AddPairNote(): JSX.Element {
+  const currentUser = useAppSelector((state) => state.currentUserStore);
 
   const dispatch = useAppDispatch();
 
@@ -37,7 +38,10 @@ function AddPersonalNote(): JSX.Element {
   } = useForm({
     mode: 'onBlur',
     resolver: yupResolver(schema),
-    defaultValues: { userID: currentUser?.id },
+    defaultValues: {
+      pairID: currentUser.user?.id,
+      userID: currentUser.pair?.id,
+    },
   });
 
   async function addNewNote(
@@ -59,7 +63,7 @@ function AddPersonalNote(): JSX.Element {
         centered
         opened={opened}
         onClose={close}
-        title="Создание новой заметки"
+        title="Создание общей заметки"
       >
         <form onSubmit={handleSubmit(addNewNote)}>
           <TextInput
@@ -79,15 +83,26 @@ function AddPersonalNote(): JSX.Element {
             placeholder="Введите описание"
           />
 
-          <Button mt="md" type="submit">
+          <Button
+            variant="gradient"
+            gradient={{ from: 'blue', to: 'pink', deg: 90 }}
+            mt="md"
+            type="submit"
+          >
             Добавить
           </Button>
         </form>
       </Modal>
 
-      <Button onClick={open}>Создать личную заметку</Button>
+      <Button
+        variant="gradient"
+        gradient={{ from: 'blue', to: 'pink', deg: 90 }}
+        onClick={open}
+      >
+        Создать общую заметку
+      </Button>
     </>
   );
 }
 
-export default AddPersonalNote;
+export default AddPairNote;
