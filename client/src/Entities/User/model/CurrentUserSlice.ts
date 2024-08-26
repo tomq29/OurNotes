@@ -129,7 +129,7 @@ const currentUserSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.accessToken = action.payload.accessToken;
-        state.pair = null
+        state.pair = null;
       })
       .addCase(regUser.fulfilled, (state, action) => {
         state.user = action.payload.user;

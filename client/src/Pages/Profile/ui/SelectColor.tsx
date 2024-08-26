@@ -31,7 +31,7 @@ function SelectColor(): JSX.Element {
       }));
 
       setColors(formattedColors);
-      console.log('colors', formattedColors);
+
       const currUserColor = formattedColors.filter(
         (color) => color.value === String(currentUser?.colorID)
       );

@@ -2,9 +2,13 @@ import { Button, Modal } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import PairsApi from '../../../Entities/Pairs/api/PairsApi';
 import type { UserLogin } from '../../../Entities/User/type/UserType';
-import { useAppSelector } from '../../../App/providers/store/store';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../App/providers/store/store';
 import './profile.css';
 import InputAreaPair from './InputAreaPair';
+import { createPair } from '../../../Entities/User/model/CurrentUserSlice';
 
 function ModalAddPair({ canMakePair }: { canMakePair: boolean }): JSX.Element {
   const [loginForSearch, setLoginForSearch] = useState('');
@@ -13,18 +17,21 @@ function ModalAddPair({ canMakePair }: { canMakePair: boolean }): JSX.Element {
   const [userForPair, setUserForPair] = useState<string>('');
   const user = useAppSelector((store) => store.currentUserStore.user);
 
-
   const getFindedLogins = async (loginForSearch: UserLogin) => {
     setFindedLogins([]);
     const data = await PairsApi.findUserForPair(loginForSearch);
     setFindedLogins(data);
   };
 
+  const dispatch = useAppDispatch();
   const createPairRequest = () => {
     if (user) {
-      PairsApi.createPair(userForPair, user.id)
-        .then((data) => console.log(data))
-        .then(() => setOpened(false));
+      dispatch(
+        createPair({ secondUserLogin: userForPair, firstUserID: user.id })
+      ).then(() => setOpened(false));
+      // PairsApi.createPair(userForPair, user.id)
+      //   .then((data) => console.log(data))
+      //   .then(() => setOpened(false));
     }
   };
 
