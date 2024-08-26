@@ -7,7 +7,8 @@ import PairsApi from '../../Entities/Pairs/api/PairsApi';
 import SelectColor from './ui/SelectColor';
 import TableForCreator from './ui/TableForCreator';
 import ModalConfirmPair from './ui/ModalConfirmPair';
-import { UserID } from '../../Entities/User/type/UserType';
+import type { UserID } from '../../Entities/User/type/UserType';
+import type { PairType } from '../../Entities/Pairs/type/PairsType';
 
 function ProfilePage(): JSX.Element {
   const currenStore = useAppSelector(
@@ -15,17 +16,24 @@ function ProfilePage(): JSX.Element {
   );
   const [canMakePair, setCanMakePair] = useState<boolean>(true);
   const [haveNotification, setHaveNotification] = useState<boolean>(false);
+  const [creatorPairTable, setCreatorPairTable] = useState<boolean>(false);
   const [firstUserId, setFirstUserId] = useState<UserID>();
+  const [currentPair, setCurrentPair] = useState<PairType>();
 
   const checkCanMakePair = async () => {
-    if (currenStore.user?.colorID) {
-      const data = await PairsApi.ckeckPair(currenStore.user?.id);
+    if (currenStore.user?.id) {
+      const data = await PairsApi.checkPair(currenStore.user?.id);
       console.log(data);
 
       if (data.pair.userOneID) {
         setCanMakePair(false);
+        setCurrentPair(data.pair);
+        setCreatorPairTable(true);
       }
-      if (data.pair.userTwoID === currenStore.user?.id) {
+      if (
+        data.pair.userTwoID === currenStore.user?.id &&
+        data.pair.status === 'pending'
+      ) {
         setHaveNotification(true);
         setFirstUserId(data.pair.userOneID);
       }
@@ -33,9 +41,7 @@ function ProfilePage(): JSX.Element {
   };
 
   useEffect(() => {
-    if (currenStore.user) {
-      checkCanMakePair();
-    }
+    checkCanMakePair();
   }, []);
 
   return (
@@ -48,10 +54,16 @@ function ProfilePage(): JSX.Element {
         <strong>Ваш email: </strong> {currenStore?.user?.email}
       </p>
       <ModalAddPair canMakePair={canMakePair} />
-      {haveNotification && <ModalConfirmPair firstUserId={firstUserId}/>}
-      
+      {haveNotification && (
+        <ModalConfirmPair firstUserId={firstUserId} currentPair={currentPair} />
+      )}
+
       <SelectColor />
-      <TableForCreator currenStore={currenStore} />
+      {creatorPairTable ? (
+        <TableForCreator currenStore={currenStore} />
+      ) : (
+        <div style={{ marginTop: '20px' }}>У Вас нет пары</div>
+      )}
     </Container>
   );
 }

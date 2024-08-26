@@ -82,10 +82,13 @@ pairsRouter.put('/acceptRequest/:pairID', async (req, res) => {
   try {
     const { pairID } = req.params;
 
-    const [updateStatus] = await Pair.update(
-      { status: 'active' },
-      { where: { id: pairID } }
-    );
+    // const [updateStatus] = await Pair.update(
+    //   { status: 'active' },
+    //   { where: { id: pairID } }
+    // );
+    const pair = await Pair.findOne({ where: { id: pairID } });
+    pair.status = 'active';
+    await pair.save();
 
     res.status(200).json({ message: 'Request accept', status: 'active' });
   } catch (error) {

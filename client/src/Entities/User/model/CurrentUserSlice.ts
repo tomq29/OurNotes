@@ -85,7 +85,7 @@ export const acceptPair = createAsyncThunk('user/acceptPair', (id: UserID) =>
 );
 
 export const checkPair = createAsyncThunk('user/checkPair', (id: UserID) =>
-  PairsApi.ckeckPair(id)
+  PairsApi.checkPair(id)
 );
 
 export const updateUserColor = createAsyncThunk(
