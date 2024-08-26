@@ -24,7 +24,7 @@ import { useNavigate } from 'react-router-dom';
 
 function DescriptionMain(): JSX.Element {
   const autoplay = useRef(Autoplay({ delay: 2500 }));
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
 
@@ -33,7 +33,6 @@ function DescriptionMain(): JSX.Element {
       <Title
         ta="center"
         order={1}
-        color="blue"
         mb="md"
         style={{
           display: 'flex',
@@ -170,7 +169,12 @@ function DescriptionMain(): JSX.Element {
 
       {!currentUser && (
         <Center>
-          <Button onClick={()=> navigate('/auth/login')} size="lg" color="blue" radius="md">
+          <Button
+            onClick={() => navigate('/auth/login')}
+            size="lg"
+            color="blue"
+            radius="md"
+          >
             Начать сейчас
           </Button>
         </Center>

@@ -7,19 +7,16 @@ import * as yup from 'yup';
 import { useAppDispatch } from '../../../App/providers/store/store';
 import { deleteNote, updateNote } from '../model/NotesSlice';
 import {
-  Avatar,
   Badge,
   Table,
   Group,
   Text,
   ActionIcon,
-  Anchor,
   rem,
   Menu,
   TextInput,
 } from '@mantine/core';
 import {
-  IconArrowsLeftRight,
   IconCancel,
   IconCheckbox,
   IconPencil,
@@ -40,7 +37,6 @@ const schema = yup
     userID: yup.number().required(),
     folderID: yup.number().nullable(),
     pairID: yup.number().nullable(),
-    
   })
   .required();
 
