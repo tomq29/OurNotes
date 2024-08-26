@@ -1,4 +1,4 @@
-import { ColorSwatch, Flex, Select } from '@mantine/core';
+import { ColorSwatch, Flex, Select, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import ColorsApi from '../../../Entities/Colors/api/ColorsApi';
 import type { UserID } from '../../../Entities/User/type/UserType';
@@ -14,25 +14,32 @@ function SelectColor(): JSX.Element {
     {
       value: string;
       label: string;
+      title: string;
     }[]
   >([]);
-
-  const [selectedColorId, setSelectedColorId] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('black');
+  const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
 
-  const getColors = () => {
+  const getColors = async () => {
     try {
-      ColorsApi.getColors().then((data) => {
-        const formattedColors = data.map((color) => ({
-          value: String(color.id),
-          label: color.color,
-        }));
+      const data = await ColorsApi.getColors();
+      const formattedColors = data.map((color) => ({
+        value: String(color.id),
+        label: color.color,
+        title: color.title,
+      }));
 
-        setColors(formattedColors);
-      });
+      setColors(formattedColors);
+      console.log('colors', formattedColors);
+      const currUserColor = formattedColors.filter(
+        (color) => color.value === String(currentUser?.colorID)
+      );
+      setSelectedColor(currUserColor[0].label);
     } catch (error) {
       console.error('Error fetching colors:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,36 +58,44 @@ function SelectColor(): JSX.Element {
 
   useEffect(() => {
     getColors();
-  }, []);
+  }, [currentUser?.id]);
 
-  const handleColorChange = (value: string) => {
-    setSelectedColorId(value);
-
+  const handleColorChange = (value: string): void => {
     const currentColor = colors.find((color) => color.value === value);
     if (currentColor) {
       setSelectedColor(currentColor.label);
     }
 
     if (currentUser) {
-      updateColorInDatabase(selectedColorId, currentUser.id); // Вызываем функцию обновления цвета
+      updateColorInDatabase(value, currentUser.id);
     }
   };
 
   return (
     <div>
-      <h2>Выберите цвет</h2>
-
-      <Flex align="center" gap="md">
-        <Select
-          placeholder="Выберите цвет"
-          data={colors}
-          size="sm"
-          variant="filled"
-          style={{ width: '20%' }}
-          onChange={handleColorChange} // Обработчик изменения цвета
-        />
-        <ColorSwatch color={selectedColor} radius="xl" />
-      </Flex>
+      <h2>Выберите цвет текста</h2>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Flex align="center" gap="md">
+          <Select
+            placeholder="Выберите цвет"
+            data={colors.map((color) => ({
+              value: color.value,
+              label: color.title,
+            }))}
+            size="sm"
+            variant="filled"
+            style={{ width: '20%' }}
+            onChange={handleColorChange}
+            value={selectedColor}
+            radius="xl"
+            searchable
+            clearable
+          />
+          <ColorSwatch color={selectedColor} radius="xl" />
+        </Flex>
+      )}
     </div>
   );
 }

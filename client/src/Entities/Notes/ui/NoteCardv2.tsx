@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Note, NoteID } from '../type/NoteType';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -69,7 +68,6 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
     },
   });
 
-  const navigate = useNavigate();
 
   async function editButtonHadler() {
     const isValidForm = await trigger();
