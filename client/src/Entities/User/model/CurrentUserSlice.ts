@@ -108,8 +108,6 @@ const currentUserSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.fulfilled, (state, action) => {
-
-
         state.error = null;
         state.user = action.payload.user;
         state.accessToken = action.payload.accessToken;
@@ -124,6 +122,9 @@ const currentUserSlice = createSlice({
       .addCase(refreshUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.accessToken = action.payload.accessToken;
+        if (action.payload.userPair) {
+          state.pair = action.payload.userPair;
+        }
       })
       .addCase(logoutUser.fulfilled, (state, action) => {
         state.user = action.payload.user;
