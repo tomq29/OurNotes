@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Note, NoteID, NoteWithoutCreatedAt } from '../type/NoteType';
+import { useState } from "react";
+import { Note, NoteID, NoteWithoutCreatedAt } from "../type/NoteType";
 
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { useAppDispatch } from '../../../App/providers/store/store';
-import { deleteNote, updateNote } from '../model/NotesSlice';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useAppDispatch } from "../../../App/providers/store/store";
+import { deleteNote, updateNote } from "../model/NotesSlice";
 import {
   Badge,
   Table,
@@ -17,16 +17,17 @@ import {
   TextInput,
   UnstyledButton,
   Button,
-} from '@mantine/core';
+} from "@mantine/core";
 import {
   IconCancel,
   IconCheckbox,
   IconPencil,
   IconTrash,
   IconX,
-} from '@tabler/icons-react';
-import { useNavigate } from 'react-router-dom';
-import { getHotkeyHandler } from '@mantine/hooks';
+  IconExternalLink,
+} from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
+import { getHotkeyHandler } from "@mantine/hooks";
 
 type NoteCardProps = {
   key: NoteID;
@@ -39,8 +40,8 @@ const schema = yup
     title: yup
       .string()
       .trim()
-      .required('Введите название')
-      .min(3, 'Минимум 3 символа'),
+      .required("Введите название")
+      .min(3, "Минимум 3 символа"),
     description: yup.string().trim(),
     userID: yup.number().required(),
     folderID: yup.number().nullable(),
@@ -64,7 +65,7 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
     trigger,
     formState: { errors },
   } = useForm({
-    mode: 'onBlur',
+    mode: "onBlur",
     resolver: yupResolver(schema),
     defaultValues: {
       id: note.id,
@@ -115,18 +116,21 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
               radius="xl"
               error={errors.title?.message}
               autoFocus
-              {...register('title')}
+              {...register("title")}
               defaultValue={note.title}
               placeholder="Введите название"
               onKeyDown={getHotkeyHandler([
-                ['Enter', editButtonHadler],
-                ['Escape', exitEditMode],
+                ["Enter", editButtonHadler],
+                ["Escape", exitEditMode],
               ])}
             />
           )}
 
           {normalMode && (
-            <UnstyledButton variant="outline" onClick={() => navigate(`/note/${note.id}`)}>
+            <UnstyledButton
+              variant="outline"
+              onClick={() => navigate(`/note/${note.id}`)}
+            >
               <Text fz="sm" fw={500}>
                 {note.title}
               </Text>
@@ -140,12 +144,12 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
           <TextInput
             variant="filled"
             radius="xl"
-            {...register('description')}
+            {...register("description")}
             defaultValue={note.description}
             placeholder="Введите описание"
             onKeyDown={getHotkeyHandler([
-              ['Enter', editButtonHadler],
-              ['Escape', exitEditMode],
+              ["Enter", editButtonHadler],
+              ["Escape", exitEditMode],
             ])}
           />
         )}
@@ -198,7 +202,13 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
             </div>
           )}
 
-          <Button variant='outline' mr={10} onClick={() => navigate(`/note/${note.id}`)}>Перейти к заметке</Button>
+          <ActionIcon variant="subtle" color="blue">
+            <IconExternalLink
+              stroke={1.5}
+              style={{ width: rem(16), height: rem(16) }}
+              onClick={() => navigate(`/note/${note.id}`)}
+            />
+          </ActionIcon>
 
           {normalMode && (
             <ActionIcon
