@@ -3,7 +3,7 @@ import { modals } from '@mantine/modals';
 import { useEffect, useState } from 'react';
 import UsersApi from '../../../Entities/User/api/UsersApi';
 import { User, UserID } from '../../../Entities/User/type/UserType';
-import PairsApi from '../../../Entities/Pairs/api/PairsApi';
+
 import { RootState, useAppDispatch, useAppSelector } from '../../../App/providers/store/store';
 import { useNavigate } from 'react-router-dom';
 import { acceptPair, rejectPair } from '../../../Entities/User/model/CurrentUserSlice';
