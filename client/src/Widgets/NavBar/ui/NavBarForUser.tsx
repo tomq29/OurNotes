@@ -104,6 +104,9 @@ function NavBarForUser(): JSX.Element {
             <NavLink to={'/questions'} className={classes.link}>
               Вопросы
             </NavLink>
+            <NavLink to={'/calendar'} className={classes.link}>
+              Календарь
+            </NavLink>
             <NavLink to={'/quotes'} className={classes.link}>
               Цитаты
             </NavLink>

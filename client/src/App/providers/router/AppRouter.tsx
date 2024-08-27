@@ -12,6 +12,7 @@ import OneNotePage from '../../../Pages/OneNotePage/OneNotePage';
 import ProfilePage from '../../../Pages/Profile/ProfilePage';
 import { useEffect } from 'react';
 import PrivacyPage from '../../../Pages/PrivacyPage/PrivacyPage';
+import CalendarPage from '../../../Pages/CalendarPage/CalendarPage';
 
 function AppRouter(): JSX.Element {
   const location = useLocation();
@@ -24,6 +25,9 @@ function AppRouter(): JSX.Element {
         break;
       case '/notes':
         document.title = 'Заметки';
+        break;
+      case '/calendar':
+        document.title = 'Календарь';
         break;
       case '/questions':
         document.title = 'Вопросы';
@@ -59,6 +63,8 @@ function AppRouter(): JSX.Element {
 
       <Route path="/notes" element={<NotesPage />} />
       <Route path="/note/:id" element={<OneNotePage />} />
+
+      <Route path="/calendar" element={<CalendarPage />} />
 
       <Route path="/questions" element={<QuestionsPage />} />
 
