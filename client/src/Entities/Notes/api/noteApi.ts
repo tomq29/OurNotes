@@ -34,8 +34,8 @@ class NoteApi {
     return data;
   };
 
-  static getOneNote = async (id: NoteID): Promise<NoteWithTexts> => {
-    const { data }: AxiosResponse<NoteWithTexts> = await axiosInstance.get(
+  static getOneNote = async (id: NoteID): Promise<Note> => {
+    const { data }: AxiosResponse<Note> = await axiosInstance.get(
       `/notes/note/${id}`
     );
 

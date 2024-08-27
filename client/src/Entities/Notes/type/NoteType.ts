@@ -1,3 +1,4 @@
+import { JSONContent } from '@tiptap/react';
 import { FolderID } from '../../Folder/type/FolderType';
 import { PairID } from '../../Pairs/type/PairsType';
 import { Text } from '../../Texts/type/TextType';
@@ -11,7 +12,7 @@ export type Note = {
   userID: UserID;
   pairID?: PairID | null;
   createdAt: string;
-  content?: JSON| null;
+  content?: JSONContent | null;
 };
 
 export type NoteID = Note['id'];

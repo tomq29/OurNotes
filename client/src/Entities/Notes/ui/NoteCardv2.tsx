@@ -105,6 +105,8 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
     dispatch(deleteNote(note.id));
   }
 
+  
+
   return (
     <Table.Tr>
       <Table.Td>

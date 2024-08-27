@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { RichTextEditor, Link } from '@mantine/tiptap';
 import { useEditor } from '@tiptap/react';
 import Highlight from '@tiptap/extension-highlight';
@@ -6,6 +7,9 @@ import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
+import { Collaboration } from '@tiptap/extension-collaboration'; // Import collaboration extensions
+import * as Y from 'yjs';
+import { WebsocketProvider } from 'y-websocket';
 import {
   useAppDispatch,
   useAppSelector,
@@ -15,20 +19,22 @@ import {
   editNoteContent,
   getOneNote,
 } from '../../Entities/Notes/model/OneNoteSlice';
-import { useEffect } from 'react';
 import Spinner from '../../Shared/LoadingSpinner/Spinner';
 import { Button, Container, Title } from '@mantine/core';
+import { CollaborationCursor } from '../../Shared/Extentions/CollaborationCursor';
 
 function PersonalNoteEditorPage() {
   const { id } = useParams();
-
-  const currentUser = useAppSelector((state) => state.currentUserStore.user);
   const dispatch = useAppDispatch();
-
   const { oneNote, loading } = useAppSelector((state) => state.oneNoteStore);
+  const currentUser = useAppSelector((state) => state.currentUserStore.user);
 
+  // Initialize Yjs document
+  const ydoc = React.useMemo(() => new Y.Doc(), []);
+  const provider = React.useMemo(() => new WebsocketProvider('ws://localhost:1234', 'my-roomname', ydoc), [ydoc]);
+
+  // Editor setup
   const editor = useEditor({
-    autofocus: true,
     extensions: [
       StarterKit,
       Underline,
@@ -36,15 +42,26 @@ function PersonalNoteEditorPage() {
       Superscript,
       SubScript,
       Highlight,
+      
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      Collaboration.configure({ document: ydoc }), // Synchronize content
+      CollaborationCursor.configure({
+        provider: provider,
+        user: {
+          name: currentUser?.login,
+          color: currentUser?.colorID,
+        },
+      }), // Synchronize cursors
     ],
     content: oneNote?.content,
   });
 
+  // Fetch the note data when the component mounts
   useEffect(() => {
     dispatch(getOneNote(Number(id))).catch(console.log);
-  }, []);
+  }, [dispatch, id]);
 
+  // Update the editor content when oneNote.content changes
   useEffect(() => {
     if (editor && oneNote.content) {
       editor.commands.setContent(oneNote.content);
@@ -58,7 +75,6 @@ function PersonalNoteEditorPage() {
   function saveHandler() {
     if (editor) {
       const editedNote = { ...oneNote, content: editor.getJSON() };
-
       dispatch(editNoteContent(editedNote));
     }
   }
@@ -101,6 +117,11 @@ function PersonalNoteEditorPage() {
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup>
+            <RichTextEditor.Link />
+            <RichTextEditor.Unlink />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
             <RichTextEditor.AlignLeft />
             <RichTextEditor.AlignCenter />
             <RichTextEditor.AlignJustify />
@@ -117,7 +138,7 @@ function PersonalNoteEditorPage() {
       </RichTextEditor>
 
       <Button onClick={saveHandler} m={10}>
-        Сохранить
+        Save
       </Button>
     </Container>
   );

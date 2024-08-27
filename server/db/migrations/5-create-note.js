@@ -19,7 +19,7 @@ module.exports = {
       content: {
         type: Sequelize.JSONB, // Use JSONB to store rich content with metadata
 
-        defaultValue: [], // Default to an empty array to represent an empty note
+        defaultValue: {"type":"doc","content":[{"type":"paragraph","attrs":{"textAlign":"left"}}]}
       },
       folderID: {
         type: Sequelize.INTEGER,

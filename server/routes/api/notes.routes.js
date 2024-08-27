@@ -42,6 +42,7 @@ notesRouter
           folderID,
           pairID,
           content,
+          
         })
       ).get();
 
@@ -102,6 +103,7 @@ notesRouter
   .put(async (req, res) => {
     try {
       const { id } = req.params;
+
       const { title, description, folderID, userID, content } = req.body;
 
       const [updateStatus] = await Note.update(

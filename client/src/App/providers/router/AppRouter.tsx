@@ -16,6 +16,7 @@ import CalendarPage from '../../../Pages/CalendarPage/CalendarPage';
 
 import SoonPage from '../../../Pages/SoonPage/SoonPage';
 import PersonalNoteEditorPage from '../../../Pages/OneNotePage/PersonalNoteEditorPage';
+import PairNoteEditorPage from '../../../Pages/OneNotePage/PairNoteEditorPage';
 
 function AppRouter(): JSX.Element {
   const location = useLocation();
@@ -68,6 +69,7 @@ function AppRouter(): JSX.Element {
       {/* <Route path="/note/:id" element={<OneNotePage />} /> */}
       {/* <Route path="/note/:id" element={<OneNotePageV2 />} /> */}
       <Route path="/note/:id" element={<PersonalNoteEditorPage />} />
+      {/* <Route path="/note/:id" element={<PairNoteEditorPage />} /> */}
 
       <Route path="/questions" element={<SoonPage />} />
       <Route path="/calendar" element={<CalendarPage />} />
