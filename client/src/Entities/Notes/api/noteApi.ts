@@ -13,6 +13,7 @@ import { UserID } from '../../User/type/UserType';
 type updateNote = {
   updateStatus: number;
   id: number;
+  updatedNote: Note
 };
 
 type deteleNote = {

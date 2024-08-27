@@ -1,4 +1,4 @@
-import { ColorSwatch, Flex, Select, Loader } from '@mantine/core';
+import { ColorSwatch, Flex, Select } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import ColorsApi from '../../../Entities/Colors/api/ColorsApi';
 import type { UserID } from '../../../Entities/User/type/UserType';
@@ -7,6 +7,7 @@ import {
   useAppSelector,
 } from '../../../App/providers/store/store';
 import { updateUserColor } from '../../../Entities/User/model/CurrentUserSlice';
+import Spinner from '../../../Shared/LoadingSpinner/Spinner';
 
 function SelectColor(): JSX.Element {
   const currentUser = useAppSelector((store) => store.currentUserStore.user);
@@ -17,7 +18,8 @@ function SelectColor(): JSX.Element {
       title: string;
     }[]
   >([]);
-  const [selectedColor, setSelectedColor] = useState<string>('black');
+  const [selectedColor, setSelectedColor] = useState<string | null>(null); // Store the color code here
+  const [selectedColorValue, setSelectedColorValue] = useState<string | null>(null); // Store the color ID here
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
 
@@ -26,20 +28,43 @@ function SelectColor(): JSX.Element {
       const data = await ColorsApi.getColors();
       const formattedColors = data.map((color) => ({
         value: String(color.id),
-        label: color.color,
+        label: color.color, // Assuming this is the color code, like #FFFFFF
         title: color.title,
       }));
 
       setColors(formattedColors);
-      console.log('colors', formattedColors);
-      const currUserColor = formattedColors.filter(
-        (color) => color.value === String(currentUser?.colorID)
-      );
-      setSelectedColor(currUserColor[0].label);
+
+      if (currentUser?.colorID) {
+        // Find the user's color by ID
+        const userColor = formattedColors.find(
+          (color) => color.value === String(currentUser.colorID)
+        );
+        if (userColor) {
+          setSelectedColor(userColor.label); // Set the color code (e.g., #FFFFFF)
+          setSelectedColorValue(userColor.value); // Set the color ID (e.g., "9")
+        }
+      }
     } catch (error) {
       console.error('Error fetching colors:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getColors();
+  }, [currentUser?.id]); // Load colors when currentUser changes
+
+  const handleColorChange = (value: string | null): void => {
+    if (value) {
+      const currentColor = colors.find((color) => color.value === value);
+      if (currentColor) {
+        setSelectedColor(currentColor.label); // Set the color code
+        setSelectedColorValue(currentColor.value); // Set the color ID
+        if (currentUser) {
+          updateColorInDatabase(value, currentUser.id);
+        }
+      }
     }
   };
 
@@ -56,26 +81,11 @@ function SelectColor(): JSX.Element {
     }
   };
 
-  useEffect(() => {
-    getColors();
-  }, [currentUser?.id]);
-
-  const handleColorChange = (value: string): void => {
-    const currentColor = colors.find((color) => color.value === value);
-    if (currentColor) {
-      setSelectedColor(currentColor.label);
-    }
-
-    if (currentUser) {
-      updateColorInDatabase(value, currentUser.id);
-    }
-  };
-
   return (
     <div>
       <h2>Выберите цвет текста</h2>
       {loading ? (
-        <Loader />
+        <Spinner />
       ) : (
         <Flex align="center" gap="md">
           <Select
@@ -88,12 +98,12 @@ function SelectColor(): JSX.Element {
             variant="filled"
             style={{ width: '20%' }}
             onChange={handleColorChange}
-            value={selectedColor}
+            value={selectedColorValue} // Use color ID for the Select component
             radius="xl"
             searchable
             clearable
           />
-          <ColorSwatch color={selectedColor} radius="xl" />
+          <ColorSwatch color={selectedColor || '#D3D3D3'} radius="xl" /> {/* Use selectedColor for ColorSwatch */}
         </Flex>
       )}
     </div>

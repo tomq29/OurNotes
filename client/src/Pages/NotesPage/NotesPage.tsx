@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SegmentedControl } from '@mantine/core';
 // import classes from './GradientSegmentedControl.module.css';
@@ -15,7 +15,7 @@ import AddPairNote from '../../Entities/Notes/ui/AddPairNote';
 
 function NotesPage(): JSX.Element {
   const dispatch = useAppDispatch();
-
+  const [filter, setFilter] = useState('Все');
   const { notes, loading } = useAppSelector((state) => state.notesStore);
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
   const currentUserPair = useAppSelector(
@@ -26,7 +26,20 @@ function NotesPage(): JSX.Element {
     if (notes.length === 0 && currentUser) {
       dispatch(getUsersNotes(currentUser.id)).catch(console.log);
     }
-  }, []);
+  }, [currentUser]);
+
+  const filteredNotes = notes.filter((note) => {
+    if (filter === 'Все') {
+      return true;
+    }
+    if (filter === 'Общие') {
+      return typeof note.pairID === 'number';
+    }
+    if (filter === 'Личные') {
+      return !note.pairID;
+    }
+    return true;
+  });
 
   if (loading) {
     return <Spinner />;
@@ -36,11 +49,16 @@ function NotesPage(): JSX.Element {
       <Flex mih={70} gap="xl" justify="center" align="center" direction="row">
         <AddPersonalNote />
 
-        {currentUserPair && <AddPairNote />}
+        {currentUserPair?.status === 'active' && <AddPairNote />}
       </Flex>
 
       <Container>
-        <SegmentedControl radius="xl" data={['Все', 'Общие', 'Личные']} />
+        <SegmentedControl
+          value={filter}
+          onChange={setFilter}
+          radius="xl"
+          data={['Все', 'Общие', 'Личные']}
+        />
         <Table.ScrollContainer minWidth={800}>
           <Table verticalSpacing="sm">
             <Table.Thead>
@@ -48,13 +66,13 @@ function NotesPage(): JSX.Element {
                 <Table.Th>Название</Table.Th>
                 <Table.Th>Описание</Table.Th>
                 <Table.Th>Тип</Table.Th>
-                <Table.Th>Дата изменения</Table.Th>
+                <Table.Th>Дата создания</Table.Th>
                 <Table.Th />
               </Table.Tr>
             </Table.Thead>
 
             <Table.Tbody>
-              {notes.map((note) => (
+              {filteredNotes.map((note) => (
                 <NoteCardv2 key={note.id} note={note} />
               ))}
             </Table.Tbody>

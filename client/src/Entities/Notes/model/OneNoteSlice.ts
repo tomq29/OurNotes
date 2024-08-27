@@ -14,6 +14,8 @@ const initialState: initialStateType = {
     title: '',
     folderID: null,
     userID: 0,
+    pairID: null,
+    createdAt: '',
     Texts: [],
   },
 
