@@ -1,4 +1,4 @@
-import { TextInput } from '@mantine/core';
+import { Text, TextInput } from '@mantine/core';
 
 import { useAppSelector } from '../../../App/providers/store/store';
 import FoundItem from './FoundItem';
@@ -23,18 +23,20 @@ function InputAreaPair({
     <>
       <TextInput
         radius="xl"
-        label="Введите email"
+        mt={10}
         placeholder="Логин пользователя"
         data-autofocus
         onChange={(event) => setLoginForSearch(event.target.value)}
       />
-      <div className="found-desc">найденные пользователи:</div>
+     
 
       {foundLogins.length === 0 ? (
-        <div>Ничего не найдено</div>
+        <Text mt={10} ta="center">Ничего не найдено</Text>
+
       ) : (
         filteredLogins.map((login) => (
           <FoundItem
+          
             key={login}
             login={login}
             setUserForPair={setUserForPair}
