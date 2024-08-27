@@ -29,6 +29,8 @@ module.exports = {
         { color: '#F0FFF0', title: 'Медовая роса' }, // Honeydew
         { color: '#FAEBD7', title: 'Антикварный белый' }, // Antique White
         { color: '#FDF5E6', title: 'Старое кружево' }, // Old Lace
+        { color: '#FFFAFA', title: 'Лапушка' }, // Linen
+        { color: '#2C7ED6', title: 'Синий' }, // Blue
       ],
       {}
     );

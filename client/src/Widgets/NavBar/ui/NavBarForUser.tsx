@@ -53,6 +53,9 @@ function NavBarForUser(): JSX.Element {
               Вопросы
               <CloudMessage/>
             </NavLink>
+            <NavLink to={'/calendar'} className={classes.link}>
+              Календарь
+            </NavLink>
             <NavLink to={'/quotes'} className={classes.link}>
               Цитаты
               <CloudMessage/>
