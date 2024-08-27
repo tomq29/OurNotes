@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mantine/core";
+import { Button, Card, Text, Flex } from "@mantine/core";
 import { Title, Container} from "@mantine/core";
 
 import {
@@ -28,30 +28,47 @@ function LogOutPage(): JSX.Element {
     <>
       <div className="vstack gap-2 col-md-5 mx-auto">
         <Container size={420} my={100}>
-          <Title ta="center"> {currentUser?.login}, Вы точно хотите выйти?</Title>
-          <div className="buttons" >
-            <Button
-              color="red"
-              onClick={logoutHandler}
-              variant="light"
-              type="button"
-              className="btn btn-outline-secondary"
-              fullWidth mt='sm'
-              size="md"
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Title ta="center">
+              {currentUser?.login}
+            </Title>
+            <Text ta="center" size="xl">
+            Вы точно хотите выйти?
+            </Text>
+            <Flex
+              className="buttons"
+              gap="xl"
+              justify="center"
+              align="center"
+              direction="column"
+              wrap="wrap"
+              mt={20}
             >
-              Да!
-            </Button>
-            <Button
-              onClick={() => navigate("/")}
-              type="button"
-              variant="default"
-              className="btn btn-outline-success"
-              fullWidth mt='sm'
-              size="md"
-            >
-              Нет, хочу остаться
-            </Button>
-          </div>
+              {" "}
+              <Button
+                onClick={() => navigate("/")}
+                type="button"
+                variant="filled"
+                className="btn btn-outline-success"
+                size="md"
+                w={200}
+              >
+                Нет, хочу остаться
+              </Button>
+              <Button
+                onClick={logoutHandler}
+                variant="light"
+                type="button"
+                className="btn btn-outline-secondary"
+                size="md"
+                color="red"
+                w={200}
+              >
+                Да!
+              </Button>
+            </Flex>
+          </Card>
+          
         </Container>
       </div>
     </>
