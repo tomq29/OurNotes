@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import PrivacyPage from '../../../Pages/PrivacyPage/PrivacyPage';
 import CalendarPage from '../../../Pages/CalendarPage/CalendarPage';
 import OneNotePageV2 from '../../../Pages/OneNotePage/OneNotePageV2';
+import SoonPage from '../../../Pages/SoonPage/SoonPage';
 
 
 function AppRouter(): JSX.Element {
@@ -66,10 +67,8 @@ function AppRouter(): JSX.Element {
       <Route path="/notes" element={<NotesPage />} />
       {/* <Route path="/note/:id" element={<OneNotePage />} /> */}
       <Route path="/note/:id" element={<OneNotePageV2 />} />
-
+      <Route path="/questions" element={<SoonPage />} />
       <Route path="/calendar" element={<CalendarPage />} />
-
-      <Route path="/questions" element={<QuestionsPage />} />
 
       <Route path="/quotes" element={<QuotesPage />} />
 
