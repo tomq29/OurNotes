@@ -16,6 +16,7 @@ import {
   Menu,
   TextInput,
   UnstyledButton,
+  Button,
 } from '@mantine/core';
 import {
   IconCancel,
@@ -196,6 +197,8 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
               </ActionIcon>
             </div>
           )}
+
+          <Button variant='outline' mr={10} onClick={() => navigate(`/note/${note.id}`)}>Перейти к заметке</Button>
 
           {normalMode && (
             <ActionIcon

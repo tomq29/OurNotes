@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { User, UserID } from '../type/UserType';
 import AuthApi from '../api/AuthApi';
-import { logEmailPassType, loginPassType } from '../type/AuthTypes';
+import type { logEmailPassType, loginPassType } from '../type/AuthTypes';
 import { AxiosError } from 'axios';
 import PairsApi from '../../Pairs/api/PairsApi';
 import type { PairType } from '../../Pairs/type/PairsType';
 import { ColorID } from '../../Colors/type/ColorType';
 import UsersApi from '../api/UsersApi';
+import type { EventType } from '../../Events/type/EventsType';
 
 export type userSliceType = {
   user: User | undefined;
@@ -14,6 +15,7 @@ export type userSliceType = {
   error: string | null;
   pair: PairType | null;
   loading: boolean;
+  events: EventType[] | null;
 };
 
 const initialState: userSliceType = {
@@ -22,6 +24,7 @@ const initialState: userSliceType = {
   error: null,
   pair: null,
   loading: false,
+  events: null,
 };
 
 export const loginUser = createAsyncThunk(
