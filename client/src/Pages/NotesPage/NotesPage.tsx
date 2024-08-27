@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { SegmentedControl } from '@mantine/core';
+import { SegmentedControl, Transition } from '@mantine/core';
 // import classes from './GradientSegmentedControl.module.css';
 import Spinner from '../../Shared/LoadingSpinner/Spinner';
 import {
@@ -73,7 +73,7 @@ function NotesPage(): JSX.Element {
 
             <Table.Tbody>
               {filteredNotes.map((note) => (
-                <NoteCardv2 key={note.id} note={note} />
+                  <NoteCardv2 key={note.id} note={note}/>
               ))}
             </Table.Tbody>
           </Table>
