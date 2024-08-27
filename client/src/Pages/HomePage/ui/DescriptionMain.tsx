@@ -127,7 +127,7 @@ function DescriptionMain(): JSX.Element {
               Общие списки дел
             </Text>
             <Text ta="center" size="sm">
-              Составляйте и ведите совместные списки покупок и задач.
+              Составляйте и ведите совместные списки покупок и задач, в приложении
             </Text>
           </Card>
         </Carousel.Slide>

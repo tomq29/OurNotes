@@ -1,5 +1,5 @@
 import { RootState, useAppSelector } from '../../App/providers/store/store';
-import { Loader, Container } from '@mantine/core';
+import { Loader, Container, FileInput } from '@mantine/core';
 import ModalAddPair from './ui/ModalAddPair';
 import './ui/profile.css';
 import { useEffect, useState } from 'react';
