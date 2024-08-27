@@ -13,6 +13,8 @@ import ProfilePage from '../../../Pages/Profile/ProfilePage';
 import { useEffect } from 'react';
 import PrivacyPage from '../../../Pages/PrivacyPage/PrivacyPage';
 import CalendarPage from '../../../Pages/CalendarPage/CalendarPage';
+import OneNotePageV2 from '../../../Pages/OneNotePage/OneNotePageV2';
+
 
 function AppRouter(): JSX.Element {
   const location = useLocation();
@@ -62,7 +64,8 @@ function AppRouter(): JSX.Element {
       <Route path="/" element={<HomePage />} />
 
       <Route path="/notes" element={<NotesPage />} />
-      <Route path="/note/:id" element={<OneNotePage />} />
+      {/* <Route path="/note/:id" element={<OneNotePage />} /> */}
+      <Route path="/note/:id" element={<OneNotePageV2 />} />
 
       <Route path="/calendar" element={<CalendarPage />} />
 
