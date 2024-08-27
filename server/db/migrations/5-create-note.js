@@ -16,6 +16,11 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
       },
+      content: {
+        type: Sequelize.JSONB, // Use JSONB to store rich content with metadata
+        allowNull: false,
+        defaultValue: [], // Default to an empty array to represent an empty note
+      },
       folderID: {
         type: Sequelize.INTEGER,
         references: {

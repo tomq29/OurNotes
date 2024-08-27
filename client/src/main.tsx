@@ -9,6 +9,7 @@ import { ModalsProvider } from '@mantine/modals';
 import '@mantine/notifications/styles.css';
 import '@mantine/carousel/styles.css';
 import { Notifications } from '@mantine/notifications';
+import '@mantine/tiptap/styles.css';
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>

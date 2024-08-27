@@ -125,7 +125,7 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
           )}
 
           {normalMode && (
-            <UnstyledButton variant="outline" onClick={() => navigate(`/note/${note.id}`)}>
+            <UnstyledButton onClick={() => navigate(`/note/${note.id}`)}>
               <Text fz="sm" fw={500}>
                 {note.title}
               </Text>
