@@ -1,6 +1,6 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from '../../../Pages/HomePage/HomePage';
-import QuestionsPage from '../../../Pages/QuestionsPage/QuestionsPage';
+
 import QuotesPage from '../../../Pages/QuotesPage/QuotesPage';
 import ObjectWritingPage from '../../../Pages/ObjectWritingPage/ObjectWritingPage';
 import LogOutPage from '../../../Pages/LogRegLogout/LogOutPage';
@@ -13,11 +13,9 @@ import ProfilePage from '../../../Pages/Profile/ProfilePage';
 import { useEffect } from 'react';
 import PrivacyPage from '../../../Pages/PrivacyPage/PrivacyPage';
 import CalendarPage from '../../../Pages/CalendarPage/CalendarPage';
-import OneNotePageV2 from '../../../Pages/OneNotePage/OneNotePageV2';
+
 import SoonPage from '../../../Pages/SoonPage/SoonPage';
 import PersonalNoteEditorPage from '../../../Pages/OneNotePage/PersonalNoteEditorPage';
-
-
 
 function AppRouter(): JSX.Element {
   const location = useLocation();
