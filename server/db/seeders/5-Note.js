@@ -13,23 +13,22 @@ module.exports = {
           description: 'Notes from the team meeting',
           folderID: 1,
           userID: 1,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'Discuss project goals and timelines. Follow up with client next week.',
+              insert: 'Discuss project goals and timelines. Follow up with client next week.',
               attributes: {
                 userId: 1,
                 colorId: '#FFCCCC',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Grocery List',
           description: 'List of groceries to buy',
           folderID: 2,
           userID: 2,
-          content: [
+          content: JSON.stringify([
             {
               insert: 'Milk, Eggs, Bread, Butter, Cheese, Apples.',
               attributes: {
@@ -37,62 +36,59 @@ module.exports = {
                 colorId: '#CCFFCC',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Lecture Notes',
           description: 'Notes from the recent lecture',
           folderID: 3,
           userID: 3,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'Key topics: React Hooks, State Management, and Component Lifecycle.',
+              insert: 'Key topics: React Hooks, State Management, and Component Lifecycle.',
               attributes: {
                 userId: 3,
                 colorId: '#CCCCFF',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Project Plan',
           description: 'Project planning details',
           folderID: 4,
           userID: 1,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'Define project scope, deliverables, and deadlines. Assign tasks to team members.',
+              insert: 'Define project scope, deliverables, and deadlines. Assign tasks to team members.',
               attributes: {
                 userId: 1,
                 colorId: '#FFCCCC',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Pasta Recipe',
           description: 'Delicious pasta recipe',
           folderID: 5,
           userID: 2,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'Ingredients: Pasta, Tomatoes, Olive Oil, Garlic, Basil, Parmesan.',
+              insert: 'Ingredients: Pasta, Tomatoes, Olive Oil, Garlic, Basil, Parmesan.',
               attributes: {
                 userId: 2,
                 colorId: '#CCFFCC',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Vacation Itinerary',
           description: 'Plans for upcoming vacation',
           folderID: 6,
           userID: 3,
-          content: [
+          content: JSON.stringify([
             {
               insert: 'Day 1: Beach, Day 2: Hiking, Day 3: City Tour.',
               attributes: {
@@ -100,14 +96,14 @@ module.exports = {
                 colorId: '#CCCCFF',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Workout Plan',
           description: 'Weekly workout schedule',
           folderID: 7,
           userID: 1,
-          content: [
+          content: JSON.stringify([
             {
               insert: 'Monday: Cardio, Wednesday: Strength, Friday: Yoga.',
               attributes: {
@@ -115,55 +111,52 @@ module.exports = {
                 colorId: '#FFCCCC',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Book Review',
           description: 'Review of a recent book read',
           folderID: 8,
           userID: 2,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'The book provides a deep insight into human psychology and behavior.',
+              insert: 'The book provides a deep insight into human psychology and behavior.',
               attributes: {
                 userId: 2,
                 colorId: '#CCFFCC',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Budget Plan',
           description: 'Monthly budget plan',
           folderID: 9,
           userID: 3,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'Allocate 50% for essentials, 30% for savings, 20% for entertainment.',
+              insert: 'Allocate 50% for essentials, 30% for savings, 20% for entertainment.',
               attributes: {
                 userId: 3,
                 colorId: '#CCCCFF',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Brainstorming Ideas',
           description: 'Ideas for new projects',
           folderID: 10,
           userID: 1,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'Develop a new app for productivity, explore AI in automation.',
+              insert: 'Develop a new app for productivity, explore AI in automation.',
               attributes: {
                 userId: 1,
                 colorId: '#FFCCCC',
               },
             },
-          ],
+          ]),
         },
         // Collaborative notes (with pairID)
         {
@@ -172,24 +165,22 @@ module.exports = {
           folderID: 1,
           userID: 1,
           pairID: 1,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'Let’s outline the project tasks. Need to sync with the design team.',
+              insert: 'Let’s outline the project tasks. Need to sync with the design team.',
               attributes: {
                 userId: 1,
                 colorId: '#FFCCCC',
               },
             },
             {
-              insert:
-                'I will draft the initial proposal and share it by the end of the day.',
+              insert: 'I will draft the initial proposal and share it by the end of the day.',
               attributes: {
                 userId: 2,
                 colorId: '#CCFFCC',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Vacation Planning',
@@ -197,10 +188,9 @@ module.exports = {
           folderID: 2,
           userID: 2,
           pairID: 1,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'Book flights by the end of the week. Check out Airbnb options.',
+              insert: 'Book flights by the end of the week. Check out Airbnb options.',
               attributes: {
                 userId: 2,
                 colorId: '#CCFFCC',
@@ -213,7 +203,7 @@ module.exports = {
                 colorId: '#FFCCCC',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'Marketing Strategy',
@@ -221,24 +211,22 @@ module.exports = {
           folderID: 3,
           userID: 1,
           pairID: 1,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'We need to focus on social media campaigns and influencer partnerships.',
+              insert: 'We need to focus on social media campaigns and influencer partnerships.',
               attributes: {
                 userId: 1,
                 colorId: '#FFCCCC',
               },
             },
             {
-              insert:
-                'I agree, and we should also look into email marketing and SEO optimization.',
+              insert: 'I agree, and we should also look into email marketing and SEO optimization.',
               attributes: {
                 userId: 2,
                 colorId: '#CCFFCC',
               },
             },
-          ],
+          ]),
         },
         {
           title: 'App Development',
@@ -246,24 +234,22 @@ module.exports = {
           folderID: 4,
           userID: 2,
           pairID: 1,
-          content: [
+          content: JSON.stringify([
             {
-              insert:
-                'The app should have offline functionality and a clean user interface.',
+              insert: 'The app should have offline functionality and a clean user interface.',
               attributes: {
                 userId: 2,
                 colorId: '#CCFFCC',
               },
             },
             {
-              insert:
-                'Let’s also include push notifications for updates and alerts.',
+              insert: 'Let’s also include push notifications for updates and alerts.',
               attributes: {
                 userId: 1,
                 colorId: '#FFCCCC',
               },
             },
-          ],
+          ]),
         },
       ],
       {}

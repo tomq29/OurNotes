@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { NoteID, NoteWithTexts } from '../type/NoteType';
+import { Note, NoteID } from '../type/NoteType';
 import NoteApi from '../api/noteApi';
 
 type initialStateType = {
-  oneNote: NoteWithTexts;
+  oneNote: Note;
   loading: boolean;
 };
 
@@ -16,7 +16,7 @@ const initialState: initialStateType = {
     userID: 0,
     pairID: null,
     createdAt: '',
-    Texts: [],
+    content: null,
   },
 
   loading: false,

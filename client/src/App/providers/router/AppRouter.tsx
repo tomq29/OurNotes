@@ -8,12 +8,12 @@ import LoginPage from '../../../Pages/LogRegLogout/LoginPage';
 import RegistrationPage from '../../../Pages/LogRegLogout/RegistrationPage';
 import NotFoundPage from '../../../Pages/LogRegLogout/NotFoundPage';
 import NotesPage from '../../../Pages/NotesPage/NotesPage';
-import OneNotePage from '../../../Pages/OneNotePage/OneNotePage';
+
 import ProfilePage from '../../../Pages/Profile/ProfilePage';
 import { useEffect } from 'react';
 import PrivacyPage from '../../../Pages/PrivacyPage/PrivacyPage';
 import CalendarPage from '../../../Pages/CalendarPage/CalendarPage';
-import OneNotePageV2 from '../../../Pages/OneNotePage/OneNotePageV2';
+
 import PersonalNoteEditorPage from '../../../Pages/OneNotePage/PersonalNoteEditorPage';
 
 
@@ -66,6 +66,7 @@ function AppRouter(): JSX.Element {
 
       <Route path="/notes" element={<NotesPage />} />
       {/* <Route path="/note/:id" element={<OneNotePage />} /> */}
+      {/* <Route path="/note/:id" element={<OneNotePageV2 />} /> */}
       <Route path="/note/:id" element={<PersonalNoteEditorPage />} />
 
       <Route path="/calendar" element={<CalendarPage />} />
