@@ -15,6 +15,7 @@ import {
   rem,
   Menu,
   TextInput,
+  UnstyledButton,
 } from '@mantine/core';
 import {
   IconCancel,
@@ -23,6 +24,8 @@ import {
   IconTrash,
   IconX,
 } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
+import { getHotkeyHandler } from '@mantine/hooks';
 
 type NoteCardProps = {
   key: NoteID;
@@ -51,6 +54,8 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
   const [normalMode, setNormalMode] = useState<boolean>(true);
 
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -90,6 +95,11 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
     }
   }
 
+  function exitEditMode() {
+    setEditMode(false);
+    setNormalMode(true);
+  }
+
   function deleteButtonHandler() {
     dispatch(deleteNote(note.id));
   }
@@ -107,13 +117,19 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
               {...register('title')}
               defaultValue={note.title}
               placeholder="Введите название"
+              onKeyDown={getHotkeyHandler([
+                ['Enter', editButtonHadler],
+                ['Escape', exitEditMode],
+              ])}
             />
           )}
 
           {normalMode && (
-            <Text fz="sm" fw={500}>
-              {note.title}
-            </Text>
+            <UnstyledButton variant="outline" onClick={() => navigate(`/note/${note.id}`)}>
+              <Text fz="sm" fw={500}>
+                {note.title}
+              </Text>
+            </UnstyledButton>
           )}
         </Group>
       </Table.Td>
@@ -126,6 +142,10 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
             {...register('description')}
             defaultValue={note.description}
             placeholder="Введите описание"
+            onKeyDown={getHotkeyHandler([
+              ['Enter', editButtonHadler],
+              ['Escape', exitEditMode],
+            ])}
           />
         )}
 
@@ -219,7 +239,7 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
                 }
                 onClick={deleteButtonHandler}
               >
-                Delete
+                Удалить
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>

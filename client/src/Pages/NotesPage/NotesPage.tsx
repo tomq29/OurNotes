@@ -49,7 +49,7 @@ function NotesPage(): JSX.Element {
       <Flex mih={70} gap="xl" justify="center" align="center" direction="row">
         <AddPersonalNote />
 
-        {currentUserPair && <AddPairNote />}
+        {currentUserPair?.status === 'active' && <AddPairNote />}
       </Flex>
 
       <Container>
