@@ -14,8 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.User, { as: 'UserOne', foreignKey: 'userOneID' });
       this.belongsTo(models.User, { as: 'UserTwo', foreignKey: 'userTwoID' });
 
-      // Associate pairs with shared notes
+      // Associate pairs with shared notes and events
       this.hasMany(models.Note, { foreignKey: 'pairID' });
+      this.hasMany(models.Event, { foreignKey: 'pairID' });
     }
   }
   Pair.init({

@@ -6,6 +6,7 @@ const folderRouter = require('./folder.routes');
 const pairsRouter = require('./pairs.routes');
 const colorsRouter = require('./colors.routes');
 const usersRouter = require('./users.routes');
+const eventsRouter = require('./events.routes');
 
 const apiRouter = require('express').Router();
 
@@ -17,5 +18,6 @@ apiRouter.use('/text', textRouter);
 apiRouter.use('/pairs', pairsRouter);
 apiRouter.use('/colors', colorsRouter);
 apiRouter.use('/users', usersRouter);
+apiRouter.use('/events', eventsRouter);
 
 module.exports = apiRouter;
