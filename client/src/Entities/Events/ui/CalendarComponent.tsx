@@ -1,39 +1,35 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/ru'; // Импортируем русскую локализацию
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { useDispatch } from 'react-redux';
-// import { addEvent, updateEvent } from './eventSlice'; // Импортируйте ваши actions
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../App/providers/store/store';
+import AddEventModal from './AddEventModal';
+import UpdateEventModal from './UpdateEventModal';
+import AboutEventModal from './AboutEventModal';
+import { EventType } from '../type/EventsType';
+import { Button, Container, Flex } from '@mantine/core';
+import { getPairEvents } from '../../User/model/CurrentUserSlice';
 
-moment.locale('ru'); // Устанавливаем локализацию на русский
+moment.locale('ru');
 const localizer = momentLocalizer(moment);
 
 function CalendarComponent() {
-  const [events, setEvents] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState(null);
-  const dispatch = useDispatch();
+  const [currentEvent, setCurrentEvent] = useState<EventType>();
+  const [openAddModal, setOpenAddModal] = useState<boolean>(false);
+  const [openAboutModal, setOpenAboutModal] = useState<boolean>(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const currentPair = useAppSelector((store) => store.currentUserStore.pair);
+  const events = useAppSelector((store) => store.currentUserStore.events);
 
   useEffect(() => {
-    const myEventsList = [
-      {
-        start: new Date(2024, 7, 26, 10, 0),
-        end: new Date(2024, 7, 26, 12, 0),
-        title: 'Свадьба',
-      },
-      {
-        start: new Date(2024, 7, 26, 12, 0),
-        end: new Date(2024, 7, 26, 15, 0),
-        title: 'Свадьба',
-      },
-      {
-        start: new Date(2024, 7, 27, 14, 0),
-        end: new Date(2024, 7, 27, 16, 0),
-        title: 'Мероприятие 2',
-      },
-    ];
-    setEvents(myEventsList);
+    if (currentPair?.id) {
+      dispatch(getPairEvents(currentPair.id));
+    }
   }, []);
 
   const messages = {
@@ -45,56 +41,15 @@ function CalendarComponent() {
     week: 'Неделя',
     day: 'День',
     agenda: 'Повестка дня',
-    // Названия дней недели
-    sunday: 'Воскресенье',
-    monday: 'Понедельник',
-    tuesday: 'Вторник',
-    wednesday: 'Среда',
-    thursday: 'Четверг',
-    friday: 'Пятница',
-    saturday: 'Суббота',
-    // Названия месяцев
-    january: 'Январь',
-    february: 'Февраль',
-    march: 'Март',
-    april: 'Апрель',
-    may: 'Май',
-    june: 'Июнь',
-    july: 'Июль',
-    august: 'Август',
-    september: 'Сентябрь',
-    october: 'Октябрь',
-    november: 'Ноябрь',
-    december: 'Декабрь',
   };
 
-  const handleSelectSlot = ({ start, end }) => {
-    const title = window.prompt('Введите название события');
-    if (title) {
-      const newEvent = { start, end, title };
-      setEvents((prevEvents) => [...prevEvents, newEvent]);
-      dispatch(addEvent(newEvent)); // Отправляем событие в Redux
-    }
+  const handlerOpenAddEventModal = (): void => {
+    setOpenAddModal(true); // Открываем модальное окно для добавления события
   };
 
-  const handleSelectEvent = (event) => {
+  const handleSelectEvent = (event: EventType) => {
     setCurrentEvent(event);
-    setModalOpen(true);
-  };
-
-  const handleUpdateEvent = () => {
-    const title = window.prompt(
-      'Введите новое название события',
-      currentEvent.title
-    );
-    if (title) {
-      const updatedEvent = { ...currentEvent, title };
-      setEvents((prevEvents) =>
-        prevEvents.map((evt) => (evt === currentEvent ? updatedEvent : evt))
-      );
-      dispatch(updateEvent(updatedEvent)); // Отправляем обновленное событие в Redux
-      setModalOpen(false);
-    }
+    setOpenAboutModal(true);
   };
 
   return (
@@ -102,22 +57,40 @@ function CalendarComponent() {
       <Calendar
         localizer={localizer}
         events={events}
-        startAccessor="start"
-        endAccessor="end"
         style={{ height: 500 }}
         messages={messages}
-        onSelectSlot={handleSelectSlot}
+        onSelectSlot={handlerOpenAddEventModal} // Обработчик клика по слоту
         onSelectEvent={handleSelectEvent} // Обработчик клика по событию
-        selectable
+        selectable // Разрешить выделение слота
       />
-      {modalOpen && (
-        <div className="modal">
-          <h2>Редактировать событие</h2>
-          <p>Текущая тема: {currentEvent.title}</p>
-          <button onClick={handleUpdateEvent}>Изменить название события</button>
-          <button onClick={() => setModalOpen(false)}>Закрыть</button>
-        </div>
+
+      {openAddModal && (
+        <AddEventModal
+          openAddModal={openAddModal}
+          setOpenAddModal={setOpenAddModal}
+        />
       )}
+
+      {openAboutModal && currentEvent && (
+        <AboutEventModal
+          openAboutModal={openAboutModal}
+          setOpenAboutModal={setOpenAboutModal}
+          setUpdateModal={setOpenUpdateModal}
+          currentEvent={currentEvent}
+        />
+      )}
+      {openUpdateModal && currentEvent && (
+        <UpdateEventModal
+          setOpenUpdateModal={setOpenUpdateModal}
+          openUpdateModal={openUpdateModal}
+          currentEvent={currentEvent}
+        />
+      )}
+      <Container p="xl">
+        <Flex justify="center">
+          <Button onClick={handlerOpenAddEventModal}>Добавить событие</Button>
+        </Flex>
+      </Container>
     </div>
   );
 }

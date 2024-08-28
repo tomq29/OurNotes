@@ -1,17 +1,17 @@
 import { RootState, useAppSelector } from '../../App/providers/store/store';
-
-import { Loader, Container, FileInput } from '@mantine/core';
-
+import { Container } from '@mantine/core';
 import ModalAddPair from './ui/ModalAddPair';
 import './ui/profile.css';
 import { useEffect, useState } from 'react';
 import SelectColor from './ui/SelectColor';
 import ModalConfirmPair from './ui/ModalConfirmPair';
-import TableForFair from './ui/TableForFair';
+import TableForPair from './ui/TableForPair';
 import Spinner from '../../Shared/LoadingSpinner/Spinner';
 
 function ProfilePage(): JSX.Element {
-  const currentStore = useAppSelector((store: RootState) => store.currentUserStore);
+  const currentStore = useAppSelector(
+    (store: RootState) => store.currentUserStore
+  );
   const [canMakePair, setCanMakePair] = useState<boolean>(true);
   const [haveNotification, setHaveNotification] = useState<boolean>(false);
   const [isPairTable, setIsPairTable] = useState<boolean>(false);
@@ -29,7 +29,11 @@ function ProfilePage(): JSX.Element {
         }
         setCanMakePair(false);
         setIsPairTable(true);
-        console.log('currentStore.pair, ', currentStore.pair, currentStore.user);
+        console.log(
+          'currentStore.pair, ',
+          currentStore.pair,
+          currentStore.user
+        );
       }
     } else {
       setIsPairTable(false);
@@ -58,11 +62,12 @@ function ProfilePage(): JSX.Element {
             <strong>Ваш email: </strong> {currentStore?.user?.email}
           </p>
           <ModalAddPair canMakePair={canMakePair} />
-          {haveNotification && <ModalConfirmPair setUpdatePage={setUpdatePage} />}
-
+          {haveNotification && (
+            <ModalConfirmPair setUpdatePage={setUpdatePage} />
+          )}
           <SelectColor />
           {isPairTable ? (
-            <TableForFair />
+            <TableForPair />
           ) : (
             <div style={{ marginTop: '20px' }}>У Вас нет пары</div>
           )}

@@ -1,9 +1,16 @@
+import { PairID } from '../../Pairs/type/PairsType';
+
 export type EventType = {
   id: number;
   title: string;
   description: string;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   allDay: boolean;
-  colorID: number;
+  pairID: PairID | undefined;
+  eventTypeID: EventID;
 };
+
+export type EventNewType = Omit<EventType, 'id'>;
+
+export type EventID = EventType['id'];

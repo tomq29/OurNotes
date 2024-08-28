@@ -49,21 +49,21 @@ function NavBarForUser(): JSX.Element {
             <NavLink to={'/notes'} className={classes.link}>
               Заметки
             </NavLink>
-            <NavLink to={'/questions'} className={classes.link}>
-              Вопросы
-              <CloudMessage/>
-            </NavLink>
             <NavLink to={'/calendar'} className={classes.link}>
               Календарь
             </NavLink>
+            <NavLink to={'/questions'} className={classes.link}>
+              Вопросы
+              <CloudMessage />
+            </NavLink>
             <NavLink to={'/quotes'} className={classes.link}>
               Цитаты
-              <CloudMessage/>
-              </NavLink>
+              <CloudMessage />
+            </NavLink>
             <NavLink to={'/objectwriting'} className={classes.link}>
               Object Writing
-              <CloudMessage/>
-              </NavLink>
+              <CloudMessage />
+            </NavLink>
           </Group>
 
           <Group visibleFrom="sm">
@@ -157,25 +157,23 @@ function NavBarForUser(): JSX.Element {
           <Divider my="sm" />
 
           <NavLink to={'/'} className={classes.link}>
-
-              Главная
-            </NavLink>
-            <NavLink to={'/notes'} className={classes.link}>
-              Заметки
-              </NavLink>
-            <NavLink to={'/questions'} className={classes.link}>
-              Вопросы
-              <CloudMessage/>
-              </NavLink>
-            <NavLink to={'/quotes'} className={classes.link}>
-              Цитаты
-              <CloudMessage/>
-              </NavLink>
-            <NavLink to={'/objectwriting'} className={classes.link}>
-              Object Writing
-              <CloudMessage/>
-              </NavLink>
-
+            Главная
+          </NavLink>
+          <NavLink to={'/notes'} className={classes.link}>
+            Заметки
+          </NavLink>
+          <NavLink to={'/questions'} className={classes.link}>
+            Вопросы
+            <CloudMessage />
+          </NavLink>
+          <NavLink to={'/quotes'} className={classes.link}>
+            Цитаты
+            <CloudMessage />
+          </NavLink>
+          <NavLink to={'/objectwriting'} className={classes.link}>
+            Object Writing
+            <CloudMessage />
+          </NavLink>
 
           <Divider my="sm" />
 

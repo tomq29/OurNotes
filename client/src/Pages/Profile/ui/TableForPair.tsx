@@ -4,7 +4,7 @@ import type { User } from '../../../Entities/User/type/UserType';
 import { useEffect, useState } from 'react';
 import UsersApi from '../../../Entities/User/api/UsersApi';
 
-function TableForFair(): JSX.Element {
+function TableForPair(): JSX.Element {
   const currentPair = useAppSelector((store) => store.currentUserStore.pair);
   const [firstUser, setFirstUser] = useState<User>({} as User);
   const [secondUser, setSecondUser] = useState<User>({} as User);
@@ -83,4 +83,4 @@ function TableForFair(): JSX.Element {
     </>
   );
 }
-export default TableForFair;
+export default TableForPair;
