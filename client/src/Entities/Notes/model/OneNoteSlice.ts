@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { NoteID, NoteWithTexts } from '../type/NoteType';
+import { Note, NoteID, NoteWithoutCreatedAt } from '../type/NoteType';
 import NoteApi from '../api/noteApi';
 
 type initialStateType = {
-  oneNote: NoteWithTexts;
+  oneNote: Note;
   loading: boolean;
 };
 
@@ -16,7 +16,7 @@ const initialState: initialStateType = {
     userID: 0,
     pairID: null,
     createdAt: '',
-    Texts: [],
+    content: null,
   },
 
   loading: false,
@@ -24,6 +24,11 @@ const initialState: initialStateType = {
 
 export const getOneNote = createAsyncThunk('note/getOne', (id: NoteID) =>
   NoteApi.getOneNote(id)
+);
+
+export const editNoteContent = createAsyncThunk(
+  'note/editContent',
+  (note: NoteWithoutCreatedAt) => NoteApi.updateNote(note)
 );
 
 const oneNote = createSlice({
@@ -36,9 +41,15 @@ const oneNote = createSlice({
         state.loading = true;
       })
       .addCase(getOneNote.fulfilled, (state, action) => {
-        state.loading = false;
-
         state.oneNote = action.payload;
+        state.loading = false;
+      })
+      .addCase(editNoteContent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(editNoteContent.fulfilled, (state, action) => {
+        state.oneNote = action.payload.updatedNote;
+        state.loading = false;
       });
   },
 });

@@ -17,7 +17,7 @@ notesRouter
 
   .get(async (req, res) => {
     try {
-      const notes = await Note.findAll({ order: [['id', 'ASC']] });
+      const notes = await Note.findAll({ order: [['id', 'DESC']] });
 
       res.status(200).json(notes);
     } catch ({ message }) {
@@ -27,17 +27,25 @@ notesRouter
 
   .post(async (req, res) => {
     try {
-      const { title, description, userID, folderID, pairID } = req.body;
+      const { title, description, userID, folderID, pairID, content } =
+        req.body;
 
       if (title.trim() === '' || !userID) {
         return res.status(400).json('Empty field exists');
       }
 
       const data = (
-        await Note.create({ title, description, userID, folderID, pairID })
+        await Note.create({
+          title,
+          description,
+          userID,
+          folderID,
+          pairID,
+          content,
+        })
       ).get();
 
-      res.json(data);
+      res.status(201).json(data);
     } catch ({ message }) {
       res.status(500).json({ err: message });
     }
@@ -79,14 +87,26 @@ notesRouter
 
 notesRouter
   .route('/note/:id')
-
+  .get(async (req, res) => {
+    try {
+      const note = await Note.findByPk(req.params.id);
+      if (note) {
+        res.json(note);
+      } else {
+        res.status(404).json({ error: 'Note not found' });
+      }
+    } catch ({ message }) {
+      res.status(500).json({ err: message });
+    }
+  })
   .put(async (req, res) => {
     try {
       const { id } = req.params;
-      const { title, description, folderID, userID } = req.body;
+
+      const { title, description, folderID, userID, content } = req.body;
 
       const [updateStatus] = await Note.update(
-        { title, description, folderID, userID },
+        { title, description, folderID, userID, content },
         { where: { id } }
       );
 
@@ -101,28 +121,14 @@ notesRouter
   .delete(async (req, res) => {
     try {
       const { id } = req.params;
+      const note = await Note.findByPk(id);
 
-      const countDeletedNotes = await Note.destroy({ where: { id } });
-
-      res.json({ countDeletedNotes, id: Number(id) });
-    } catch ({ message }) {
-      res.status(500).json({ err: message });
-    }
-  });
-
-notesRouter
-  .route('/note/:id')
-
-  .get(async (req, res) => {
-    try {
-      const { id } = req.params;
-      const data = await Note.findOne({
-        where: { id },
-        include: { model: Text },
-        // SORT BY CREATE DATE
-      });
-
-      res.json(data);
+      if (note) {
+        await note.destroy();
+        res.json({ id: Number(id) });
+      } else {
+        res.status(404).json({ error: 'Note not found' });
+      }
     } catch ({ message }) {
       res.status(500).json({ err: message });
     }

@@ -16,7 +16,6 @@ import {
   Menu,
   TextInput,
   UnstyledButton,
-  Button,
 } from '@mantine/core';
 import {
   IconCancel,
@@ -24,6 +23,7 @@ import {
   IconPencil,
   IconTrash,
   IconX,
+  IconExternalLink,
 } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { getHotkeyHandler } from '@mantine/hooks';
@@ -126,7 +126,14 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
           )}
 
           {normalMode && (
-            <UnstyledButton variant="outline" onClick={() => navigate(`/note/${note.id}`)}>
+            <UnstyledButton
+              variant="outline"
+              onClick={() =>
+                navigate(
+                  note.pairID ? `/ournote/${note.id}` : `/mynote/${note.id}`
+                )
+              }
+            >
               <Text fz="sm" fw={500}>
                 {note.title}
               </Text>
@@ -198,22 +205,33 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
             </div>
           )}
 
-          <Button variant='outline' mr={10} onClick={() => navigate(`/note/${note.id}`)}>Перейти к заметке</Button>
-
           {normalMode && (
-            <ActionIcon
-              variant="subtle"
-              color="gray"
-              onClick={() => {
-                setEditMode((prev) => !prev);
-                setNormalMode((prev) => !prev);
-              }}
-            >
-              <IconPencil
-                style={{ width: rem(16), height: rem(16) }}
-                stroke={1.5}
-              />
-            </ActionIcon>
+            <div>
+              <ActionIcon variant="subtle" color="blue">
+                <IconExternalLink
+                  stroke={1.5}
+                  style={{ width: rem(16), height: rem(16) }}
+                  onClick={() =>
+                    navigate(
+                      note.pairID ? `/ournote/${note.id}` : `/mynote/${note.id}`
+                    )
+                  }
+                />
+              </ActionIcon>
+              <ActionIcon
+                variant="subtle"
+                color="gray"
+                onClick={() => {
+                  setEditMode((prev) => !prev);
+                  setNormalMode((prev) => !prev);
+                }}
+              >
+                <IconPencil
+                  style={{ width: rem(16), height: rem(16) }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+            </div>
           )}
 
           <Menu position="top">

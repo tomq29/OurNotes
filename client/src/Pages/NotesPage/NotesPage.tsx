@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { SegmentedControl, Transition } from '@mantine/core';
+import { SegmentedControl } from '@mantine/core';
 // import classes from './GradientSegmentedControl.module.css';
 import Spinner from '../../Shared/LoadingSpinner/Spinner';
 import {

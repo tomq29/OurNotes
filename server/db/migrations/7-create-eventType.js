@@ -11,14 +11,14 @@ module.exports = {
       },
       colorID: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+
         defaultValue: 26,
         references: {
           model: 'Colors',
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
       },
 
       title: {

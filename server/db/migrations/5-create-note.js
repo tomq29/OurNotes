@@ -16,6 +16,11 @@ module.exports = {
       description: {
         type: Sequelize.STRING,
       },
+      content: {
+        type: Sequelize.JSONB, // Use JSONB to store rich content with metadata
+
+        defaultValue: {"type":"doc","content":[{"type":"paragraph","attrs":{"textAlign":"left"}}]}
+      },
       folderID: {
         type: Sequelize.INTEGER,
         references: {
