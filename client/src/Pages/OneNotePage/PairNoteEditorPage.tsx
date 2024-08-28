@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RichTextEditor, Link } from '@mantine/tiptap';
 import { useEditor } from '@tiptap/react';
 import Highlight from '@tiptap/extension-highlight';
@@ -23,18 +23,38 @@ import Spinner from '../../Shared/LoadingSpinner/Spinner';
 import { Button, Container, Title } from '@mantine/core';
 import { CollaborationCursor } from '../../Shared/Extentions/CollaborationCursor';
 
+const defaultContent = `
+  <p>Hi 👋, this is a collaborative document.</p>
+`;
 function PersonalNoteEditorPage() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const { oneNote, loading } = useAppSelector((state) => state.oneNoteStore);
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
 
+  const currentUserForCollab = {
+    name: currentUser?.login,
+    color: '#E3F4F4',
+  };
+
+  const [status, setStatus] = useState('connecting');
+
   // Initialize Yjs document
   const ydoc = React.useMemo(() => new Y.Doc(), []);
-  const provider = React.useMemo(() => new WebsocketProvider('ws://localhost:1234', 'my-roomname', ydoc), [ydoc]);
+  const provider = React.useMemo(
+    () => new WebsocketProvider('ws://localhost:1234', oneNote.title, ydoc),
+    [ydoc, oneNote.title]
+  );
 
   // Editor setup
   const editor = useEditor({
+    onCreate: ({ editor: currentEditor }) => {
+      provider.on('synced', () => {
+        if (currentEditor.isEmpty) {
+          currentEditor.commands.setContent(defaultContent);
+        }
+      });
+    },
     extensions: [
       StarterKit,
       Underline,
@@ -42,17 +62,18 @@ function PersonalNoteEditorPage() {
       Superscript,
       SubScript,
       Highlight,
-      
+
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Collaboration.configure({ document: ydoc }), // Synchronize content
       CollaborationCursor.configure({
         provider: provider,
-        user: {
-          name: currentUser?.login,
-          color: currentUser?.colorID,
-        },
+        // user: {
+        //   name: currentUser?.login,
+        //   color: currentUser?.colorID,
+        // },
       }), // Synchronize cursors
     ],
+
     content: oneNote?.content,
   });
 
@@ -67,6 +88,25 @@ function PersonalNoteEditorPage() {
       editor.commands.setContent(oneNote.content);
     }
   }, [editor, oneNote.content]);
+
+  useEffect(() => {
+    // Update status changes
+    const statusHandler = (event) => {
+      setStatus(event.status);
+    };
+
+    provider.on('status', statusHandler);
+
+    return () => {
+      provider.off('status', statusHandler);
+    };
+  }, [provider]);
+
+  useEffect(() => {
+    if (editor && currentUser) {
+      editor.chain().focus().updateUser(currentUserForCollab).run();
+    }
+  }, [editor, currentUser]);
 
   if (loading) {
     return <Spinner />;
