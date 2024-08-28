@@ -3,6 +3,7 @@ import { useAppSelector } from '../../../App/providers/store/store';
 import type { User } from '../../../Entities/User/type/UserType';
 import { useEffect, useState } from 'react';
 import UsersApi from '../../../Entities/User/api/UsersApi';
+import { getColorByID } from '../../../utils/getColorByID/getColorByID';
 
 function TableForPair(): JSX.Element {
   const currentPair = useAppSelector((store) => store.currentUserStore.pair);
@@ -25,7 +26,11 @@ function TableForPair(): JSX.Element {
   useEffect(() => {
     getUsers();
   }, [currentPair]);
+  // console.log(firstUser, secondUser);
 
+  console.log();
+  
+  
   return (
     <>
       <h2>Актуальная пара</h2>
@@ -42,7 +47,14 @@ function TableForPair(): JSX.Element {
           <Table.Tr>
             <Table.Td>
               <Group gap="sm">
-                <Avatar size={40} src={avatar} radius={40} />
+                {firstUser.login && <Avatar
+                    name={firstUser.login}
+                    color={getColorByID(firstUser.colorID)}
+                    radius="xl"
+                    size={40}
+                    variant='filled'
+                  >{firstUser.login.charAt(0).toUpperCase()}</Avatar>
+                } 
                 <div>
                   <Text fz="sm" fw={500}>
                     {firstUser.login}
@@ -56,7 +68,14 @@ function TableForPair(): JSX.Element {
 
             <Table.Td>
               <Group gap="sm">
-                <Avatar size={40} src={avatar} radius={40} />
+              {secondUser.login && <Avatar
+                    name={secondUser.login}
+                    color={getColorByID(secondUser.colorID)}
+                    radius="xl"
+                    size={40}
+                    variant='filled'
+                  >{secondUser.login.charAt(0).toUpperCase()}</Avatar>
+                } 
                 <div>
                   <Text fz="sm" fw={500}>
                     {secondUser.login}

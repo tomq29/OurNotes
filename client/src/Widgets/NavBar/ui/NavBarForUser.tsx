@@ -21,6 +21,7 @@ import { ThemeToggle } from '../../../Shared/ThemeToggle/ThemeToggle';
 import { useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import CloudMessage from './CloudMessage';
+import { getColorByID } from '../../../utils/getColorByID/getColorByID';
 
 function NavBarForUser(): JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -31,6 +32,8 @@ function NavBarForUser(): JSX.Element {
 
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
 
+  // console.log(currentUser?.colorID);
+  
   return (
     <Box>
       <header className={classes.header}>
@@ -77,9 +80,17 @@ function NavBarForUser(): JSX.Element {
                   <Group gap={7}>
                   <Avatar
                     name={currentUser?.login}
-                    color='initials'
                     radius="xl"
                     size={30}
+                    color={getColorByID(currentUser?.colorID)}
+                    variant='filled'
+                    // variant='outline'
+                    // variant='gradient'
+                    // gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+                    // variant='default'
+                    // variant='subtle'
+                    // variant='light'
+
                   >{currentUser?.login.charAt(0).toUpperCase()}</Avatar>
                     <Text fw={500} size="sm" lh={1} mr={3}>
                       {currentUser?.login}
@@ -189,9 +200,9 @@ function NavBarForUser(): JSX.Element {
                   <Group gap={7}>
                   <Avatar
                     name={currentUser?.login}
-                    color='initials'
                     radius="xl"
                     size={30}
+                    color={getColorByID(currentUser?.colorID)}
                   >{currentUser?.login.charAt(0).toUpperCase()}</Avatar>
                     <Text fw={500} size="sm" lh={1} mr={3}>
                       {currentUser?.login}
