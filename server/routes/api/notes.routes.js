@@ -42,7 +42,6 @@ notesRouter
           folderID,
           pairID,
           content,
-          
         })
       ).get();
 
@@ -123,11 +122,12 @@ notesRouter
     try {
       const { id } = req.params;
       const note = await Note.findByPk(id);
+
       if (note) {
         await note.destroy();
-        return res.status(204).json({ id: Number(id) });
+        res.json({ id: Number(id) });
       } else {
-        return res.status(404).json({ error: 'Note not found' });
+        res.status(404).json({ error: 'Note not found' });
       }
     } catch ({ message }) {
       res.status(500).json({ err: message });
