@@ -24,7 +24,6 @@ import { IconCheck } from '@tabler/icons-react';
 function PersonalNoteEditorPage() {
   const { id } = useParams();
 
-  const currentUser = useAppSelector((state) => state.currentUserStore.user);
   const dispatch = useAppDispatch();
 
   const { oneNote, loading } = useAppSelector((state) => state.oneNoteStore);
