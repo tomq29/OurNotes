@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.User, { foreignKey: 'userID' });
       this.belongsTo(models.Pair, { foreignKey: 'pairID', allowNull: true });
 
-      this.hasMany(models.Text, { foreignKey: 'noteID' });
+      this.hasMany(models.Text, { foreignKey: 'noteID' }); // LEGACY
     }
   }
   Note.init(
@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       folderID: DataTypes.INTEGER,
       userID: DataTypes.INTEGER,
       pairID: DataTypes.INTEGER,
+      content: DataTypes.JSONB,
     },
 
     {

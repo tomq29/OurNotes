@@ -30,7 +30,7 @@ module.exports = {
           model: 'Colors',
           key: 'id',
         },
-        onDelete: 'CASCADE',
+        onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       },
       createdAt: {

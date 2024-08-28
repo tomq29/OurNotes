@@ -25,6 +25,12 @@ module.exports = {
           colorID: 3,
         },
         {
+          email: 'igor@igor',
+          login: 'igor',
+          password: await bcrypt.hash('123', 10),
+          colorID: 7,
+        },
+        {
           email: 'jane@doe',
           login: 'jane',
           password: await bcrypt.hash('123', 10),
@@ -42,6 +48,7 @@ module.exports = {
           password: await bcrypt.hash('123', 10),
           colorID: 6,
         },
+    
       ],
       {}
     );
