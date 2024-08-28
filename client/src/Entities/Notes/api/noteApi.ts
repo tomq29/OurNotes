@@ -4,7 +4,6 @@ import {
   NoteID,
   NoteWithoutCreatedAt,
   NoteWithoutIDFolderIDcreatedAt,
-  NoteWithTexts,
 } from '../type/NoteType';
 
 import axiosInstance from '../../../../services/axiosInstace';
@@ -13,7 +12,7 @@ import { UserID } from '../../User/type/UserType';
 type updateNote = {
   updateStatus: number;
   id: number;
-  updatedNote: Note
+  updatedNote: Note;
 };
 
 type deteleNote = {
@@ -49,7 +48,9 @@ class NoteApi {
     return data;
   };
 
-  static updateNote = async (note: NoteWithoutCreatedAt): Promise<updateNote> => {
+  static updateNote = async (
+    note: NoteWithoutCreatedAt
+  ): Promise<updateNote> => {
     const { data } = await axiosInstance.put<updateNote>(
       `/notes/note/${note.id}`,
       note

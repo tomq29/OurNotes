@@ -28,6 +28,10 @@ import { ColorID } from '../../Entities/Colors/type/ColorType';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
 
+const defaultContent = `
+  <p>Hi 👋, this is a collaborative document.</p>
+`;
+
 // Utility function to get color value by colorID
 function getColorByID(colorID: ColorID | undefined) {
   const colors = [

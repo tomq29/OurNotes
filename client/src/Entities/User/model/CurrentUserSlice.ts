@@ -4,10 +4,15 @@ import AuthApi from '../api/AuthApi';
 import type { logEmailPassType, loginPassType } from '../type/AuthTypes';
 import { AxiosError } from 'axios';
 import PairsApi from '../../Pairs/api/PairsApi';
-import type { PairType } from '../../Pairs/type/PairsType';
+import type { PairID, PairType } from '../../Pairs/type/PairsType';
 import { ColorID } from '../../Colors/type/ColorType';
 import UsersApi from '../api/UsersApi';
-import type { EventType } from '../../Events/type/EventsType';
+import type {
+  EventID,
+  EventNewType,
+  EventType,
+} from '../../Events/type/EventsType';
+import EventsApi from '../../Events/api/EventsApi';
 
 export type userSliceType = {
   user: User | undefined;
@@ -15,7 +20,7 @@ export type userSliceType = {
   error: string | null;
   pair: PairType | null;
   loading: boolean;
-  events: EventType[] | null;
+  events: EventType[];
 };
 
 const initialState: userSliceType = {
@@ -24,7 +29,7 @@ const initialState: userSliceType = {
   error: null,
   pair: null,
   loading: false,
-  events: null,
+  events: [],
 };
 
 export const loginUser = createAsyncThunk(
@@ -103,6 +108,32 @@ export const updateUserColor = createAsyncThunk(
     UsersApi.changeColor(id, colorID)
 );
 
+export const getPairEvents = createAsyncThunk(
+  'user/getEvents',
+  (pairID: PairID) => EventsApi.getEvents(pairID)
+);
+
+export const getOneEvent = createAsyncThunk(
+  'user/getOneEvent',
+  (eventID: EventID) => EventsApi.getOneEvent(eventID)
+);
+
+export const createEvent = createAsyncThunk(
+  'user/createEvent',
+  (event: EventNewType) => EventsApi.createEvent(event)
+);
+
+export const deleteEvent = createAsyncThunk(
+  'user/deleteEvent',
+  (eventID: EventID) => EventsApi.deleteEvent(eventID)
+);
+
+export const updateEvent = createAsyncThunk(
+  'user/updateEvent',
+  ({ eventID, event }: { eventID: EventID; event: EventType }) =>
+    EventsApi.updateEvent(eventID, event)
+);
+
 const currentUserSlice = createSlice({
   name: 'currentUser',
   initialState,
@@ -176,6 +207,44 @@ const currentUserSlice = createSlice({
         if (state.user) {
           state.user.colorID = action.payload.user.colorID;
         }
+      })
+      .addCase(getPairEvents.fulfilled, (state, action) => {
+        if (state.pair?.id) {
+          const newPayloadEvents = action.payload.events.map((event) => ({
+            ...event,
+            start: new Date(event.start),
+            end: new Date(event.end),
+          }));
+          state.events = [...newPayloadEvents];
+        }
+      })
+      .addCase(createEvent.fulfilled, (state, action) => {
+        if (state.pair?.id) {
+          const newPayloadEvent = {
+            ...action.payload.event,
+            start: new Date(action.payload.event.start),
+            end: new Date(action.payload.event.end),
+          };
+          state.events = [...state.events, newPayloadEvent];
+        }
+      })
+      .addCase(deleteEvent.fulfilled, (state, action) => {
+        state.events = state.events.filter(
+          (event) => event.id !== Number(action.payload.eventID)
+        );
+      })
+      .addCase(updateEvent.fulfilled, (state, action) => {
+        const newPayloadEvent = {
+          ...action.payload.event,
+          start: new Date(action.payload.event.start),
+          end: new Date(action.payload.event.end),
+        };
+        state.events = state.events.map((event) => {
+          if (event.id === newPayloadEvent.id) {
+            return newPayloadEvent;
+          }
+          return event;
+        });
       });
   },
 });
