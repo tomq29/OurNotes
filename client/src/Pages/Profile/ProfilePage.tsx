@@ -1,5 +1,7 @@
 import { RootState, useAppSelector } from '../../App/providers/store/store';
-import {  Container } from '@mantine/core';
+
+import { Container } from '@mantine/core';
+
 import ModalAddPair from './ui/ModalAddPair';
 import './ui/profile.css';
 import { useEffect, useState } from 'react';
@@ -43,11 +45,12 @@ function ProfilePage(): JSX.Element {
     setLoading(false); // Set loading to false once all conditions are checked
   };
 
+  console.log(currentStore?.user?.login);
+
   useEffect(() => {
     checkCanMakePair();
   }, [currentStore.pair?.id, currentStore.user?.id, updatePage]); // Adding user ID to dependencies
-
-  return (
+    return (
     <>
       {loading ? (
         <Spinner />
