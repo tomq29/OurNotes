@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import {
+  Calendar,
+  DateLocalizer,
+  Formats,
+  momentLocalizer,
+} from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/ru'; // Импортируем русскую локализацию
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -49,15 +54,39 @@ function CalendarComponent() {
     agenda: 'Повестка дня',
   };
 
-  const formats = {
-    timeGutterFormat: 'HH:mm', // Format for the time gutter in the 24-hour format
-    eventTimeRangeFormat: ({ start, end }, culture, localizer) =>
-      `${localizer.format(start, 'HH:mm', culture)} - ${localizer.format(end, 'HH:mm', culture)}`,
-    agendaTimeRangeFormat: ({ start, end }, culture, localizer) =>
-      `${localizer.format(start, 'HH:mm', culture)} - ${localizer.format(end, 'HH:mm', culture)}`,
+  const formats: Partial<Formats> = {
+    timeGutterFormat: 'HH:mm', // Format for the time gutter in 24-hour format
+    eventTimeRangeFormat: (
+      { start, end }: { start: Date; end: Date },
+      culture?: string,
+      localizer?: DateLocalizer
+    ) =>
+      `${localizer?.format(start, 'HH:mm', culture)} - ${localizer?.format(
+        end,
+        'HH:mm',
+        culture
+      )}`,
+    agendaTimeRangeFormat: (
+      { start, end }: { start: Date; end: Date },
+      culture?: string,
+      localizer?: DateLocalizer
+    ) =>
+      `${localizer?.format(start, 'HH:mm', culture)} - ${localizer?.format(
+        end,
+        'HH:mm',
+        culture
+      )}`,
     dayHeaderFormat: 'dddd, MMMM D', // Format for the day header
-    dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>
-      `${localizer.format(start, 'MMMM D', culture)} - ${localizer.format(end, 'MMMM D', culture)}`,
+    dayRangeHeaderFormat: (
+      { start, end }: { start: Date; end: Date },
+      culture?: string,
+      localizer?: DateLocalizer
+    ) =>
+      `${localizer?.format(start, 'MMMM D', culture)} - ${localizer?.format(
+        end,
+        'MMMM D',
+        culture
+      )}`,
   };
 
   const handlerOpenAddEventModal = (): void => {
@@ -80,7 +109,6 @@ function CalendarComponent() {
         onSelectEvent={handleSelectEvent} // Обработчик клика по событию
         selectable // Разрешить выделение слота
         formats={formats}
-       
       />
 
       {openAddModal && (
