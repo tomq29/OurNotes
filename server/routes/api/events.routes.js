@@ -30,7 +30,7 @@ eventsRouter.put('/:eventID', async (req, res) => {
   try {
     const { eventID } = req.params;
     const { title, description, start, end, allDay } = req.body;
-    if (!eventID || !title || !description || !start || !end || !allDay) {
+    if ( !title || !description || !start || !end ) {
       return res.status(400).json({ message: 'Invalid input' });
     }
     const event = await Event.findOne({
@@ -56,7 +56,7 @@ eventsRouter.delete('/:eventID', async (req, res) => {
       return res.status(404).json({ message: 'Event not found' });
     }
     await event.destroy();
-    res.status(200).json({ message: 'event deleted' });
+    res.status(200).json({ message: 'event deleted', eventID: eventID });
   } catch (error) {
     res.status(500).json({ message: error.message || 'Internal server error' });
   }
@@ -64,17 +64,19 @@ eventsRouter.delete('/:eventID', async (req, res) => {
 
 eventsRouter.post('/', async (req, res) => {
   try {
-    const { pairID, title, description, start, end, allDay } = req.body;
-    if (!pairID || !title || !description || !start || !end || !allDay) {
+    const { title, description, start, end, allDay, pairID, eventTypeID } =
+      req.body;
+    if (!title || !description || !start || !end || !pairID || !eventTypeID) {
       return res.status(400).json({ message: 'Invalid input' });
     }
     const event = await Event.create({
-      pairID,
       title,
       description,
       start,
       end,
       allDay,
+      pairID,
+      eventTypeID,
     });
     res.status(200).json({ message: 'success', event });
   } catch (error) {
