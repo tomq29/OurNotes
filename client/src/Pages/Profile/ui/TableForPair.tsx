@@ -26,9 +26,9 @@ function TableForPair(): JSX.Element {
   useEffect(() => {
     getUsers();
   }, [currentPair]);
-  // console.log(firstUser, secondUser);
 
-  console.log();
+
+
   
   
   return (

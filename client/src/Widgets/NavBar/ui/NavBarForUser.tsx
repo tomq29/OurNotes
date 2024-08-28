@@ -32,7 +32,7 @@ function NavBarForUser(): JSX.Element {
 
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
 
-  // console.log(currentUser?.colorID);
+
   
   return (
     <Box>
