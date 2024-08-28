@@ -10,7 +10,7 @@ function CalendarPage(): JSX.Element {
       {currentPair?.id ? (
         <CalendarComponent />
       ) : (
-        <Container>календарь доступен только в паре</Container>
+        <Container>Календарь доступен только в паре</Container>
       )}
     </Flex>
   );

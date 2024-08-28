@@ -15,6 +15,12 @@ import { Button, Container, Flex } from '@mantine/core';
 import { getPairEvents } from '../../User/model/CurrentUserSlice';
 
 moment.locale('ru');
+moment.updateLocale('ru', {
+  week: {
+    dow: 1, // Monday is the first day of the week
+  },
+});
+
 const localizer = momentLocalizer(moment);
 
 function CalendarComponent() {
@@ -43,6 +49,17 @@ function CalendarComponent() {
     agenda: 'Повестка дня',
   };
 
+  const formats = {
+    timeGutterFormat: 'HH:mm', // Format for the time gutter in the 24-hour format
+    eventTimeRangeFormat: ({ start, end }, culture, localizer) =>
+      `${localizer.format(start, 'HH:mm', culture)} - ${localizer.format(end, 'HH:mm', culture)}`,
+    agendaTimeRangeFormat: ({ start, end }, culture, localizer) =>
+      `${localizer.format(start, 'HH:mm', culture)} - ${localizer.format(end, 'HH:mm', culture)}`,
+    dayHeaderFormat: 'dddd, MMMM D', // Format for the day header
+    dayRangeHeaderFormat: ({ start, end }, culture, localizer) =>
+      `${localizer.format(start, 'MMMM D', culture)} - ${localizer.format(end, 'MMMM D', culture)}`,
+  };
+
   const handlerOpenAddEventModal = (): void => {
     setOpenAddModal(true); // Открываем модальное окно для добавления события
   };
@@ -62,6 +79,8 @@ function CalendarComponent() {
         onSelectSlot={handlerOpenAddEventModal} // Обработчик клика по слоту
         onSelectEvent={handleSelectEvent} // Обработчик клика по событию
         selectable // Разрешить выделение слота
+        formats={formats}
+       
       />
 
       {openAddModal && (
