@@ -22,17 +22,10 @@ import { useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import CloudMessage from './CloudMessage';
 
-const user = {
-  name: 'Jane Spoonfighter',
-  email: 'janspoon@fighter.dev',
-  image:
-    'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-10.png',
-};
-
 function NavBarForUser(): JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
 
   const [userMenuOpened, setUserMenuOpened] = useState(false);
 
@@ -82,12 +75,12 @@ function NavBarForUser(): JSX.Element {
                   })}
                 >
                   <Group gap={7}>
-                    <Avatar
-                      src={user.image}
-                      alt={user.name}
-                      radius="xl"
-                      size={20}
-                    />
+                  <Avatar
+                    name={currentUser?.login}
+                    color='initials'
+                    radius="xl"
+                    size={30}
+                  >{currentUser?.login.charAt(0).toUpperCase()}</Avatar>
                     <Text fw={500} size="sm" lh={1} mr={3}>
                       {currentUser?.login}
                     </Text>
@@ -194,12 +187,12 @@ function NavBarForUser(): JSX.Element {
                   })}
                 >
                   <Group gap={7}>
-                    <Avatar
-                      src={user.image}
-                      alt={user.name}
-                      radius="xl"
-                      size={20}
-                    />
+                  <Avatar
+                    name={currentUser?.login}
+                    color='initials'
+                    radius="xl"
+                    size={30}
+                  >{currentUser?.login.charAt(0).toUpperCase()}</Avatar>
                     <Text fw={500} size="sm" lh={1} mr={3}>
                       {currentUser?.login}
                     </Text>
