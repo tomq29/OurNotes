@@ -1,15 +1,15 @@
-import { Avatar, Badge, Table, Group, Text } from '@mantine/core';
-import { useAppSelector } from '../../../App/providers/store/store';
-import type { User } from '../../../Entities/User/type/UserType';
-import { useEffect, useState } from 'react';
-import UsersApi from '../../../Entities/User/api/UsersApi';
+import { Avatar, Badge, Table, Group, Text } from "@mantine/core";
+import { useAppSelector } from "../../../App/providers/store/store";
+import type { User } from "../../../Entities/User/type/UserType";
+import { useEffect, useState } from "react";
+import UsersApi from "../../../Entities/User/api/UsersApi";
 
 function TableForFair(): JSX.Element {
   const currentPair = useAppSelector((store) => store.currentUserStore.pair);
   const [firstUser, setFirstUser] = useState<User>({} as User);
   const [secondUser, setSecondUser] = useState<User>({} as User);
-  const avatar =
-    'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png';
+  // const avatar =
+  //   'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png';
 
   const getUsers = () => {
     if (currentPair) {
@@ -42,7 +42,17 @@ function TableForFair(): JSX.Element {
           <Table.Tr>
             <Table.Td>
               <Group gap="sm">
-                <Avatar size={40} src={avatar} radius={40} />
+                {firstUser.login && (
+                  <Avatar
+                    name={firstUser?.login}
+                    color="initials"
+                    radius={40}
+                    size={40}
+                  >
+                    {firstUser?.login.charAt(0).toUpperCase()}
+                  </Avatar>
+                )}
+
                 <div>
                   <Text fz="sm" fw={500}>
                     {firstUser.login}
@@ -56,7 +66,17 @@ function TableForFair(): JSX.Element {
 
             <Table.Td>
               <Group gap="sm">
-                <Avatar size={40} src={avatar} radius={40} />
+                {secondUser.login && (
+                  <Avatar
+                    name={secondUser?.login}
+                    color="initials"
+                    radius={40}
+                    size={40}
+                  >
+                    {secondUser?.login.charAt(0).toUpperCase()}
+                  </Avatar>
+                )}
+
                 <div>
                   <Text fz="sm" fw={500}>
                     {secondUser.login}
@@ -69,7 +89,7 @@ function TableForFair(): JSX.Element {
             </Table.Td>
 
             <Table.Td>
-              {currentPair?.status === 'active' ? (
+              {currentPair?.status === "active" ? (
                 <Badge color="green">Пара активна</Badge>
               ) : (
                 <Badge color="gray" variant="light">

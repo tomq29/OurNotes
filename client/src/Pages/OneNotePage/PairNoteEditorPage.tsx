@@ -1,5 +1,5 @@
 import './css/stylesForCollab.scss';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { RichTextEditor, Link } from '@mantine/tiptap';
 import { useEditor } from '@tiptap/react';
 import Highlight from '@tiptap/extension-highlight';
@@ -21,16 +21,12 @@ import {
   getOneNote,
 } from '../../Entities/Notes/model/OneNoteSlice';
 import Spinner from '../../Shared/LoadingSpinner/Spinner';
-import { Button, Container, rem, Text, Title } from '@mantine/core';
+import { Button, Container, rem, Title } from '@mantine/core';
 import { CollaborationCursor } from '../../Shared/Extentions/CollaborationCursor';
 import Placeholder from '@tiptap/extension-placeholder';
 import { ColorID } from '../../Entities/Colors/type/ColorType';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
-
-const defaultContent = `
-  <p>Hi 👋, this is a collaborative document.</p>
-`;
 
 // Utility function to get color value by colorID
 function getColorByID(colorID: ColorID | undefined) {
