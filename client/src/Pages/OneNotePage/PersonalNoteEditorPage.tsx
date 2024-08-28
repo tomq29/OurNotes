@@ -17,7 +17,9 @@ import {
 } from '../../Entities/Notes/model/OneNoteSlice';
 import { useEffect } from 'react';
 import Spinner from '../../Shared/LoadingSpinner/Spinner';
-import { Button, Container, Title } from '@mantine/core';
+import { Button, Container, rem, Title } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
 
 function PersonalNoteEditorPage() {
   const { id } = useParams();
@@ -56,10 +58,29 @@ function PersonalNoteEditorPage() {
   }
 
   function saveHandler() {
+    const id = notifications.show({
+      loading: true,
+      title: 'Ждемс..',
+      message: 'Ща все будет',
+      autoClose: false,
+      withCloseButton: false,
+    });
+
     if (editor) {
       const editedNote = { ...oneNote, content: editor.getJSON() };
-
-      dispatch(editNoteContent(editedNote));
+      dispatch(editNoteContent(editedNote)).then((action) => {
+        if (action.meta.requestStatus === 'fulfilled') {
+          notifications.update({
+            id,
+            color: 'teal',
+            title: 'Успешно',
+            message: 'Все сохранилось',
+            icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+            loading: false,
+            autoClose: 3000,
+          });
+        }
+      });
     }
   }
 

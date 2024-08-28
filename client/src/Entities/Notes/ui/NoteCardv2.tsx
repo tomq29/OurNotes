@@ -105,8 +105,6 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
     dispatch(deleteNote(note.id));
   }
 
-  
-
   return (
     <Table.Tr>
       <Table.Td>
@@ -130,7 +128,11 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
           {normalMode && (
             <UnstyledButton
               variant="outline"
-              onClick={() => navigate(`/note/${note.id}`)}
+              onClick={() =>
+                navigate(
+                  note.pairID ? `/ournote/${note.id}` : `/mynote/${note.id}`
+                )
+              }
             >
               <Text fz="sm" fw={500}>
                 {note.title}
@@ -209,7 +211,11 @@ function NoteCardv2({ note }: NoteCardProps): JSX.Element {
                 <IconExternalLink
                   stroke={1.5}
                   style={{ width: rem(16), height: rem(16) }}
-                  onClick={() => navigate(`/note/${note.id}`)}
+                  onClick={() =>
+                    navigate(
+                      note.pairID ? `/ournote/${note.id}` : `/mynote/${note.id}`
+                    )
+                  }
                 />
               </ActionIcon>
               <ActionIcon

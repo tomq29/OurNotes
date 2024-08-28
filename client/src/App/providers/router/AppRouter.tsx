@@ -68,8 +68,8 @@ function AppRouter(): JSX.Element {
       <Route path="/notes" element={<NotesPage />} />
       {/* <Route path="/note/:id" element={<OneNotePage />} /> */}
       {/* <Route path="/note/:id" element={<OneNotePageV2 />} /> */}
-      {/* <Route path="/note/:id" element={<PersonalNoteEditorPage />} /> */}
-      <Route path="/note/:id" element={<PairNoteEditorPage />} />
+      <Route path="/mynote/:id" element={<PersonalNoteEditorPage />} />
+      <Route path="/ournote/:id" element={<PairNoteEditorPage />} />
 
       <Route path="/questions" element={<SoonPage />} />
       <Route path="/calendar" element={<CalendarPage />} />

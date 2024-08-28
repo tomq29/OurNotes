@@ -21,10 +21,12 @@ import {
   getOneNote,
 } from '../../Entities/Notes/model/OneNoteSlice';
 import Spinner from '../../Shared/LoadingSpinner/Spinner';
-import { Button, Container, Title } from '@mantine/core';
+import { Button, Container, rem, Text, Title } from '@mantine/core';
 import { CollaborationCursor } from '../../Shared/Extentions/CollaborationCursor';
 import Placeholder from '@tiptap/extension-placeholder';
 import { ColorID } from '../../Entities/Colors/type/ColorType';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
 
 const defaultContent = `
   <p>Hi 👋, this is a collaborative document.</p>
@@ -71,24 +73,17 @@ function PersonalNoteEditorPage() {
   const { oneNote, loading } = useAppSelector((state) => state.oneNoteStore);
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
 
-  const [status, setStatus] = useState('connecting');
+  // const [status, setStatus] = useState('connecting');
 
   // Initialize Yjs document
   const ydoc = React.useMemo(() => new Y.Doc(), []);
   const provider = React.useMemo(
-    () => new WebsocketProvider('ws://localhost:1234', oneNote.title, ydoc),
-    [ydoc, oneNote.title]
+    () => new WebsocketProvider('ws://localhost:1234', `note-${id}`, ydoc),
+    [ydoc, id]
   );
 
   // Editor setup
   const editor = useEditor({
-    onCreate: ({ editor: currentEditor }) => {
-      provider.on('synced', () => {
-        if (currentEditor.isEmpty) {
-          currentEditor.commands.setContent(defaultContent);
-        }
-      });
-    },
     extensions: [
       StarterKit,
       Underline,
@@ -112,7 +107,7 @@ function PersonalNoteEditorPage() {
       // Synchronize cursors
     ],
 
-    content: oneNote?.content,
+    // content: oneNote?.content,
   });
 
   // Fetch the note data when the component mounts
@@ -127,33 +122,46 @@ function PersonalNoteEditorPage() {
     }
   }, [editor, oneNote.content]);
 
-  useEffect(() => {
-    // Update status changes
-    const statusHandler = (event) => {
-      setStatus(event.status);
-    };
-
-    provider.on('status', statusHandler);
-
-    return () => {
-      provider.off('status', statusHandler);
-    };
-  }, [provider]);
-
   // useEffect(() => {
-  //   if (editor && currentUser) {
-  //     editor.chain().focus().updateUser(currentUserForCollab).run();
-  //   }
-  // }, [editor, currentUser]);
+  //   const statusHandler = (event) => {
+  //     setStatus(event.status);
+  //   };
+
+  //   provider.on('status', statusHandler);
+
+  //   return () => {
+  //     provider.off('status', statusHandler);
+  //   };
+  // }, [provider, editor]);
 
   if (loading) {
     return <Spinner />;
   }
 
   function saveHandler() {
+    const id = notifications.show({
+      loading: true,
+      title: 'Ждемс..',
+      message: 'Ща все будет',
+      autoClose: false,
+      withCloseButton: false,
+    });
+
     if (editor) {
       const editedNote = { ...oneNote, content: editor.getJSON() };
-      dispatch(editNoteContent(editedNote));
+      dispatch(editNoteContent(editedNote)).then((action) => {
+        if (action.meta.requestStatus === 'fulfilled') {
+          notifications.update({
+            id,
+            color: 'teal',
+            title: 'Успешно',
+            message: 'Все сохранилось',
+            icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+            loading: false,
+            autoClose: 3000,
+          });
+        }
+      });
     }
   }
 
@@ -216,8 +224,10 @@ function PersonalNoteEditorPage() {
       </RichTextEditor>
 
       <Button onClick={saveHandler} m={10}>
-        Save
+        Сохранить
       </Button>
+
+
     </Container>
   );
 }
