@@ -16,26 +16,26 @@ const app = express();
 const PORT_HTTP = process.env.PORT_HTTP ?? 3000;
 const PORT_HTTPS = process.env.PORT_HTTPS ?? 3000;
 
-const sslOptions = {
-  key: fs.readFileSync(
-    path.join(
-      __dirname,
-      'public',
-      '.well-known',
-      'acme-challenge',
-      'privkey.pem'
-    )
-  ),
-  cert: fs.readFileSync(
-    path.join(
-      __dirname,
-      'public',
-      '.well-known',
-      'acme-challenge',
-      'fullchain.pem'
-    )
-  ),
-};
+// const sslOptions = {
+//   key: fs.readFileSync(
+//     path.join(
+//       __dirname,
+//       'public',
+//       '.well-known',
+//       'acme-challenge',
+//       'privkey.pem'
+//     )
+//   ),
+//   cert: fs.readFileSync(
+//     path.join(
+//       __dirname,
+//       'public',
+//       '.well-known',
+//       'acme-challenge',
+//       'fullchain.pem'
+//     )
+//   ),
+// };
 
 //
 serverConfig(app);
