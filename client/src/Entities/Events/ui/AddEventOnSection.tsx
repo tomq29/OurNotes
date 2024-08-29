@@ -6,27 +6,30 @@ import {
   Card,
   NativeSelect,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import React, { useState } from 'react';
 import {
   useAppDispatch,
   useAppSelector,
 } from '../../../App/providers/store/store';
 import { useForm } from '@mantine/form';
-import { clearError, createEvent } from '../../User/model/CurrentUserSlice';
+import { createEvent } from '../../User/model/CurrentUserSlice';
 import { DateTimePicker } from '@mantine/dates';
-import { EventTypeType } from '../../EventTypes/type/EventTypesType';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
+import {  useState } from 'react';
+import { EventTypeType } from '../../EventTypes/type/EventTypesType';
 
 type Props = {
-  openAddModal: boolean;
-  setOpenAddModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setAddEventOnSection: React.Dispatch<React.SetStateAction<boolean>>;
+  addEventOnSection: boolean;
+  startEvent: Date;
+  endEvent: Date;
   eventTypes: EventTypeType[];
 };
-
-function AddEventModal({
-  openAddModal,
-  setOpenAddModal,
+function AddEventOnSection({
+  setAddEventOnSection,
+  addEventOnSection,
+  startEvent,
+  endEvent,
   eventTypes,
 }: Props): JSX.Element {
   const dispatch = useAppDispatch();
@@ -38,14 +41,14 @@ function AddEventModal({
     initialValues: {
       title: '',
       description: '',
-      start: new Date(),
+      start: startEvent,
       end: (() => {
-        const date = new Date();
-        date.setHours(date.getHours() + 1); // Добавляем 1 час
+        const date = new Date(endEvent);
+        date.setHours(date.getHours() - 1); // Добавляем 1 час
         return date;
       })(),
       pairID: currentStore.pair?.id,
-      eventTypeID: 1,
+      eventTypeID: selectTypeValue,
       allDay: false,
     },
     validate: {
@@ -54,7 +57,7 @@ function AddEventModal({
   });
 
   const closeModalHandler = () => {
-    setOpenAddModal(false);
+    setAddEventOnSection(false);
   };
 
   const submitHandler = () => {
@@ -65,8 +68,8 @@ function AddEventModal({
       if (data.pairID) {
         const id = notifications.show({
           loading: true,
-          title: 'Создание события',
-          message: 'Загрузка данных',
+          title: 'Ждемс..',
+          message: 'Ща все будет',
           autoClose: false,
           withCloseButton: false,
         });
@@ -101,14 +104,13 @@ function AddEventModal({
           })
           .catch(console.log);
       }
+      closeModalHandler(); // Закрываем модальное окно после отправки
     }
-    clearError();
-    closeModalHandler();
   };
 
   return (
     <Modal
-      opened={openAddModal}
+      opened={addEventOnSection}
       onClose={closeModalHandler}
       title="Введите название события"
     >
@@ -140,22 +142,22 @@ function AddEventModal({
               }))}
             />
             <DateTimePicker
+              radius="xl"
               label="Выберите время начала события"
               placeholder="Выберите дату и время начала"
               valueFormat="DD MMM YYYY HH:mm"
               {...form.getInputProps('start')}
               style={{ marginBottom: '1rem' }}
               required
-              radius="xl"
             />
             <DateTimePicker
+              radius="xl"
               label="Выберите время окончания события"
               placeholder="Выберите дату и время окончания"
               valueFormat="DD MMM YYYY HH:mm"
               {...form.getInputProps('end')}
               style={{ marginBottom: '1rem' }}
               required
-              radius="xl"
             />
             <Button type="submit" fullWidth>
               Создать событие
@@ -167,4 +169,4 @@ function AddEventModal({
   );
 }
 
-export default AddEventModal;
+export default AddEventOnSection;

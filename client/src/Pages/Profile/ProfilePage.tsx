@@ -31,11 +31,7 @@ function ProfilePage(): JSX.Element {
         }
         setCanMakePair(false);
         setIsPairTable(true);
-        console.log(
-          'currentStore.pair, ',
-          currentStore.pair,
-          currentStore.user
-        );
+      
       }
     } else {
       setIsPairTable(false);
@@ -45,7 +41,6 @@ function ProfilePage(): JSX.Element {
     setLoading(false); // Set loading to false once all conditions are checked
   };
 
-  // console.log(currentStore?.user?.login);
 
   useEffect(() => {
     checkCanMakePair();

@@ -29,8 +29,8 @@ eventsRouter.get('/:eventID', async (req, res) => {
 eventsRouter.put('/:eventID', async (req, res) => {
   try {
     const { eventID } = req.params;
-    const { title, description, start, end, allDay } = req.body;
-    if ( !title || !description || !start || !end ) {
+    const { title, description, start, end, allDay, eventTypeID } = req.body;
+    if (!title || !description || !start || !end || !eventTypeID) {
       return res.status(400).json({ message: 'Invalid input' });
     }
     const event = await Event.findOne({
@@ -39,7 +39,7 @@ eventsRouter.put('/:eventID', async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
-    await event.update({ title, description, start, end, allDay });
+    await event.update({ title, description, start, end, allDay, eventTypeID });
     res.status(200).json({ message: 'event updated', event });
   } catch (error) {
     res.status(500).json({ message: error.message || 'Internal server error' });

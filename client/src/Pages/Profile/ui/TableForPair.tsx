@@ -14,6 +14,7 @@ function TableForPair(): JSX.Element {
   const avatar =
     "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png";
 
+
   const getUsers = () => {
     if (currentPair) {
       UsersApi.getUser(currentPair.userOneID).then((data) => {
@@ -28,9 +29,6 @@ function TableForPair(): JSX.Element {
   useEffect(() => {
     getUsers();
   }, [currentPair]);
-  // console.log(firstUser, secondUser);
-
-  console.log();
 
   return (
     <>
