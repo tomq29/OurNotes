@@ -61,6 +61,7 @@ function AddPersonalNote(): JSX.Element {
         opened={opened}
         onClose={close}
         title="Создание новой заметки"
+        transitionProps={{ transition: 'fade', duration: 200 }}
       >
         <form onSubmit={handleSubmit(addNewNote)}>
           <TextInput
@@ -72,13 +73,13 @@ function AddPersonalNote(): JSX.Element {
             placeholder="Введите название"
           />
 
-          <TextInput
+          {/* <TextInput
             variant="filled"
             radius="xl"
             label="Описание"
             {...register('description')}
             placeholder="Введите описание"
-          />
+          /> */}
 
           <Button mt="md" type="submit">
             Добавить
