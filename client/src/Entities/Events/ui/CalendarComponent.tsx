@@ -15,7 +15,7 @@ import {
 import AddEventModal from './AddEventModal';
 import UpdateEventModal from './UpdateEventModal';
 import AboutEventModal from './AboutEventModal';
-import { EventType } from '../type/EventsType';
+import { EventType, Toolbar } from '../type/EventsType';
 import {
   Button,
   Container,
@@ -177,7 +177,7 @@ function CalendarComponent(): JSX.Element {
 
   // Новый тулбар
 
-  const CustomToolbar = (toolbar): JSX.Element => {
+  const CustomToolbar = (toolbar: Toolbar): JSX.Element => {
     const goToBack = () => {
       toolbar.onNavigate('PREV');
     };
@@ -190,12 +190,12 @@ function CalendarComponent(): JSX.Element {
       toolbar.onNavigate('TODAY');
     };
 
-    const handleViewChange = (view) => {
+    const handleViewChange = (view: 'day' | 'month' | 'agenda'): void => {
       toolbar.onView(view);
     };
 
     // Формат даты
-    const options = {
+    const options: Intl.DateTimeFormatOptions = {
       year: 'numeric',
       month: 'long',
       day: 'numeric',

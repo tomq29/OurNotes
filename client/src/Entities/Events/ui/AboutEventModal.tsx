@@ -40,18 +40,36 @@ function AboutEventModal({
     >
       <Container>
         <Card shadow="sm" padding="lg" style={{ marginBottom: '1rem' }}>
-          <Text size="lg" style={{ marginBottom: '0.5rem' }}>
-            Название: {currentEvent.title}
-          </Text>
-          <Text size="sm" style={{ marginBottom: '0.5rem' }}>
-            Описание: {currentEvent.description}
-          </Text>
-          <Group style={{ marginTop: '1rem' }}>
-            <Text size="sm">
-              Начало: {moment(currentEvent.start).format('DD-MM-YYYY HH:mm')}
+          <Group>
+            <Text size="lg" fw={300} style={{ marginBottom: '0.5rem' }}>
+              Название:
             </Text>
-            <Text size="sm">
-              Окончание: {moment(currentEvent.end).format('DD-MM-YYYY HH:mm')}
+            <Text size="lg" fw={500} style={{ marginBottom: '0.5rem' }}>
+              {currentEvent.title}
+            </Text>
+          </Group>
+          <Group>
+            <Text size="lg" fw={300} style={{ marginBottom: '0.5rem' }}>
+              Описание:
+            </Text>
+            <Text size="lg" fw={500} style={{ marginBottom: '0.5rem' }}>
+              {currentEvent.description}
+            </Text>
+          </Group>
+          <Group>
+            <Text size="lg" fw={300} style={{ marginBottom: '0.5rem' }}>
+              Начало:
+            </Text>
+            <Text size="lg" fw={500} style={{ marginBottom: '0.5rem' }}>
+              {moment(currentEvent.start).format('DD-MM-YYYY HH:mm')}
+            </Text>
+          </Group>
+          <Group>
+            <Text size="lg" fw={300} style={{ marginBottom: '0.5rem' }}>
+              Окончание:
+            </Text>
+            <Text size="lg" fw={500} style={{ marginBottom: '0.5rem' }}>
+              {moment(currentEvent.end).format('DD-MM-YYYY HH:mm')}
             </Text>
           </Group>
           <Button
