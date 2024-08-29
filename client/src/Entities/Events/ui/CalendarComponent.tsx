@@ -16,15 +16,22 @@ import AddEventModal from './AddEventModal';
 import UpdateEventModal from './UpdateEventModal';
 import AboutEventModal from './AboutEventModal';
 import { EventType } from '../type/EventsType';
-import { Button, Container, Flex, SegmentedControl } from '@mantine/core';
+import {
+  Button,
+  Container,
+  Flex,
+  Group,
+  SegmentedControl,
+} from '@mantine/core';
 import {
   getEventTypes,
   getPairEvents,
 } from '../../User/model/CurrentUserSlice';
 import AddEventOnSection from './AddEventOnSection';
 import './css/calendarStyle.css';
+import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
 
-moment.locale('ru');
+moment.locale('ru'); // Устанавливаем локализацию на русский
 moment.updateLocale('ru', {
   week: {
     dow: 1, // Monday is the first day of the week
@@ -68,6 +75,7 @@ function CalendarComponent(): JSX.Element {
     agenda: 'Таблица событий',
   };
 
+  // 24 формат отображения
   const formats: Partial<Formats> = {
     timeGutterFormat: 'HH:mm', // Format for the time gutter in 24-hour format
     eventTimeRangeFormat: (
@@ -103,6 +111,7 @@ function CalendarComponent(): JSX.Element {
       )}`,
   };
 
+  // Фильтрация событий
   const filteredEvents = events.filter((event) => {
     if (filter === 'Все') {
       return true;
@@ -127,17 +136,17 @@ function CalendarComponent(): JSX.Element {
 
   // Цвета событий
   const eventPropGetter = (event: EventType) => {
-    let backgroundColor = 'gray'; // Установите цвет по умолчанию
+    let backgroundColor = 'gray'; //  цвет по умолчанию
 
-    // Пример изменения цвета в зависимости от свойства события
+    // Выбираем цвет согласно типу события
     if (event.eventTypeID === 1) {
       backgroundColor = 'green'; // Цвет для встреч
     } else if (event.eventTypeID === 2) {
-      backgroundColor = 'red'; // Цвет для праздников
+      backgroundColor = 'red'; // Цвет для мероприятий
     } else if (event.eventTypeID === 3) {
-      backgroundColor = 'blue'; // Цвет для праздников
+      backgroundColor = 'blue'; // Цвет для дел
     } else if (event.eventTypeID === 4) {
-      backgroundColor = 'orange'; // Цвет для праздников
+      backgroundColor = 'orange'; // Цвет для дня рождения
     }
 
     return {
@@ -166,37 +175,140 @@ function CalendarComponent(): JSX.Element {
     setAddEventOnSection(true);
   };
 
-  return (
-    <div style={{ height: '500px' }}>
-      <SegmentedControl
-        value={filter}
-        onChange={setFilter}
-        radius="xl"
-        data={[
-          'Все',
-          'Встреча',
-          'Мероприятие',
-          'Дела',
-          'День Рождения',
-          'Спорт',
-        ]}
-        styles={{
-          root: {
-            margin: '20px', // Отступ вокруг компонента
-            padding: '10px', // Внутренний отступ
-          },
+  // Новый тулбар
+
+  const CustomToolbar = (toolbar) => {
+    const goToBack = () => {
+      toolbar.onNavigate('PREV');
+    };
+
+    const goToNext = () => {
+      toolbar.onNavigate('NEXT');
+    };
+
+    const goToToday = () => {
+      toolbar.onNavigate('TODAY');
+    };
+
+    const handleViewChange = (view) => {
+      toolbar.onView(view);
+    };
+
+    // Формат даты
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+
+    // Обрабатываем вид отображения даты
+    console.log(toolbar.date.toLocaleDateString('ru', options));
+    const dateString = toolbar.date.toLocaleDateString('ru', options);
+    // const formattedDateString =
+    //   dateString.charAt(0).toUpperCase() + dateString.slice(1);
+
+    return (
+      <Container
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+          marginBottom: '0.5rem',
         }}
-      />
+      >
+        <Group
+          gap="lg"
+          style={{
+            display: 'flex',
+            gap: '0.4rem',
+          }}
+        >
+          <Button variant="default" radius="xl" onClick={goToBack} size="xs">
+            <IconArrowLeft stroke={2} size={18} />
+          </Button>
+          <Button variant="default" radius="xl" onClick={goToToday} size="xs">
+            Сегодня
+          </Button>
+          <Button variant="default" radius="xl" onClick={goToNext} size="xs">
+            <IconArrowRight stroke={2} size={18} />
+          </Button>
+        </Group>
+
+        <Container>{dateString}</Container>
+        <Group
+          style={{
+            display: 'flex',
+            // justifyContent: 'space-around',
+            gap: '0.4rem',
+          }}
+        >
+          <Button
+            variant="default"
+            radius="xl"
+            size="xs"
+            onClick={() => handleViewChange('day')}
+          >
+            День
+          </Button>
+          <Button
+            variant="default"
+            radius="xl"
+            size="xs"
+            onClick={() => handleViewChange('month')}
+          >
+            Месяц
+          </Button>
+          <Button
+            variant="default"
+            radius="xl"
+            size="xs"
+            onClick={() => handleViewChange('agenda')}
+          >
+            События
+          </Button>
+        </Group>
+      </Container>
+    );
+  };
+
+  return (
+    <Container style={{ width: '100%' }}>
+      <Flex justify="flex-start" style={{ margin: '20px' }}>
+        <SegmentedControl
+          value={filter}
+          onChange={setFilter}
+          radius="xl"
+          data={[
+            'Все',
+            'Встреча',
+            'Мероприятие',
+            'Дела',
+            'День Рождения',
+            'Спорт',
+          ]}
+          styles={{
+            root: {
+              // Убираем отступы вокруг компонента
+              padding: '10px',
+            },
+          }}
+        />
+      </Flex>
+
       <Calendar
         localizer={localizer}
         events={filteredEvents} // Массив событий
-        style={{ height: 500 }}
+        style={{ height: '70vh' }}
         messages={messages}
         onSelectSlot={handleSelectSlot} // Обработчик клика по слоту
         onSelectEvent={handleSelectEvent} // Обработчик клика по событию
         selectable // Разрешить выделение слота
         formats={formats}
         eventPropGetter={eventPropGetter} // Функция для получения свойств события
+        components={{
+          toolbar: CustomToolbar, // Используем кастомный тулбар
+        }}
       />
 
       {openAddModal && (
@@ -235,10 +347,12 @@ function CalendarComponent(): JSX.Element {
       )}
       <Container p="xl">
         <Flex justify="center">
-          <Button onClick={handlerOpenAddEventModal}>Добавить событие</Button>
+          <Button onClick={handlerOpenAddEventModal} variant="outline">
+            Добавить событие
+          </Button>
         </Flex>
       </Container>
-    </div>
+    </Container>
   );
 }
 

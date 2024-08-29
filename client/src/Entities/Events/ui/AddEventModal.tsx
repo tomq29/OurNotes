@@ -63,7 +63,6 @@ function AddEventModal({
       data.pairID = currentStore.pair.id;
       data.eventTypeID = selectTypeValue;
       if (data.pairID) {
-        console.log(selectTypeValue);
         const id = notifications.show({
           loading: true,
           title: 'Создание события',
