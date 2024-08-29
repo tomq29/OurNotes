@@ -39,6 +39,7 @@
     "@tiptap/react": "^2.6.6",
     "@tiptap/starter-kit": "^2.6.6",
     "axios": "^1.7.3",
+    "date-fns": "^3.6.0",
     "dayjs": "^1.11.13",
     "embla-carousel-autoplay": "^8.2.0",
     "embla-carousel-react": "^8.2.0",
