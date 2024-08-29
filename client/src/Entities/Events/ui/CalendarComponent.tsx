@@ -177,7 +177,7 @@ function CalendarComponent(): JSX.Element {
 
   // Новый тулбар
 
-  const CustomToolbar = (toolbar) => {
+  const CustomToolbar = (toolbar): JSX.Element => {
     const goToBack = () => {
       toolbar.onNavigate('PREV');
     };
@@ -202,7 +202,6 @@ function CalendarComponent(): JSX.Element {
     };
 
     // Обрабатываем вид отображения даты
-    console.log(toolbar.date.toLocaleDateString('ru', options));
     const dateString = toolbar.date.toLocaleDateString('ru', options);
     // const formattedDateString =
     //   dateString.charAt(0).toUpperCase() + dateString.slice(1);
@@ -274,84 +273,117 @@ function CalendarComponent(): JSX.Element {
 
   return (
     <Container style={{ width: '100%' }}>
-      <Flex justify="flex-start" style={{ margin: '20px' }}>
-        <SegmentedControl
-          value={filter}
-          onChange={setFilter}
-          radius="xl"
-          data={[
-            'Все',
-            'Встреча',
-            'Мероприятие',
-            'Дела',
-            'День Рождения',
-            'Спорт',
-          ]}
-          styles={{
-            root: {
-              // Убираем отступы вокруг компонента
-              padding: '10px',
-            },
+      <Flex style={{ height: '85vh', width: '100%' }}>
+        <Flex
+          direction="column"
+          w={'100%'}
+          style={{
+            maxWidth: '150px', // Ширина фильтра
           }}
-        />
-      </Flex>
-
-      <Calendar
-        localizer={localizer}
-        events={filteredEvents} // Массив событий
-        style={{ height: '70vh' }}
-        messages={messages}
-        onSelectSlot={handleSelectSlot} // Обработчик клика по слоту
-        onSelectEvent={handleSelectEvent} // Обработчик клика по событию
-        selectable // Разрешить выделение слота
-        formats={formats}
-        eventPropGetter={eventPropGetter} // Функция для получения свойств события
-        components={{
-          toolbar: CustomToolbar, // Используем кастомный тулбар
-        }}
-      />
-
-      {openAddModal && (
-        <AddEventModal
-          openAddModal={openAddModal}
-          setOpenAddModal={setOpenAddModal}
-          eventTypes={eventTypes}
-        />
-      )}
-
-      {openAboutModal && currentEvent && (
-        <AboutEventModal
-          openAboutModal={openAboutModal}
-          setOpenAboutModal={setOpenAboutModal}
-          setUpdateModal={setOpenUpdateModal}
-          currentEvent={currentEvent}
-        />
-      )}
-      {openUpdateModal && currentEvent && (
-        <UpdateEventModal
-          setOpenUpdateModal={setOpenUpdateModal}
-          openUpdateModal={openUpdateModal}
-          currentEvent={currentEvent}
-          eventTypes={eventTypes}
-        />
-      )}
-
-      {addEventOnSection && (
-        <AddEventOnSection
-          addEventOnSection={addEventOnSection}
-          setAddEventOnSection={setAddEventOnSection}
-          startEvent={startEvent}
-          endEvent={endEvent}
-          eventTypes={eventTypes}
-        />
-      )}
-      <Container p="xl">
-        <Flex justify="center">
-          <Button onClick={handlerOpenAddEventModal} variant="outline">
-            Добавить событие
-          </Button>
+        >
+          <SegmentedControl
+            value={filter}
+            onChange={setFilter}
+            radius="xl"
+            data={[
+              'Все',
+              'Встреча',
+              'Мероприятие',
+              'Дела',
+              'День Рождения',
+              'Спорт',
+            ]}
+            styles={{
+              root: {
+                maxWidth: '150px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginBottom: '10px',
+                marginTop: '60px',
+                gap: '10px',
+                backgroundColor: '#F1F3F5',
+                boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)' /* Тень */,
+              },
+              control: {
+                width: '100%',
+                border: 'none',
+                before: {
+                  display: 'none',
+                },
+              },
+            }}
+          />
         </Flex>
-      </Container>
+
+        <Flex
+          style={{
+            width: '100%',
+            margin: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <Calendar
+            localizer={localizer}
+            events={filteredEvents} // Массив событий
+            style={{ height: '100%', width: '100%' }} // Занимает всю оставшуюся высоту
+            messages={messages}
+            onSelectSlot={handleSelectSlot} // Обработчик клика по слоту
+            onSelectEvent={handleSelectEvent} // Обработчик клика по событию
+            selectable // Разрешить выделение слота
+            formats={formats}
+            eventPropGetter={eventPropGetter} // Функция для получения свойств события
+            components={{
+              toolbar: CustomToolbar, // Используем кастомный тулбар
+            }}
+          />
+
+          <Container p="xl">
+            <Flex justify="center">
+              <Button onClick={handlerOpenAddEventModal} variant="outline">
+                Добавить событие
+              </Button>
+            </Flex>
+          </Container>
+        </Flex>
+
+        {openAddModal && (
+          <AddEventModal
+            openAddModal={openAddModal}
+            setOpenAddModal={setOpenAddModal}
+            eventTypes={eventTypes}
+          />
+        )}
+
+        {openAboutModal && currentEvent && (
+          <AboutEventModal
+            openAboutModal={openAboutModal}
+            setOpenAboutModal={setOpenAboutModal}
+            setUpdateModal={setOpenUpdateModal}
+            currentEvent={currentEvent}
+          />
+        )}
+
+        {openUpdateModal && currentEvent && (
+          <UpdateEventModal
+            setOpenUpdateModal={setOpenUpdateModal}
+            openUpdateModal={openUpdateModal}
+            currentEvent={currentEvent}
+            eventTypes={eventTypes}
+          />
+        )}
+
+        {addEventOnSection && (
+          <AddEventOnSection
+            addEventOnSection={addEventOnSection}
+            setAddEventOnSection={setAddEventOnSection}
+            startEvent={startEvent}
+            endEvent={endEvent}
+            eventTypes={eventTypes}
+          />
+        )}
+      </Flex>
     </Container>
   );
 }
