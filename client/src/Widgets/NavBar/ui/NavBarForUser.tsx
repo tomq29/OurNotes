@@ -26,18 +26,16 @@ import { getColorByID } from '../../../utils/getColorByID/getColorByID';
 function NavBarForUser(): JSX.Element {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
   const [userMenuOpened, setUserMenuOpened] = useState(false);
 
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
 
-
-  
   return (
     <Box>
       <header className={classes.header}>
-        <Group style={{flexWrap: 'var(--group-wrap, wrap)'}} justify="space-around" h="100%">
+        <Group justify="space-around" h="100%">
           <Group h="100%" gap={0} visibleFrom="sm">
             <NavLink to={'/'} className={classes.link}>
               Главная
@@ -78,20 +76,21 @@ function NavBarForUser(): JSX.Element {
                   })}
                 >
                   <Group gap={7}>
-                  <Avatar
-                    name={currentUser?.login}
-                    radius="xl"
-                    size={30}
-                    color={getColorByID(currentUser?.colorID)}
-                    variant='filled'
-                    // variant='outline'
-                    // variant='gradient'
-                    // gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
-                    // variant='default'
-                    // variant='subtle'
-                    // variant='light'
-
-                  >{currentUser?.login.charAt(0).toUpperCase()}</Avatar>
+                    <Avatar
+                      name={currentUser?.login}
+                      radius="xl"
+                      size={30}
+                      color={getColorByID(currentUser?.colorID)}
+                      variant="filled"
+                      // variant='outline'
+                      // variant='gradient'
+                      // gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+                      // variant='default'
+                      // variant='subtle'
+                      // variant='light'
+                    >
+                      {currentUser?.login.charAt(0).toUpperCase()}
+                    </Avatar>
                     <Text fw={500} size="sm" lh={1} mr={3}>
                       {currentUser?.login}
                     </Text>
@@ -198,12 +197,14 @@ function NavBarForUser(): JSX.Element {
                   })}
                 >
                   <Group gap={7}>
-                  <Avatar
-                    name={currentUser?.login}
-                    radius="xl"
-                    size={30}
-                    color={getColorByID(currentUser?.colorID)}
-                  >{currentUser?.login.charAt(0).toUpperCase()}</Avatar>
+                    <Avatar
+                      name={currentUser?.login}
+                      radius="xl"
+                      size={30}
+                      color={getColorByID(currentUser?.colorID)}
+                    >
+                      {currentUser?.login.charAt(0).toUpperCase()}
+                    </Avatar>
                     <Text fw={500} size="sm" lh={1} mr={3}>
                       {currentUser?.login}
                     </Text>

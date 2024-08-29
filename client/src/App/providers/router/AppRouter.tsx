@@ -1,8 +1,6 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from '../../../Pages/HomePage/HomePage';
 
-import QuotesPage from '../../../Pages/QuotesPage/QuotesPage';
-import ObjectWritingPage from '../../../Pages/ObjectWritingPage/ObjectWritingPage';
 import LogOutPage from '../../../Pages/LogRegLogout/LogOutPage';
 import LoginPage from '../../../Pages/LogRegLogout/LoginPage';
 import RegistrationPage from '../../../Pages/LogRegLogout/RegistrationPage';
@@ -66,8 +64,7 @@ function AppRouter(): JSX.Element {
       <Route path="/" element={<HomePage />} />
 
       <Route path="/notes" element={<NotesPage />} />
-      {/* <Route path="/note/:id" element={<OneNotePage />} /> */}
-      {/* <Route path="/note/:id" element={<OneNotePageV2 />} /> */}
+
       <Route path="/mynote/:id" element={<PersonalNoteEditorPage />} />
       <Route path="/ournote/:id" element={<PairNoteEditorPage />} />
 

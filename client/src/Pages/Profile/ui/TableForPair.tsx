@@ -1,19 +1,15 @@
-import { Avatar, Badge, Table, Group, Text, ActionIcon } from "@mantine/core";
-import { useAppSelector } from "../../../App/providers/store/store";
-import type { User } from "../../../Entities/User/type/UserType";
-import { useEffect, useState } from "react";
-import UsersApi from "../../../Entities/User/api/UsersApi";
-import { getColorByID } from "../../../utils/getColorByID/getColorByID";
-import ModalDeletePair from "./ModalDeletePair";
+import { Avatar, Badge, Table, Group, Text } from '@mantine/core';
+import { useAppSelector } from '../../../App/providers/store/store';
+import type { User } from '../../../Entities/User/type/UserType';
+import { useEffect, useState } from 'react';
+import UsersApi from '../../../Entities/User/api/UsersApi';
+import { getColorByID } from '../../../utils/getColorByID/getColorByID';
+import ModalDeletePair from './ModalDeletePair';
 
 function TableForPair(): JSX.Element {
   const currentPair = useAppSelector((store) => store.currentUserStore.pair);
   const [firstUser, setFirstUser] = useState<User>({} as User);
   const [secondUser, setSecondUser] = useState<User>({} as User);
-
-  const avatar =
-    "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png";
-
 
   const getUsers = () => {
     if (currentPair) {
@@ -94,7 +90,7 @@ function TableForPair(): JSX.Element {
             </Table.Td>
 
             <Table.Td>
-              {currentPair?.status === "active" ? (
+              {currentPair?.status === 'active' ? (
                 <Badge color="green">Пара активна</Badge>
               ) : (
                 <Badge color="gray" variant="light">
@@ -103,7 +99,7 @@ function TableForPair(): JSX.Element {
               )}
             </Table.Td>
             <Table.Td>
-             <ModalDeletePair/>
+              <ModalDeletePair />
             </Table.Td>
           </Table.Tr>
         </Table.Tbody>

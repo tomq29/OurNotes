@@ -31,7 +31,6 @@ function ProfilePage(): JSX.Element {
         }
         setCanMakePair(false);
         setIsPairTable(true);
-      
       }
     } else {
       setIsPairTable(false);
@@ -41,41 +40,44 @@ function ProfilePage(): JSX.Element {
     setLoading(false); // Set loading to false once all conditions are checked
   };
 
-
   useEffect(() => {
     checkCanMakePair();
   }, [currentStore.pair?.id, currentStore.user?.id, updatePage]); // Adding user ID to dependencies
-    return (
+  return (
     <>
       {loading ? (
         <Spinner />
       ) : (
         <Container className="profileContainer">
-          <Title style={{ textAlign: 'center', fontSize: '40px', marginTop: '20px' }} className="profile-title">Профиль</Title> {/* Using CSS class */}
-          
+          <Title
+            style={{ textAlign: 'center', fontSize: '40px', marginTop: '20px' }}
+            className="profile-title"
+          >
+            Личный кабинет
+          </Title>{' '}
+          {/* Using CSS class */}
           <Card mt={20} withBorder shadow="sm" padding="lg" radius="md">
-          <h2 style={{margin: '0'}}>Информация о вас :</h2>
-          <p style={{ margin: '2% 0', fontSize: '20px'}}>
-            <strong>Ваш логин: </strong> {currentStore?.user?.login}
-          </p>
-          <p style={{margin: '0 0 1% 0', fontSize: '20px'}}>
-            <strong>Ваш email: </strong> {currentStore?.user?.email}
-          </p>
-          <Flex mt={20} gap={'md'} direction={'column'}>
-          <ModalAddPair canMakePair={canMakePair} />
-          {haveNotification && (
-            <ModalConfirmPair setUpdatePage={setUpdatePage} />
-          )}
-          </Flex>
-          
-          <SelectColor />
-          {isPairTable ? (
-            <TableForPair />
-          ) : (
-            <div style={{ marginTop: '20px' }}>У Вас нет пары</div>
-          )}
+            <h2 style={{ margin: '0' }}>Информация о вас :</h2>
+            <p style={{ margin: '2% 0', fontSize: '20px' }}>
+              <strong>Ваш логин: </strong> {currentStore?.user?.login}
+            </p>
+            <p style={{ margin: '0 0 1% 0', fontSize: '20px' }}>
+              <strong>Ваш email: </strong> {currentStore?.user?.email}
+            </p>
+            <Flex mt={20} gap={'md'} direction={'column'}>
+              <ModalAddPair canMakePair={canMakePair} />
+              {haveNotification && (
+                <ModalConfirmPair setUpdatePage={setUpdatePage} />
+              )}
+            </Flex>
+
+            <SelectColor />
+            {isPairTable ? (
+              <TableForPair />
+            ) : (
+              <div style={{ marginTop: '20px' }}>У Вас нет пары</div>
+            )}
           </Card>
-          
         </Container>
       )}
     </>
