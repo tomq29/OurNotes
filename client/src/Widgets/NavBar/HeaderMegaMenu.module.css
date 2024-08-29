@@ -16,7 +16,7 @@
     font-weight: 500;
     font-size: var(--mantine-font-size-sm);
   
-    @media (max-width: $mantine-breakpoint-sm) {
+    @media (max-width: 900px) {
       height: rem(42px);
       width: 100%;
     }
@@ -45,5 +45,8 @@
     border-top: rem(1px) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
   }
 
+  .custom-no-wrap {
+    flex-wrap: nowrap !important; /* Используйте !important, чтобы переопределить */
+}
 
   

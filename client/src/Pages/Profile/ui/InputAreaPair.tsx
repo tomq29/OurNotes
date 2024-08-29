@@ -1,5 +1,4 @@
 import { Text, TextInput } from '@mantine/core';
-
 import { useAppSelector } from '../../../App/providers/store/store';
 import FoundItem from './FoundItem';
 
@@ -36,7 +35,6 @@ function InputAreaPair({
       ) : (
         filteredLogins.map((login) => (
           <FoundItem
-          
             key={login}
             login={login}
             setUserForPair={setUserForPair}

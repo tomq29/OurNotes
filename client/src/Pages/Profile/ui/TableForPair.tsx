@@ -1,16 +1,18 @@
-import { Avatar, Badge, Table, Group, Text } from '@mantine/core';
-import { useAppSelector } from '../../../App/providers/store/store';
-import type { User } from '../../../Entities/User/type/UserType';
-import { useEffect, useState } from 'react';
-import UsersApi from '../../../Entities/User/api/UsersApi';
-import { getColorByID } from '../../../utils/getColorByID/getColorByID';
+import { Avatar, Badge, Table, Group, Text, ActionIcon } from "@mantine/core";
+import { useAppSelector } from "../../../App/providers/store/store";
+import type { User } from "../../../Entities/User/type/UserType";
+import { useEffect, useState } from "react";
+import UsersApi from "../../../Entities/User/api/UsersApi";
+import { getColorByID } from "../../../utils/getColorByID/getColorByID";
+import ModalDeletePair from "./ModalDeletePair";
 
 function TableForPair(): JSX.Element {
   const currentPair = useAppSelector((store) => store.currentUserStore.pair);
   const [firstUser, setFirstUser] = useState<User>({} as User);
   const [secondUser, setSecondUser] = useState<User>({} as User);
+
   const avatar =
-    'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png';
+    "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png";
 
   const getUsers = () => {
     if (currentPair) {
@@ -29,8 +31,7 @@ function TableForPair(): JSX.Element {
   // console.log(firstUser, secondUser);
 
   console.log();
-  
-  
+
   return (
     <>
       <h2>Актуальная пара</h2>
@@ -41,20 +42,24 @@ function TableForPair(): JSX.Element {
             <Table.Th>Участник-1</Table.Th>
             <Table.Th>Участник-2</Table.Th>
             <Table.Th>Статус</Table.Th>
+            <Table.Th>Действия</Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
           <Table.Tr>
             <Table.Td>
               <Group gap="sm">
-                {firstUser.login && <Avatar
+                {firstUser.login && (
+                  <Avatar
                     name={firstUser.login}
                     color={getColorByID(firstUser.colorID)}
                     radius="xl"
                     size={40}
-                    variant='filled'
-                  >{firstUser.login.charAt(0).toUpperCase()}</Avatar>
-                } 
+                    variant="filled"
+                  >
+                    {firstUser.login.charAt(0).toUpperCase()}
+                  </Avatar>
+                )}
                 <div>
                   <Text fz="sm" fw={500}>
                     {firstUser.login}
@@ -68,14 +73,17 @@ function TableForPair(): JSX.Element {
 
             <Table.Td>
               <Group gap="sm">
-              {secondUser.login && <Avatar
+                {secondUser.login && (
+                  <Avatar
                     name={secondUser.login}
                     color={getColorByID(secondUser.colorID)}
                     radius="xl"
                     size={40}
-                    variant='filled'
-                  >{secondUser.login.charAt(0).toUpperCase()}</Avatar>
-                } 
+                    variant="filled"
+                  >
+                    {secondUser.login.charAt(0).toUpperCase()}
+                  </Avatar>
+                )}
                 <div>
                   <Text fz="sm" fw={500}>
                     {secondUser.login}
@@ -88,13 +96,16 @@ function TableForPair(): JSX.Element {
             </Table.Td>
 
             <Table.Td>
-              {currentPair?.status === 'active' ? (
+              {currentPair?.status === "active" ? (
                 <Badge color="green">Пара активна</Badge>
               ) : (
                 <Badge color="gray" variant="light">
                   Ожидание подтверждения
                 </Badge>
               )}
+            </Table.Td>
+            <Table.Td>
+             <ModalDeletePair/>
             </Table.Td>
           </Table.Tr>
         </Table.Tbody>

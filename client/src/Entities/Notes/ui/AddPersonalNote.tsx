@@ -86,7 +86,7 @@ function AddPersonalNote(): JSX.Element {
         </form>
       </Modal>
 
-      <Button onClick={open}>Создать личную заметку</Button>
+      <Button  onClick={open}>Создать личную заметку</Button>
     </>
   );
 }

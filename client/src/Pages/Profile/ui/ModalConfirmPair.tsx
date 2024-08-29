@@ -91,7 +91,7 @@ function ModalConfirmPair({
   };
 
   return (
-    <Button onClick={openModal} disabled={loading}>
+    <Button w={170} onClick={openModal} disabled={loading}>
       {loading ? 'Загрузка...' : 'Входящие заявки'}
     </Button>
   );
