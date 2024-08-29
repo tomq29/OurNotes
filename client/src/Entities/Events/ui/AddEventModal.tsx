@@ -131,6 +131,7 @@ function AddEventModal({
             />
             <NativeSelect
               value={selectTypeValue}
+              radius="xl"
               onChange={(event) =>
                 setSelectTypeValue(Number(event.currentTarget.value))
               }

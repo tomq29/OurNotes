@@ -15,7 +15,7 @@ import { createEvent } from '../../User/model/CurrentUserSlice';
 import { DateTimePicker } from '@mantine/dates';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { EventTypeType } from '../../EventTypes/type/EventTypesType';
 
 type Props = {
@@ -132,6 +132,7 @@ function AddEventOnSection({
               radius="xl"
             />
             <NativeSelect
+              radius="xl"
               value={selectTypeValue}
               onChange={(event) =>
                 setSelectTypeValue(Number(event.currentTarget.value))
