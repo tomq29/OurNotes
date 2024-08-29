@@ -7,15 +7,16 @@ export default defineConfig({
   server: {
     proxy: {
       // Proxying WebSocket connections to the Socket.IO server
-      '/socket.io': {
-        target: 'http://localhost:3000', // Replace with your actual server URL
-        ws: true, // Proxy WebSockets
-        changeOrigin: true,
-      },
+      // '/socket.io': {
+      //   target: 'http://localhost:3000', // Replace with your actual server URL
+      //   ws: true, // Proxy WebSockets
+      //   changeOrigin: true,
+      // },
       '/api': {
         target: 'http://localhost:3000/',
         changeOrigin: true,
       },
     },
   },
+  base: './',
 });
