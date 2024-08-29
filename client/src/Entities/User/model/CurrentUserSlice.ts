@@ -13,6 +13,8 @@ import type {
   EventType,
 } from '../../Events/type/EventsType';
 import EventsApi from '../../Events/api/EventsApi';
+import { EventTypeType } from '../../EventTypes/type/EventTypesType';
+import EventTypesApi from '../../EventTypes/api/EventTypesApi';
 
 export type userSliceType = {
   user: User | undefined;
@@ -21,6 +23,7 @@ export type userSliceType = {
   pair: PairType | null;
   loading: boolean;
   events: EventType[];
+  eventTypes: EventTypeType[];
 };
 
 const initialState: userSliceType = {
@@ -30,6 +33,7 @@ const initialState: userSliceType = {
   pair: null,
   loading: false,
   events: [],
+  eventTypes: [],
 };
 
 export const loginUser = createAsyncThunk(
@@ -120,7 +124,24 @@ export const getOneEvent = createAsyncThunk(
 
 export const createEvent = createAsyncThunk(
   'user/createEvent',
-  (event: EventNewType) => EventsApi.createEvent(event)
+  async (event: EventNewType, { rejectWithValue }) => {
+    try {
+      const response = await EventsApi.createEvent(event);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          return rejectWithValue(error.response.data.message);
+        } else if (error.request) {
+          return rejectWithValue(
+            'Нет ответа от сервера. Попробуйте еще раз позже.'
+          );
+        }
+      }
+
+      return rejectWithValue('Неизвестная ошибка. Попробуйте еще раз.');
+    }
+  }
 );
 
 export const deleteEvent = createAsyncThunk(
@@ -132,6 +153,10 @@ export const updateEvent = createAsyncThunk(
   'user/updateEvent',
   ({ eventID, event }: { eventID: EventID; event: EventType }) =>
     EventsApi.updateEvent(eventID, event)
+);
+
+export const getEventTypes = createAsyncThunk('user/getEventTypes', () =>
+  EventTypesApi.getEventTypes()
 );
 
 const currentUserSlice = createSlice({
@@ -218,6 +243,11 @@ const currentUserSlice = createSlice({
           state.events = [...newPayloadEvents];
         }
       })
+      .addCase(createEvent.rejected, (state, action) => {
+        console.log(action.payload);
+
+        state.error = action.payload as string;
+      })
       .addCase(createEvent.fulfilled, (state, action) => {
         if (state.pair?.id) {
           const newPayloadEvent = {
@@ -245,6 +275,9 @@ const currentUserSlice = createSlice({
           }
           return event;
         });
+      })
+      .addCase(getEventTypes.fulfilled, (state, action) => {
+        state.eventTypes = action.payload.eventTypes;
       });
   },
 });

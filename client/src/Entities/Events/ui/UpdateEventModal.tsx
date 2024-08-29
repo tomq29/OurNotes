@@ -5,8 +5,9 @@ import {
   Button,
   Card,
   Group,
+  NativeSelect,
 } from '@mantine/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { DateTimePicker } from '@mantine/dates';
 import {
   useAppDispatch,
@@ -14,19 +15,25 @@ import {
 } from '../../../App/providers/store/store';
 import { useForm } from '@mantine/form';
 import { updateEvent } from '../../User/model/CurrentUserSlice';
+import { EventTypeType } from '../../EventTypes/type/EventTypesType';
 import { EventType } from '../type/EventsType';
 
 type Props = {
   openUpdateModal: boolean;
   setOpenUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
   currentEvent: EventType;
+  eventTypes: EventTypeType[];
 };
 
 function UpdateEventModal({
   openUpdateModal,
   setOpenUpdateModal,
   currentEvent,
+  eventTypes,
 }: Props): JSX.Element {
+  const [selectTypeValue, setSelectTypeValue] = useState<number>(
+    currentEvent.eventTypeID
+  );
   const dispatch = useAppDispatch();
   const currentStore = useAppSelector((store) => store.currentUserStore);
 
@@ -38,7 +45,7 @@ function UpdateEventModal({
       start: new Date(currentEvent.start),
       end: new Date(currentEvent.end),
       pairID: currentStore.pair?.id,
-      eventTypeID: 1,
+      eventTypeID: currentEvent.eventTypeID,
       allDay: false,
     },
   });
@@ -51,6 +58,9 @@ function UpdateEventModal({
     if (currentStore.pair) {
       const data = form.getValues();
       data.pairID = currentStore.pair.id;
+      data.eventTypeID = selectTypeValue;
+      console.log('selectTypeValue', selectTypeValue);
+
       data.start = new Date(data.start);
       data.end = new Date(data.end);
       dispatch(updateEvent({ eventID: data.id, event: data }));
@@ -72,12 +82,23 @@ function UpdateEventModal({
               {...form.getInputProps('title')}
               required
               style={{ marginBottom: '1rem' }}
+              radius="xl"
             />
             <TextInput
               label="Описание события"
               {...form.getInputProps('description')}
               required
               style={{ marginBottom: '1rem' }}
+              radius="xl"
+            />
+            <NativeSelect
+              onChange={(event) =>
+                setSelectTypeValue(Number(event.currentTarget.value))
+              }
+              data={eventTypes.map((eventType) => ({
+                value: String(eventType.id),
+                label: eventType.title,
+              }))}
             />
             <Group style={{ marginBottom: '1rem' }}>
               <DateTimePicker
@@ -85,12 +106,14 @@ function UpdateEventModal({
                 placeholder="Выберите дату и время начала"
                 valueFormat="YYYY MMM DD HH:mm"
                 {...form.getInputProps('start')}
+                radius="xl"
               />
               <DateTimePicker
                 label="Выберите время окончания события"
                 placeholder="Выберите дату и время окончания"
                 valueFormat="YYYY MMM DD HH:mm"
                 {...form.getInputProps('end')}
+                radius="xl"
               />
             </Group>
             <Button type="submit" fullWidth variant="outline">

@@ -19,7 +19,6 @@ function AboutEventModal({
 }: Props): JSX.Element {
   const closeModalHandler = () => {
     setOpenAboutModal(false);
-    console.log('currentEvent.start', currentEvent.start);
   };
   const dispatch = useAppDispatch();
 
