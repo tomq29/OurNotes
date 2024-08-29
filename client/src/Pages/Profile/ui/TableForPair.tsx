@@ -9,8 +9,6 @@ function TableForPair(): JSX.Element {
   const currentPair = useAppSelector((store) => store.currentUserStore.pair);
   const [firstUser, setFirstUser] = useState<User>({} as User);
   const [secondUser, setSecondUser] = useState<User>({} as User);
-  const avatar =
-    'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-9.png';
 
   const getUsers = () => {
     if (currentPair) {
@@ -27,10 +25,6 @@ function TableForPair(): JSX.Element {
     getUsers();
   }, [currentPair]);
 
-
-
-  
-  
   return (
     <>
       <h2>Актуальная пара</h2>
@@ -47,14 +41,17 @@ function TableForPair(): JSX.Element {
           <Table.Tr>
             <Table.Td>
               <Group gap="sm">
-                {firstUser.login && <Avatar
+                {firstUser.login && (
+                  <Avatar
                     name={firstUser.login}
                     color={getColorByID(firstUser.colorID)}
                     radius="xl"
                     size={40}
-                    variant='filled'
-                  >{firstUser.login.charAt(0).toUpperCase()}</Avatar>
-                } 
+                    variant="filled"
+                  >
+                    {firstUser.login.charAt(0).toUpperCase()}
+                  </Avatar>
+                )}
                 <div>
                   <Text fz="sm" fw={500}>
                     {firstUser.login}
@@ -68,14 +65,17 @@ function TableForPair(): JSX.Element {
 
             <Table.Td>
               <Group gap="sm">
-              {secondUser.login && <Avatar
+                {secondUser.login && (
+                  <Avatar
                     name={secondUser.login}
                     color={getColorByID(secondUser.colorID)}
                     radius="xl"
                     size={40}
-                    variant='filled'
-                  >{secondUser.login.charAt(0).toUpperCase()}</Avatar>
-                } 
+                    variant="filled"
+                  >
+                    {secondUser.login.charAt(0).toUpperCase()}
+                  </Avatar>
+                )}
                 <div>
                   <Text fz="sm" fw={500}>
                     {secondUser.login}
