@@ -6,10 +6,9 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // Proxying WebSocket connections to the Socket.IO server
-      // '/socket.io': {
-      //   target: 'http://localhost:3000', // Replace with your actual server URL
-      //   ws: true, // Proxy WebSockets
+      // '/ws': {
+      //   target: 'ws://localhost:1234',  // WebSocket server URL
+      //   ws: true,  // Enable WebSocket proxying
       //   changeOrigin: true,
       // },
       '/api': {
