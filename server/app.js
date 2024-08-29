@@ -4,7 +4,8 @@ const express = require('express');
 const fs = require('fs');
 const http = require('http'); // Import Node's HTTP module
 const https = require('https'); // Import Node's HTTP module
-// const socketIo = require('socket.io'); // Import Socket.IO
+// const socketIo = require('socket.io'); // Import Socket.IO]
+const  WebSocket  = require('ws');
 
 const serverConfig = require('./config/serverConfig');
 // const indexRouter = require('./routes/index.routes');
@@ -72,6 +73,57 @@ const server = http.createServer(app);
 //       console.log('User disconnected');
 //   });
 // });
+
+const wss = new WebSocket.Server({server});
+
+const rooms = {};
+// WebSocket connection handling
+wss.on('connection', (ws) => {
+  console.log('New WebSocket connection');
+  // You can add more WebSocket event handling here
+  ws.room = null
+  ws.on("message", (message) =>{
+    const messageStr = message.toString();
+    console.log(`Received message: ${messageStr}`);
+
+    // Parse incoming JSON message
+    // let data;
+    // try {
+    //   data = JSON.parse(messageStr);
+    // } catch (error) {
+    //   console.log('Error parsing JSON:', error);
+    //   return;
+    // }
+
+    // Handle different types of messages
+     
+      // Join a room
+       
+        rooms[data.room] = new Set();
+ 
+      if (ws.room) {
+        // Remove client from the previous room
+        rooms[ws.room].delete(ws);
+      }
+      rooms[data.room].add(ws);
+      ws.room = data.room;
+      console.log(`Client joined room ${data.room}`);
+   
+      // Broadcast message to all clients in the room
+      if (ws.room && rooms[ws.room]) {
+        rooms[ws.room].forEach(client => {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            client.send(messageStr);
+          }
+        });
+        console.log(`Message sent to room ${ws.room}: ${messageStr}`);
+   
+    }
+    
+  })
+
+
+});
 
 server.listen(PORT_HTTP, () => {
   console.log(`Server starter at ${PORT_HTTP} port`);

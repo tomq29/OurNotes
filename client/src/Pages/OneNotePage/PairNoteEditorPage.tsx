@@ -41,7 +41,7 @@ function PersonalNoteEditorPage() {
   // Initialize Yjs document
   const ydoc = React.useMemo(() => new Y.Doc(), []);
   const provider = React.useMemo(
-    () => new WebsocketProvider('ws://87.228.24.113:1234', `note-${id}`, ydoc),
+    () => new WebsocketProvider('ws://localhost:80', `note-${id}`, ydoc),
     [ydoc, id]
   );
 
