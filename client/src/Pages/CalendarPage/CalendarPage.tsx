@@ -5,8 +5,13 @@ import CalendarComponent from '../../Entities/Events/ui/CalendarComponent';
 function CalendarPage(): JSX.Element {
   const currentPair = useAppSelector((store) => store.currentUserStore.pair);
   return (
-    <Flex justify="center" direction={'column'} gap={'md'} align={'center'}>
-      <div>Календарь</div>
+    <Flex
+      justify="center"
+      direction={'column'}
+      gap={'md'}
+      align={'center'}
+      w={'100%'}
+    >
       {currentPair?.id ? (
         <CalendarComponent />
       ) : (
