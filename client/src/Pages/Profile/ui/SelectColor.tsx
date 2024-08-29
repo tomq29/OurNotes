@@ -88,7 +88,7 @@ function SelectColor(): JSX.Element {
         <Spinner />
       ) : (
         <Flex align="center" gap="md">
-          <Select
+          <Select 
             placeholder="Выберите цвет"
             data={colors.map((color) => ({
               value: color.value,
@@ -96,12 +96,12 @@ function SelectColor(): JSX.Element {
             }))}
             size="sm"
             variant="filled"
-            style={{ width: '20%' }}
             onChange={handleColorChange}
             value={selectedColorValue} // Use color ID for the Select component
             radius="xl"
             searchable
             clearable
+            w={170}
           />
           <ColorSwatch color={selectedColor || '#D3D3D3'} radius="xl" /> {/* Use selectedColor for ColorSwatch */}
         </Flex>

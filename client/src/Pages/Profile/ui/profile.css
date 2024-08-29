@@ -21,3 +21,7 @@
   margin: 20px 0;
   display: block;
 }
+
+.findedItem2:hover {
+  cursor: pointer;
+}

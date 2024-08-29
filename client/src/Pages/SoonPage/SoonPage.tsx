@@ -1,8 +1,10 @@
 import { Container, SimpleGrid, Title, Text, Button, Image } from '@mantine/core';
 import image from './Garfield.gif';
 import classes from './NotFoundImage.module.css';
+import { useNavigate } from 'react-router-dom';
 
 function SoonPage() {
+  const navigate = useNavigate();  
   return (
     <div>
       <Container>
@@ -12,7 +14,7 @@ function SoonPage() {
             <Text mt={15} c="dimmed" size="lg">
               Разработчики работают над этой фичей
             </Text>
-            <Button variant="outline" size="md" mt="xl">
+            <Button onClick={() => navigate('/')} variant="outline" size="md" mt="xl">
               Вернуться на главную страницу
             </Button>
           </Container>

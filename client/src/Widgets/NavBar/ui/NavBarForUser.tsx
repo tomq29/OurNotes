@@ -37,7 +37,7 @@ function NavBarForUser(): JSX.Element {
   return (
     <Box>
       <header className={classes.header}>
-        <Group justify="space-around" h="100%">
+        <Group style={{flexWrap: 'var(--group-wrap, wrap)'}} justify="space-around" h="100%">
           <Group h="100%" gap={0} visibleFrom="sm">
             <NavLink to={'/'} className={classes.link}>
               Главная

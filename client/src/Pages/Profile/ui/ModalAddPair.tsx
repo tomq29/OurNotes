@@ -64,7 +64,7 @@ function ModalAddPair({ canMakePair }: { canMakePair: boolean }): JSX.Element {
 
   return (
     <>
-      <Button disabled={!canMakePair} onClick={() => setOpened(true)}>
+      <Button w={170} variant='filled' color='blue' disabled={!canMakePair} onClick={() => setOpened(true)}>
         Добавить пару
       </Button>
 
@@ -91,10 +91,11 @@ function ModalAddPair({ canMakePair }: { canMakePair: boolean }): JSX.Element {
         )}
 
         <Button
-          fullWidth
           onClick={createPairRequest}
           mt="md"
           disabled={!userForPair} // Simplified check
+          w={170}
+          variant='filled' color='green'
         >
           Добавить
         </Button>

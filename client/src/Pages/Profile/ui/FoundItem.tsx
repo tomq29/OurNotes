@@ -1,5 +1,5 @@
-import { Container } from '@mantine/core';
-import './profile.css';
+import { Container } from "@mantine/core";
+import "./profile.css";
 
 type Props = {
   login: string;
@@ -12,7 +12,7 @@ function FoundItem({ login, setUserForPair }: Props): JSX.Element {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === "Enter" || event.key === " ") {
       setUserForPair(login);
     }
   };
@@ -20,7 +20,7 @@ function FoundItem({ login, setUserForPair }: Props): JSX.Element {
   return (
     <Container mt={15}>
       <div
-        className="found-item" // Updated CSS class name for consistency
+        className="findedItem2" // Updated CSS class name for consistency
         role="button" // Adds semantic meaning for accessibility
         tabIndex={0} // Makes the div focusable for keyboard interaction
         onClick={handleClick}

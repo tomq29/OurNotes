@@ -74,9 +74,9 @@ function AppRouter(): JSX.Element {
       <Route path="/questions" element={<SoonPage />} />
       <Route path="/calendar" element={<CalendarPage />} />
 
-      <Route path="/quotes" element={<QuotesPage />} />
+      <Route path="/quotes" element={<SoonPage />} />
 
-      <Route path="/objectwriting" element={<ObjectWritingPage />} />
+      <Route path="/objectwriting" element={<SoonPage />} />
       <Route path="/profile" element={<ProfilePage />} />
 
       <Route path="/auth/logout" element={<LogOutPage />} />
