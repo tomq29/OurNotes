@@ -6,7 +6,7 @@ function serverConfig(app) {
   app.use(express.json());
   app.disable('x-powered-by');
   app.use(cookieParser());
-  app.use(express.static('public'));
+  // app.use(express.static('public'));
 }
 
 module.exports = serverConfig;
