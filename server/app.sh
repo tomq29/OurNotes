@@ -1,7 +1,4 @@
-#!/bin/sh
+# npx y-websocket --port 1234 &
 
-# Start the WebSocket server in the background
-npx y-websocket-server --port 1234 &
-
-# Start your Node.js app
+HOST=localhost PORT=1234 npx y-websocket &
 node app.js

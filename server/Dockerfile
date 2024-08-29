@@ -35,7 +35,7 @@ EXPOSE 1234
 
 # Run the application.
 RUN chmod +x app.sh
-CMD [ "./app.sh" ] 
+CMD  [ "./app.sh"]
 
 
 
