@@ -29,7 +29,11 @@ import classes from './AunthenticationTitle.module.css';
 
 const schema = yup
   .object({
-    email: yup.string().email('Введите email').required('Введите email'),
+    email: yup
+      .string()
+      .email('Введите email')
+      .required('Введите email')
+      .lowercase(),
     login: yup.string().required('Введите логин'),
     password: yup.string().required('Введите пароль'),
     confirm: yup
@@ -64,6 +68,7 @@ function RegistrationPage(): JSX.Element {
         autoClose: false,
         withCloseButton: false,
       });
+
       dispatch(regUser(logEmailPass))
         .then((action) => {
           if (action.meta.requestStatus === 'fulfilled') {

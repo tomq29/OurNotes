@@ -75,7 +75,10 @@ function ProfilePage(): JSX.Element {
             {isPairTable ? (
               <TableForPair />
             ) : (
-              <div style={{ marginTop: '20px' }}>У Вас нет пары</div>
+              <div style={{ marginTop: '20px' }}>
+                У Вас нет пары. Добавьте пару для использования всего
+                функционала сервиса.
+              </div>
             )}
           </Card>
         </Container>

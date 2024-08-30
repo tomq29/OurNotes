@@ -1,25 +1,26 @@
 const textRouter = require('express').Router();
 const { Note, Text } = require('../../db/models'); // Change here your Model
+const verifyAccessToken = require('../../middleware/verifyAccessToken');
 
 textRouter
   .route('/')
 
-//   .get(async (req, res) => {
-//     try {
-//       // CODE HERE
-//     } catch ({ message }) {
-//       res.status(500).json({ err: message });
-//     }
-//   })
+  //   .get(async (req, res) => {
+  //     try {
+  //       // CODE HERE
+  //     } catch ({ message }) {
+  //       res.status(500).json({ err: message });
+  //     }
+  //   })
 
-  .post(async (req, res) => {
+  .post(verifyAccessToken, async (req, res) => {
     try {
       // CODE HERE
 
       const { body, noteID, userID } = req.body;
 
       if (body.trim() === '' || !userID || !noteID) {
-       return res.status(400).json('Empty field exists');
+        return res.status(400).json('Empty field exists');
       }
       const data = await Text.create({ body, noteID, userID });
 
@@ -32,7 +33,7 @@ textRouter
 textRouter
   .route('/:id')
 
-  .get(async (req, res) => {
+  .get(verifyAccessToken, async (req, res) => {
     try {
       // CODE HERE
       const { id } = req.params;
@@ -64,7 +65,7 @@ textRouter
     }
   })
 
-  .delete(async (req, res) => {
+  .delete(verifyAccessToken, async (req, res) => {
     try {
       // CODE HERE
 

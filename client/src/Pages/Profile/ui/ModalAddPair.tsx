@@ -1,4 +1,4 @@
-import { Button, Modal, Loader } from '@mantine/core';
+import { Button, Modal, Loader, Container, Flex } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import PairsApi from '../../../Entities/Pairs/api/PairsApi';
 import type { UserLogin } from '../../../Entities/User/type/UserType';
@@ -38,7 +38,9 @@ function ModalAddPair({ canMakePair }: { canMakePair: boolean }): JSX.Element {
 
   const createPairRequest = () => {
     if (user && userForPair) {
-      dispatch(createPair({ secondUserLogin: userForPair, firstUserID: user.id }))
+      dispatch(
+        createPair({ secondUserLogin: userForPair, firstUserID: user.id })
+      )
         .then(() => setOpened(false))
         .catch(() => setError('Failed to create pair. Please try again.'));
     }
@@ -64,7 +66,13 @@ function ModalAddPair({ canMakePair }: { canMakePair: boolean }): JSX.Element {
 
   return (
     <>
-      <Button w={170} variant='filled' color='blue' disabled={!canMakePair} onClick={() => setOpened(true)}>
+      <Button
+        w={170}
+        variant="filled"
+        color="blue"
+        disabled={!canMakePair}
+        onClick={() => setOpened(true)}
+      >
         Добавить пару
       </Button>
 
@@ -73,11 +81,11 @@ function ModalAddPair({ canMakePair }: { canMakePair: boolean }): JSX.Element {
         onClose={closeModalHandler}
         title="Введите логин пользователя для создания пары"
       >
-        {error && <div className="error-message">{error}</div>} {/* Error Message Display */}
-        
+        {error && <div className="error-message">{error}</div>}{' '}
+        {/* Error Message Display */}
         {userForPair ? (
           <div>
-            <strong>{userForPair}</strong>
+            Добавить пользователя <strong>{userForPair}</strong> в пару?
           </div>
         ) : (
           <>
@@ -89,16 +97,18 @@ function ModalAddPair({ canMakePair }: { canMakePair: boolean }): JSX.Element {
             {loading && <Loader size="sm" />} {/* Loader during search */}
           </>
         )}
-
-        <Button
-          onClick={createPairRequest}
-          mt="md"
-          disabled={!userForPair} // Simplified check
-          w={170}
-          variant='filled' color='green'
-        >
-          Добавить
-        </Button>
+        <Flex justify="center">
+          <Button
+            onClick={createPairRequest}
+            mt="md"
+            disabled={!userForPair} // Simplified check
+            w={170}
+            variant="filled"
+           
+          >
+            Добавить
+          </Button>
+        </Flex>
       </Modal>
     </>
   );

@@ -31,7 +31,11 @@ import {
 
 const schema = yup
   .object({
-    email: yup.string().email('Введите email').required('Введите email'),
+    email: yup
+      .string()
+      .email('Введите email')
+      .required('Введите email')
+      .lowercase(),
     password: yup.string().required('Введите пароль'),
   })
   .required();

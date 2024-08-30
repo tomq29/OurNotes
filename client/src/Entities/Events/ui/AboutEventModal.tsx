@@ -3,6 +3,9 @@ import moment from 'moment';
 import { EventType } from '../type/EventsType';
 import { useAppDispatch } from '../../../App/providers/store/store';
 import { deleteEvent } from '../../User/model/CurrentUserSlice';
+import { useEffect, useState } from 'react';
+import EventTypesApi from '../../EventTypes/api/EventTypesApi';
+import { EventTypeType } from '../../EventTypes/type/EventTypesType';
 
 type Props = {
   openAboutModal: boolean;
@@ -17,6 +20,7 @@ function AboutEventModal({
   setUpdateModal,
   currentEvent,
 }: Props): JSX.Element {
+  const [currentEventType, setCurrentEventType] = useState<EventTypeType>();
   const closeModalHandler = () => {
     setOpenAboutModal(false);
   };
@@ -31,6 +35,21 @@ function AboutEventModal({
     dispatch(deleteEvent(currentEvent.id));
     closeModalHandler();
   };
+
+  useEffect(() => {
+    if (currentEvent.eventTypeID) {
+      EventTypesApi.getEventType(currentEvent.eventTypeID)
+        .then((res) => {
+          if (res.eventType.id) {
+            setCurrentEventType(res.eventType);
+          }
+        })
+        .then((res) => console.log(res))
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [currentEvent.eventTypeID]);
 
   return (
     <Modal
@@ -54,6 +73,14 @@ function AboutEventModal({
             </Text>
             <Text size="lg" fw={500} style={{ marginBottom: '0.5rem' }}>
               {currentEvent.description}
+            </Text>
+          </Group>
+          <Group>
+            <Text size="lg" fw={300} style={{ marginBottom: '0.5rem' }}>
+              Тип события:
+            </Text>
+            <Text size="lg" fw={500} style={{ marginBottom: '0.5rem' }}>
+              {currentEventType?.title || 'Неизвестно'}
             </Text>
           </Group>
           <Group>

@@ -1,5 +1,6 @@
 const eventsRouter = require('express').Router();
 const { Event } = require('../../db/models');
+const verifyAccessToken = require('../../middleware/verifyAccessToken');
 
 eventsRouter.get('/pairs/:pairID', async (req, res) => {
   try {
@@ -26,7 +27,7 @@ eventsRouter.get('/:eventID', async (req, res) => {
   }
 });
 
-eventsRouter.put('/:eventID', async (req, res) => {
+eventsRouter.put('/:eventID', verifyAccessToken, async (req, res) => {
   try {
     const { eventID } = req.params;
     const { title, description, start, end, allDay, eventTypeID } = req.body;
@@ -46,7 +47,7 @@ eventsRouter.put('/:eventID', async (req, res) => {
   }
 });
 
-eventsRouter.delete('/:eventID', async (req, res) => {
+eventsRouter.delete('/:eventID', verifyAccessToken, async (req, res) => {
   try {
     const { eventID } = req.params;
     const event = await Event.findOne({
@@ -62,7 +63,7 @@ eventsRouter.delete('/:eventID', async (req, res) => {
   }
 });
 
-eventsRouter.post('/', async (req, res) => {
+eventsRouter.post('/', verifyAccessToken, async (req, res) => {
   try {
     const { title, description, start, end, allDay, pairID, eventTypeID } =
       req.body;
