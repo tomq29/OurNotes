@@ -7,7 +7,7 @@ const sslOptions = {
     path.join(
       __dirname,
 
-      'public',
+      '../public',
 
       '.well-known',
 
@@ -21,7 +21,7 @@ const sslOptions = {
     path.join(
       __dirname,
 
-      'public',
+      '../public',
 
       '.well-known',
 

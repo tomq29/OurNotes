@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AppRouter from './providers/router/AppRouter';
 import NavBar from '../Widgets/NavBar/NavBar';
 import { useAppDispatch, useAppSelector } from './providers/store/store';
@@ -9,13 +9,21 @@ import Spinner from '../Shared/LoadingSpinner/Spinner';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
+  const [isInitialized, setIsInitialized] = useState(false);
   const loading = useAppSelector((state) => state.currentUserStore.loading);
 
   useEffect(() => {
-    dispatch(refreshUser()).catch(console.log);
-  }, []);
+    // Dispatch refreshUser and set isInitialized to true once completed
+    const initializeUser = async () => {
+      await dispatch(refreshUser());
+      setIsInitialized(true); // Mark initialization as complete
+    };
+    
+    initializeUser();
+  }, [dispatch]);
 
-  if (loading) {
+  // Show loading spinner while initializing
+  if (!isInitialized || loading) {
     return <Spinner />;
   }
 

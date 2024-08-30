@@ -17,11 +17,13 @@ import PersonalNoteEditorPage from '../../../Pages/OneNotePage/PersonalNoteEdito
 import PairNoteEditorPage from '../../../Pages/OneNotePage/PairNoteEditorPage';
 import { useAppSelector } from '../store/store';
 import ProtectedRouter from '../../../Shared/hocs/ProtectedRouter';
+import Spinner from '../../../Shared/LoadingSpinner/Spinner';
 
 function AppRouter(): JSX.Element {
   const location = useLocation();
 
   const currentUser = useAppSelector((state) => state.currentUserStore.user);
+  const loading = useAppSelector((state) => state.currentUserStore.loading);
 
   useEffect(() => {
     // Устанавливаем заголовок страницы в зависимости от текущего пути
@@ -63,6 +65,11 @@ function AppRouter(): JSX.Element {
         document.title = 'Our Notes';
     }
   }, [location]);
+
+  if (loading) {
+    return <Spinner />; // Show loading spinner while loading
+  }
+
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
