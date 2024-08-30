@@ -1,7 +1,7 @@
 import { UserID } from '../../User/type/UserType';
 
 export type Folder = {
-  id: number | null;
+  id: number ;
   name: string;
   purpose: string;
   userID: UserID;

@@ -1,4 +1,20 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { IconX, IconCheck } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
+
+import {
+  TextInput,
+  PasswordInput,
+  Anchor,
+  Paper,
+  Title,
+  Text,
+  Container,
+  Group,
+  Button,
+  rem,
+} from '@mantine/core';
+import classes from './AunthenticationTitle.module.css';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -15,7 +31,11 @@ import {
 
 const schema = yup
   .object({
-    email: yup.string().email('Введите email').required('Введите email'),
+    email: yup
+      .string()
+      .email('Введите email')
+      .required('Введите email')
+      .lowercase(),
     password: yup.string().required('Введите пароль'),
   })
   .required();
@@ -37,12 +57,40 @@ function LoginPage(): JSX.Element {
   const navigate = useNavigate();
 
   const authorizationUser = async (loginPass: loginPassType) => {
+    const id = notifications.show({
+      loading: true,
+      title: 'Ждемс..',
+      message: 'Ща все будет',
+      autoClose: false,
+      withCloseButton: false,
+    });
     dispatch(clearError());
 
     dispatch(loginUser(loginPass))
       .then((action) => {
         if (action.meta.requestStatus === 'fulfilled') {
+          notifications.update({
+            id,
+            color: 'teal',
+            title: 'Успешно',
+            message: 'Авторизация прошла успешно',
+            icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+            loading: false,
+            autoClose: 3000,
+          });
           navigate('/');
+        }
+
+        if (action.meta.requestStatus === 'rejected') {
+          notifications.update({
+            id,
+            color: 'red',
+            title: 'Ошибка',
+            message: error,
+            icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
+            loading: false,
+            autoClose: 3000,
+          });
         }
       })
       .catch(console.log);
@@ -50,34 +98,43 @@ function LoginPage(): JSX.Element {
 
   return (
     <>
-      <div style={{ width: '50%', margin: ' 0 auto' }}>
-        <h2>Authorization</h2>
+      <Container size={420} my={40}>
+        <Title ta="center" className={classes.title}>
+          С возвращением!
+        </Title>
+        <Text c="dimmed" size="sm" ta="center" mt={5}>
+          У вас еще аккаунта? <Link to="/auth/reg">Зарегистрируйтесь</Link>
+        </Text>
         <form onSubmit={handleSubmit(authorizationUser)}>
-          <input
-            type="text"
-            {...register('email')}
-            className="form-control mb-3"
-            placeholder="Email"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.email?.message}
-          </p>
-          <input
-            type="password"
-            {...register('password')}
-            className="form-control mb-3"
-            placeholder="Пароль"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.password?.message}
-          </p>
-          <button type="submit" className="btn btn-outline-success">
-            Войти
-          </button>
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            <TextInput
+              label="Email"
+              radius="xl"
+              error={errors.email?.message}
+              placeholder="Введите email"
+              required
+              {...register('email')}
+            />
 
-          {error && <p className="text-danger text-center mt-3">{error}</p>}
+            <PasswordInput
+              label="Пароль"
+              placeholder="Введите пароль"
+              radius="xl"
+              error={errors.password?.message}
+              required
+              mt="md"
+              {...register('password')}
+            />
+
+            <Group justify="space-between" mt="lg">
+              <Anchor component="button" size="sm"></Anchor>
+            </Group>
+            <Button fullWidth mt="md" type="submit" size="md">
+              Войти
+            </Button>
+          </Paper>
         </form>
-      </div>
+      </Container>
     </>
   );
 }

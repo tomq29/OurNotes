@@ -1,4 +1,17 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { IconX, IconCheck } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
+
+import {
+  TextInput,
+  PasswordInput,
+  Paper,
+  Title,
+  Text,
+  Container,
+  Button,
+  rem,
+} from '@mantine/core';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,17 +25,21 @@ import {
   clearError,
   regUser,
 } from '../../Entities/User/model/CurrentUserSlice';
+import classes from './AunthenticationTitle.module.css';
 
 const schema = yup
   .object({
-    email: yup.string().email('Введите email').required('Введите email'),
-    login: yup.string().required('Введите login'),
+    email: yup
+      .string()
+      .email('Введите email')
+      .required('Введите email')
+      .lowercase(),
+    login: yup.string().required('Введите логин'),
     password: yup.string().required('Введите пароль'),
     confirm: yup
       .string()
       .oneOf([yup.ref('password')], 'Пароли должны совпадать')
-      .required('Потвердите пароль'),
-    colorID: yup.string().required('Выберите цвет'),
+      .required('Подтвердите пароль'),
   })
   .required();
 
@@ -44,10 +61,39 @@ function RegistrationPage(): JSX.Element {
 
   const registrationUser = (logEmailPass: logEmailPassType) => {
     if (logEmailPass.confirm === logEmailPass.password) {
+      const id = notifications.show({
+        loading: true,
+        title: 'Ждемс..',
+        message: 'Ща все будет',
+        autoClose: false,
+        withCloseButton: false,
+      });
+
       dispatch(regUser(logEmailPass))
         .then((action) => {
           if (action.meta.requestStatus === 'fulfilled') {
+            notifications.update({
+              id,
+              color: 'teal',
+              title: 'Успешно',
+              message: 'Регистрация прошла успешно',
+              icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+              loading: false,
+              autoClose: 3000,
+            });
             navigate('/');
+          }
+
+          if (action.meta.requestStatus === 'rejected' && error) {
+            notifications.update({
+              id,
+              color: 'red',
+              title: 'Ошибка',
+              message: error,
+              icon: <IconX style={{ width: rem(18), height: rem(18) }} />,
+              loading: false,
+              autoClose: 3000,
+            });
           }
         })
         .catch(console.log);
@@ -56,70 +102,70 @@ function RegistrationPage(): JSX.Element {
 
   return (
     <>
-      <div style={{ width: '50%', margin: ' 0 auto' }}>
-        <h2>Registration</h2>
+      <Container size={420} my={40}>
+        <Title ta="center" className={classes.title}>
+          Добро пожаловать!
+        </Title>
+        <Text c="dimmed" size="sm" ta="center" mt={5}>
+          Уже есть аккаунт? <Link to="/auth/login"> Авторизируйтесь</Link>
+        </Text>
         <form onSubmit={handleSubmit(registrationUser)}>
-          <input
-            type="text"
-            {...register('login')}
-            className={`form-control mb-3 ${errors.login ? 'is-invalid' : ''}`}
-            placeholder="Login"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.login?.message}
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            <TextInput
+              radius="xl"
+              error={errors.login?.message}
+              label="Логин"
+              placeholder="Введите логин"
+              autoFocus
+              required
+              {...register('login')}
+            />
+
+            <TextInput
+              radius="xl"
+              error={errors.email?.message}
+              label="Email"
+              onClick={() => dispatch(clearError())}
+              placeholder="Введите email"
+              required
+              {...register('email')}
+            />
+
+            <PasswordInput
+              radius="xl"
+              error={errors.password?.message}
+              label="Пароль"
+              placeholder="Введите пароль"
+              required
+              mt="md"
+              {...register('password')}
+            />
+
+            <PasswordInput
+              radius="xl"
+              error={errors.confirm?.message}
+              label="Подтвердите пароль"
+              placeholder="Подтвердите пароль"
+              required
+              mt="md"
+              {...register('confirm')}
+            />
+
+            <Button fullWidth mt="md" type="submit" size="md">
+              Зарегистрироваться
+            </Button>
+          </Paper>
+          <p style={{ textAlign: 'center', fontSize: '12px', opacity: '0.5' }}>
+            Ваш логин отображается для пользователей, которые приглашают вас в
+            рабочее пространство. Продолжая, вы подтверждаете, что понимаете и
+            соглашаетесь с{' '}
+            <a href="/privacy-policy" target="_blank">
+              Условиями
+            </a>{' '}
+            использования нашего сервиса.
           </p>
-          <input
-            type="email"
-            onClick={() => dispatch(clearError())}
-            {...register('email')}
-            className={`form-control mb-3 ${errors.email ? 'is-invalid' : ''}`}
-            placeholder="Email"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.email?.message}
-          </p>
-          <input
-            type="password"
-            {...register('password')}
-            className={`form-control mb-3 ${
-              errors.password ? 'is-invalid' : ''
-            }`}
-            placeholder="Пароль"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.password?.message}
-          </p>
-          <input
-            type="password"
-            {...register('confirm')}
-            className={`form-control mb-3 ${
-              errors.confirm ? 'is-invalid' : ''
-            }`}
-            placeholder="Подтвердите пароль"
-          />
-          <p className="text-danger  text-center mt-3">
-            {errors.confirm?.message}
-          </p>
-          <select
-            {...register('colorID')}
-            className={`form-control mb-3 ${
-              errors.colorID ? 'is-invalid' : ''
-            }`}
-          >
-            <option value="">Выберите цвет</option>
-            <option value={1}>Красный</option>
-            <option value={2}>Зелёный</option>
-            <option value={3}>Синий</option>
-          </select>
-          <p className="text-danger text-center mt-3">
-            {errors.colorID?.message}
-          </p>
-          <button type="submit" className="btn btn-outline-success">
-            Зарегистрироваться
-          </button>
         </form>
-        {error && <p className="text-danger  text-center mt-3">{error}</p>}
-      </div>
+      </Container>
     </>
   );
 }

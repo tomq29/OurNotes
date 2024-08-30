@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Note, NoteID } from '../type/NoteType';
+import { Note, NoteID, NoteWithoutCreatedAt } from '../type/NoteType';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -58,7 +58,7 @@ function NoteCard({ note }: NoteCardProps): JSX.Element {
     }
   }
 
-  async function editNote(editedNote: Note) {
+  async function editNote(editedNote: NoteWithoutCreatedAt) {
     try {
       dispatch(updateNote(editedNote));
 

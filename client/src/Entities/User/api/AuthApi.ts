@@ -3,12 +3,13 @@ import axiosInstance from '../../../../services/axiosInstace';
 import {
   logEmailPassType,
   loginPassType,
+  LoginResponseType,
   LogRegResponceType,
 } from '../type/AuthTypes';
 
 class AuthApi {
   static login = async (loginPass: loginPassType) => {
-    const { data } = await axiosInstance.post<LogRegResponceType>(
+    const { data } = await axiosInstance.post<LoginResponseType>(
       '/auth/login',
       loginPass
     );
@@ -32,7 +33,7 @@ class AuthApi {
   };
 
   static refreshToken = async () => {
-    const { data } = await axiosInstance.get<LogRegResponceType>(
+    const { data } = await axiosInstance.get<LoginResponseType>(
       '/tokens/refresh'
     );
     return data;

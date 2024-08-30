@@ -1,29 +1,39 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Note, NoteID, NoteWithoutIDandFolderID } from '../type/NoteType';
+import { Note, NoteID, NoteWithoutCreatedAt, NoteWithoutIDFolderIDcreatedAt } from '../type/NoteType';
 import NoteApi from '../api/noteApi';
+import { UserID } from '../../User/type/UserType';
 
-type initialState = { notes: Note[]; loading: boolean };
+type initialStateType = { notes: Note[]; loading: boolean };
 
-const initialState: initialState = { notes: [], loading: false };
+const initialState: initialStateType = { notes: [], loading: false };
 
 export const getAllNotes = createAsyncThunk('notes/getAll', () =>
   NoteApi.getAllNotes()
 );
+export const getUsersNotes = createAsyncThunk(
+  'notes/getAllUsers',
+  (userID: UserID) => NoteApi.getUsersNotes(userID)
+);
 export const createlNote = createAsyncThunk(
   'notes/createNote',
-  (note: NoteWithoutIDandFolderID) => NoteApi.createNote(note)
+  (note: NoteWithoutIDFolderIDcreatedAt) => NoteApi.createNote(note)
 );
 export const deleteNote = createAsyncThunk('notes/deleteNote', (id: NoteID) =>
   NoteApi.deteleNote(id)
 );
-export const updateNote = createAsyncThunk('notes/updateNote', (note: Note) =>
+export const updateNote = createAsyncThunk('notes/updateNote', (note: NoteWithoutCreatedAt) =>
   NoteApi.updateNote(note)
 );
 
 const notesSlice = createSlice({
   name: 'Notes',
   initialState,
-  reducers: {},
+  reducers: {
+    clearNotes: (state) => {
+      state.loading = false;
+      state.notes = [];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getAllNotes.pending, (state) => {
       state.loading = true;
@@ -33,9 +43,17 @@ const notesSlice = createSlice({
       state.notes.push(...action.payload);
       state.loading = false;
     });
+    builder.addCase(getUsersNotes.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(getUsersNotes.fulfilled, (state, action) => {
+      state.notes.push(...action.payload);
+      state.loading = false;
+    });
 
     builder.addCase(createlNote.fulfilled, (state, action) => {
-      state.notes.push(action.payload);
+      state.notes.unshift(action.payload);
       state.loading = false;
     });
 
@@ -46,11 +64,13 @@ const notesSlice = createSlice({
 
     builder.addCase(updateNote.fulfilled, (state, action) => {
       state.notes = state.notes.map((el) =>
-        el.id === action.payload.id ? action.meta.arg : el
+        el.id === action.payload.id ? action.payload.updatedNote : el
       );
       state.loading = false;
     });
   },
 });
+
+export const { clearNotes } = notesSlice.actions;
 
 export default notesSlice.reducer;
