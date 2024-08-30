@@ -1,4 +1,4 @@
-import { Button, Modal, Loader, Container, Flex } from '@mantine/core';
+import { Button, Modal, Loader, Flex } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import PairsApi from '../../../Entities/Pairs/api/PairsApi';
 import type { UserLogin } from '../../../Entities/User/type/UserType';
