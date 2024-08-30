@@ -8,23 +8,33 @@ import ModalDeletePair from './ModalDeletePair';
 
 function TableForPair(): JSX.Element {
   const currentPair = useAppSelector((store) => store.currentUserStore.pair);
-  const [firstUser, setFirstUser] = useState<User>({} as User);
-  const [secondUser, setSecondUser] = useState<User>({} as User);
+  const currentUser = useAppSelector((state) => state.currentUserStore.user);
+
+  const [inviter, setInviter] = useState<User>({} as User);
+  const [invitee, setInvitee] = useState<User>({} as User);
 
   const getUsers = () => {
-    if (currentPair) {
-      UsersApi.getUser(currentPair.userOneID).then((data) => {
-        setFirstUser(data.user);
-      });
-      UsersApi.getUser(currentPair.userTwoID).then((data) => {
-        setSecondUser(data.user);
-      });
+    if (currentPair && currentUser) {
+      // Determine who is the inviter (userOne) and invitee (userTwo)
+      const isCurrentUserInviter = currentUser.id === currentPair.userOneID;
+
+      if (isCurrentUserInviter) {
+        setInviter(currentUser);
+        UsersApi.getUser(currentPair.userTwoID).then((data) => {
+          setInvitee(data.user);
+        });
+      } else {
+        setInvitee(currentUser);
+        UsersApi.getUser(currentPair.userOneID).then((data) => {
+          setInviter(data.user);
+        });
+      }
     }
   };
 
   useEffect(() => {
     getUsers();
-  }, [currentPair]);
+  }, [currentPair, currentUser]);
 
   return (
     <>
@@ -43,23 +53,23 @@ function TableForPair(): JSX.Element {
           <Table.Tr>
             <Table.Td>
               <Group gap="sm">
-                {firstUser.login && (
+                {inviter.login && (
                   <Avatar
-                    name={firstUser.login}
-                    color={getColorByID(firstUser.colorID)}
+                    name={inviter.login}
+                    color={getColorByID(inviter.colorID)}
                     radius="xl"
                     size={40}
                     variant="filled"
                   >
-                    {firstUser.login.charAt(0).toUpperCase()}
+                    {inviter.login.charAt(0).toUpperCase()}
                   </Avatar>
                 )}
                 <div>
                   <Text fz="sm" fw={500}>
-                    {firstUser.login}
+                    {inviter.login}
                   </Text>
                   <Text fz="xs" c="dimmed">
-                    {firstUser.email}
+                    {inviter.email}
                   </Text>
                 </div>
               </Group>
@@ -67,23 +77,23 @@ function TableForPair(): JSX.Element {
 
             <Table.Td>
               <Group gap="sm">
-                {secondUser.login && (
+                {invitee.login && (
                   <Avatar
-                    name={secondUser.login}
-                    color={getColorByID(secondUser.colorID)}
+                    name={invitee.login}
+                    color={getColorByID(invitee.colorID)}
                     radius="xl"
                     size={40}
                     variant="filled"
                   >
-                    {secondUser.login.charAt(0).toUpperCase()}
+                    {invitee.login.charAt(0).toUpperCase()}
                   </Avatar>
                 )}
                 <div>
                   <Text fz="sm" fw={500}>
-                    {secondUser.login}
+                    {invitee.login}
                   </Text>
                   <Text fz="xs" c="dimmed">
-                    {secondUser.email}
+                    {invitee.email}
                   </Text>
                 </div>
               </Group>

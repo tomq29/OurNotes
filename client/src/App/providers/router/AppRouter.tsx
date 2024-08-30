@@ -15,9 +15,13 @@ import CalendarPage from '../../../Pages/CalendarPage/CalendarPage';
 import SoonPage from '../../../Pages/SoonPage/SoonPage';
 import PersonalNoteEditorPage from '../../../Pages/OneNotePage/PersonalNoteEditorPage';
 import PairNoteEditorPage from '../../../Pages/OneNotePage/PairNoteEditorPage';
+import { useAppSelector } from '../store/store';
+import ProtectedRouter from '../../../Shared/hocs/ProtectedRouter';
 
 function AppRouter(): JSX.Element {
   const location = useLocation();
+
+  const currentUser = useAppSelector((state) => state.currentUserStore.user);
 
   useEffect(() => {
     // Устанавливаем заголовок страницы в зависимости от текущего пути
@@ -63,18 +67,86 @@ function AppRouter(): JSX.Element {
     <Routes>
       <Route path="/" element={<HomePage />} />
 
-      <Route path="/notes" element={<NotesPage />} />
+      <Route
+        path="/notes"
+        element={
+          <ProtectedRouter isAllowed={currentUser} redirect="/auth/login">
+            <NotesPage />
+          </ProtectedRouter>
+        }
+      />
 
-      <Route path="/mynote/:id" element={<PersonalNoteEditorPage />} />
-      <Route path="/ournote/:id" element={<PairNoteEditorPage />} />
+      <Route
+        path="/mynote/:id"
+        element={
+          <ProtectedRouter isAllowed={currentUser} redirect="/auth/login">
+            <PersonalNoteEditorPage />
+          </ProtectedRouter>
+        }
+      />
 
-      <Route path="/questions" element={<SoonPage />} />
-      <Route path="/calendar" element={<CalendarPage />} />
+      <Route
+        path="/ournote/:id"
+        element={
+          <ProtectedRouter isAllowed={currentUser} redirect="/auth/login">
+            <PairNoteEditorPage />
+          </ProtectedRouter>
+        }
+      />
 
-      <Route path="/quotes" element={<SoonPage />} />
+      <Route
+        path="/questions"
+        element={
+          <ProtectedRouter isAllowed={currentUser} redirect="/auth/login">
+            <SoonPage />
+          </ProtectedRouter>
+        }
+      />
 
-      <Route path="/objectwriting" element={<SoonPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route
+        path="/calendar"
+        element={
+          <ProtectedRouter isAllowed={currentUser} redirect="/auth/login">
+            <CalendarPage />
+          </ProtectedRouter>
+        }
+      />
+
+      <Route
+        path="/quotes"
+        element={
+          <ProtectedRouter isAllowed={currentUser} redirect="/auth/login">
+            <SoonPage />
+          </ProtectedRouter>
+        }
+      />
+
+      <Route
+        path="/objectwriting"
+        element={
+          <ProtectedRouter isAllowed={currentUser} redirect="/auth/login">
+            <SoonPage />
+          </ProtectedRouter>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRouter isAllowed={currentUser} redirect="/auth/login">
+            <ProfilePage />
+          </ProtectedRouter>
+        }
+      />
+
+      <Route
+        path="/notes"
+        element={
+          <ProtectedRouter isAllowed={currentUser} redirect="/auth/login">
+            <NotesPage />
+          </ProtectedRouter>
+        }
+      />
 
       <Route path="/auth/logout" element={<LogOutPage />} />
       <Route path="/auth/login" element={<LoginPage />} />
