@@ -7,6 +7,7 @@ import {
   Drawer,
   ScrollArea,
   rem,
+  Flex,
 } from '@mantine/core';
 import classes from '../HeaderMegaMenu.module.css';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -52,21 +53,24 @@ function NavBarForAnon(): JSX.Element {
         hiddenFrom="sm"
         zIndex={1000}
       >
-        <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
+        <ScrollArea h={`calc(100vh - ${rem(70)})`} mx="-md">
           <Divider my="sm" />
 
           <NavLink to={'/'} className={classes.link}>
             Главная
           </NavLink>
-
+          <ThemeToggle />
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button onClick={() => navigate('/auth/login')} variant="default">
-              Авторизация
-            </Button>
-            <Button onClick={() => navigate('/auth/reg')}>Регистрация</Button>
-            <ThemeToggle />
+            <Flex direction={'column'}>
+              <Button onClick={() => navigate('/auth/login')} variant="default">
+                Авторизация
+              </Button>
+              <Button mt={10} onClick={() => navigate('/auth/reg')}>
+                Регистрация
+              </Button>
+            </Flex>
           </Group>
         </ScrollArea>
       </Drawer>

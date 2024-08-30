@@ -9,6 +9,13 @@ class EventTypesApi {
     }>('/eventtypes');
     return data;
   }
+  static async getEventType(id: number) {
+    const { data } = await axiosInstance.get<{
+      message: string;
+      eventType: EventTypeType;
+    }>(`/eventtypes/${id}`);
+    return data;
+  }
 }
 
 export default EventTypesApi;

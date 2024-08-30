@@ -15,7 +15,7 @@ const verifyAccessToken = require('../../middleware/verifyAccessToken');
 notesRouter
   .route('/')
 
-  .get(async (req, res) => {
+  .get(verifyAccessToken, async (req, res) => {
     try {
       const notes = await Note.findAll({ order: [['id', 'DESC']] });
 
@@ -25,7 +25,7 @@ notesRouter
     }
   })
 
-  .post(async (req, res) => {
+  .post(verifyAccessToken, async (req, res) => {
     try {
       const { title, description, userID, folderID, pairID, content } =
         req.body;
@@ -54,7 +54,7 @@ notesRouter
 notesRouter
   .route('/:userID')
 
-  .get(async (req, res) => {
+  .get(verifyAccessToken, async (req, res) => {
     try {
       const { userID } = req.params;
 
@@ -87,7 +87,7 @@ notesRouter
 
 notesRouter
   .route('/note/:id')
-  .get(async (req, res) => {
+  .get(verifyAccessToken, async (req, res) => {
     try {
       const note = await Note.findByPk(req.params.id);
       if (note) {
@@ -118,7 +118,7 @@ notesRouter
     }
   })
 
-  .delete(async (req, res) => {
+  .delete(verifyAccessToken, async (req, res) => {
     try {
       const { id } = req.params;
       const note = await Note.findByPk(id);

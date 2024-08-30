@@ -1,7 +1,8 @@
 const usersRouter = require('express').Router();
 const { User } = require('../../db/models');
+const verifyAccessToken = require('../../middleware/verifyAccessToken');
 
-usersRouter.put('/:id', async (req, res) => {
+usersRouter.put('/:id', verifyAccessToken, async (req, res) => {
   const { id } = req.params;
   const { colorID } = req.body;
 
@@ -23,7 +24,7 @@ usersRouter.put('/:id', async (req, res) => {
   }
 });
 
-usersRouter.get('/:id', async (req, res) => {
+usersRouter.get('/:id', verifyAccessToken, async (req, res) => {
   const { id } = req.params;
 
   if (!id) {
