@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "node --watch app.js",
+    "y-webSocket": "npx y-websocket --port 1234",
     "y-webSocket-server": "npx y-websocket-server --port 1234",
     "db:migSeed": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate && npx sequelize db:seed:undo:all && npx sequelize db:seed:all",
     "db:mig": "npx sequelize db:migrate:undo:all && npx sequelize db:migrate",
