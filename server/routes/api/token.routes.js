@@ -10,7 +10,14 @@ tokenRouter.get('/refresh', verifyRefreshToken, async (req, res) => {
   try {
     const { user } = res.locals;
 
-    const refreshUser = await User.findByPk(user.id);
+    const refreshUser = await User.findByPk(user.id, {
+      attributes: { exclude: ['password'] },
+      raw: true,
+    });
+
+    if (!refreshUser) {
+      return res.clearCookie(jwtConfig.refresh.type).sendStatus(401);
+    }
 
     const { refreshToken, accessToken } = generateTokens({ user: refreshUser });
 
