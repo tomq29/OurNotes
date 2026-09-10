@@ -30,6 +30,9 @@ import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
 import { getColorByID } from '../../utils/getColorByID/getColorByID';
 
+const COLLAB_WS_URL =
+  import.meta.env.VITE_WS_URL ?? `ws://${window.location.hostname}:1234`;
+
 function PersonalNoteEditorPage() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
@@ -41,7 +44,7 @@ function PersonalNoteEditorPage() {
   // Initialize Yjs document
   const ydoc = React.useMemo(() => new Y.Doc(), []);
   const provider = React.useMemo(
-    () => new WebsocketProvider('ws://87.228.24.113:1234', `note-${id}`, ydoc),
+    () => new WebsocketProvider(COLLAB_WS_URL, `note-${id}`, ydoc),
     [ydoc, id]
   );
 
