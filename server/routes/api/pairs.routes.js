@@ -2,8 +2,11 @@ const pairsRouter = require('express').Router();
 const { Op } = require('sequelize');
 const { User, Pair } = require('../../db/models');
 const verifyAccessToken = require('../../middleware/verifyAccessToken');
+const { memberOf } = require('../../utils/access');
 
-pairsRouter.get('/users/search', verifyAccessToken, async (req, res) => {
+pairsRouter.use(verifyAccessToken);
+
+pairsRouter.get('/users/search', async (req, res) => {
   try {
     const login = req.query.targetLogin;
 
@@ -24,22 +27,23 @@ pairsRouter.get('/users/search', verifyAccessToken, async (req, res) => {
   }
 });
 
-pairsRouter.post('/createRequest', verifyAccessToken, async (req, res) => {
+pairsRouter.post('/createRequest', async (req, res) => {
   try {
-    const { firstUserID, secondUserLogin } = req.body;
+    const { id: firstUserID } = res.locals.user;
+    const { secondUserLogin } = req.body;
 
-    if (!firstUserID || !secondUserLogin) {
+    if (!secondUserLogin) {
       return res.status(400).json({ message: 'Invalid input' });
     }
 
-    const secondUser = (
-      await User.findOne({
-        where: { login: secondUserLogin },
-      })
-    ).get();
+    const secondUser = await User.findOne({ where: { login: secondUserLogin } });
 
     if (!secondUser) {
       return res.status(404).json({ message: 'Second user not found' });
+    }
+
+    if (secondUser.id === firstUserID) {
+      return res.status(400).json({ message: 'Cannot pair with yourself' });
     }
 
     const pair = (
@@ -56,15 +60,15 @@ pairsRouter.post('/createRequest', verifyAccessToken, async (req, res) => {
   }
 });
 
-pairsRouter.get('/checkPair/:userID', verifyAccessToken, async (req, res) => {
+pairsRouter.get('/checkPair/:userID', async (req, res) => {
   try {
-    const { userID } = req.params;
+    const { id: userID } = res.locals.user;
 
-    const pair = await Pair.findOne({
-      where: {
-        [Op.or]: [{ userTwoID: userID }, { userOneID: userID }],
-      },
-    });
+    if (Number(req.params.userID) !== userID) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const pair = await Pair.findOne({ where: memberOf(userID) });
 
     if (pair) {
       return res.status(200).json({ message: 'you have pair', pair });
@@ -76,45 +80,39 @@ pairsRouter.get('/checkPair/:userID', verifyAccessToken, async (req, res) => {
   }
 });
 
-pairsRouter.put(
-  '/acceptRequest/:pairID',
-  verifyAccessToken,
-  async (req, res) => {
-    try {
-      const { pairID } = req.params;
+pairsRouter.put('/acceptRequest/:pairID', async (req, res) => {
+  try {
+    const pair = await Pair.findOne({
+      where: { id: req.params.pairID, userTwoID: res.locals.user.id },
+    });
 
-      // const [updateStatus] = await Pair.update(
-      //   { status: 'active' },
-      //   { where: { id: pairID } }
-      // );
-      const pair = await Pair.findOne({ where: { id: pairID } });
-      pair.status = 'active';
-      await pair.save();
-
-      res.status(200).json({ message: 'Request accept', status: 'active' });
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: error.message || 'Internal server error' });
+    if (!pair) {
+      return res.status(404).json({ message: 'Request not found' });
     }
+
+    pair.status = 'active';
+    await pair.save();
+
+    res.status(200).json({ message: 'Request accept', status: 'active' });
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Internal server error' });
   }
-);
+});
 
-pairsRouter.delete(
-  '/rejectRequest/:pairID',
-  verifyAccessToken,
-  async (req, res) => {
-    try {
-      const { pairID } = req.params;
-      const status = await Pair.destroy({ where: { id: pairID } });
+pairsRouter.delete('/rejectRequest/:pairID', async (req, res) => {
+  try {
+    const status = await Pair.destroy({
+      where: { id: req.params.pairID, ...memberOf(res.locals.user.id) },
+    });
 
-      res.status(200).json({ message: 'Request reject', status });
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: error.message || 'Internal server error' });
+    if (!status) {
+      return res.status(404).json({ message: 'Request not found' });
     }
+
+    res.status(200).json({ message: 'Request reject', status });
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Internal server error' });
   }
-);
+});
 
 module.exports = pairsRouter;

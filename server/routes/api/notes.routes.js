@@ -1,100 +1,70 @@
 const notesRouter = require('express').Router();
 const { Op } = require('sequelize');
-
-/////////////
-const { Note, Text, Pair } = require('../../db/models'); // Change here your Model
-/////////////
-
-// verifyAccessToken Использовать перед POST DELETE PUT
+const { Note, Pair } = require('../../db/models');
 const verifyAccessToken = require('../../middleware/verifyAccessToken');
+const { memberOf, isPairMember, canAccessNote } = require('../../utils/access');
 
-/////////////
+notesRouter.use(verifyAccessToken);
 
-// AKA CRUD routes.js
+async function findAccessibleNote(id, userID) {
+  const note = await Note.findByPk(id);
+  if (!note || !(await canAccessNote(note, userID))) return null;
+  return note;
+}
 
-notesRouter
-  .route('/')
+notesRouter.post('/', async (req, res) => {
+  try {
+    const { id: userID } = res.locals.user;
+    const { title, description, folderID, pairID, content } = req.body;
 
-  .get(verifyAccessToken, async (req, res) => {
-    try {
-      const notes = await Note.findAll({ order: [['id', 'DESC']] });
-
-      res.status(200).json(notes);
-    } catch ({ message }) {
-      res.status(500).json({ err: message });
+    if (!title || title.trim() === '') {
+      return res.status(400).json('Empty field exists');
     }
-  })
 
-  .post(verifyAccessToken, async (req, res) => {
-    try {
-      const { title, description, userID, folderID, pairID, content } =
-        req.body;
-
-      if (title.trim() === '' || !userID) {
-        return res.status(400).json('Empty field exists');
-      }
-
-      const data = (
-        await Note.create({
-          title,
-          description,
-          userID,
-          folderID,
-          pairID,
-          content,
-        })
-      ).get();
-
-      res.status(201).json(data);
-    } catch ({ message }) {
-      res.status(500).json({ err: message });
+    if (pairID && !(await isPairMember(pairID, userID))) {
+      return res.status(403).json({ err: 'Not a member of this pair' });
     }
-  });
 
-notesRouter
-  .route('/:userID')
+    const data = (
+      await Note.create({ title, description, userID, folderID, pairID, content })
+    ).get();
 
-  .get(verifyAccessToken, async (req, res) => {
-    try {
-      const { userID } = req.params;
+    res.status(201).json(data);
+  } catch ({ message }) {
+    res.status(500).json({ err: message });
+  }
+});
 
-      const userPair = await Pair.findOne({
-        where: {
-          [Op.or]: [{ userOneID: userID }, { userTwoID: userID }],
-        },
-      });
+notesRouter.get('/:userID', async (req, res) => {
+  try {
+    const { id: userID } = res.locals.user;
 
-      let notes;
-      if (userPair) {
-        notes = await Note.findAll({
-          where: {
-            [Op.or]: [{ userID }, { pairID: userPair.id }],
-          },
-          order: [['id', 'DESC']],
-        });
-      } else {
-        notes = await Note.findAll({
-          where: { userID },
-          order: [['id', 'DESC']],
-        });
-      }
-
-      res.status(200).json(notes);
-    } catch ({ message }) {
-      res.status(500).json({ err: message });
+    if (Number(req.params.userID) !== userID) {
+      return res.status(403).json({ err: 'Forbidden' });
     }
-  });
+
+    const userPair = await Pair.findOne({ where: memberOf(userID) });
+    const where = userPair
+      ? { [Op.or]: [{ userID }, { pairID: userPair.id }] }
+      : { userID };
+
+    const notes = await Note.findAll({ where, order: [['id', 'DESC']] });
+
+    res.status(200).json(notes);
+  } catch ({ message }) {
+    res.status(500).json({ err: message });
+  }
+});
 
 notesRouter
   .route('/note/:id')
-  .get(verifyAccessToken, async (req, res) => {
+  .get(async (req, res) => {
     try {
-      const note = await Note.findByPk(req.params.id);
-      if (note) {
-        res.json(note);
-      } else {
-        res.status(404).json({ error: 'Note not found' });
+      const note = await findAccessibleNote(req.params.id, res.locals.user.id);
+      if (!note) {
+        return res.status(404).json({ error: 'Note not found' });
       }
+      res.json(note);
     } catch ({ message }) {
       res.status(500).json({ err: message });
     }
@@ -102,33 +72,29 @@ notesRouter
   .put(async (req, res) => {
     try {
       const { id } = req.params;
+      const note = await findAccessibleNote(id, res.locals.user.id);
+      if (!note) {
+        return res.status(404).json({ error: 'Note not found' });
+      }
 
-      const { title, description, folderID, userID, content } = req.body;
+      const { title, description, folderID, content } = req.body;
+      const updatedNote = await note.update({ title, description, folderID, content });
 
-      const [updateStatus] = await Note.update(
-        { title, description, folderID, userID, content },
-        { where: { id } }
-      );
-
-      const updatedNote = await Note.findByPk(id);
-
-      res.json({ updateStatus, id: Number(id), updatedNote });
+      res.json({ updateStatus: 1, id: Number(id), updatedNote });
     } catch ({ message }) {
       res.status(500).json({ err: message });
     }
   })
-
-  .delete(verifyAccessToken, async (req, res) => {
+  .delete(async (req, res) => {
     try {
       const { id } = req.params;
-      const note = await Note.findByPk(id);
-
-      if (note) {
-        await note.destroy();
-        res.json({ id: Number(id) });
-      } else {
-        res.status(404).json({ error: 'Note not found' });
+      const note = await findAccessibleNote(id, res.locals.user.id);
+      if (!note) {
+        return res.status(404).json({ error: 'Note not found' });
       }
+
+      await note.destroy();
+      res.json({ id: Number(id) });
     } catch ({ message }) {
       res.status(500).json({ err: message });
     }
